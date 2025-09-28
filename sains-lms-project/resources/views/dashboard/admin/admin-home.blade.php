@@ -1,18 +1,7 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
-    </x-slot>
+@extends('dashboard.admin.admin-base')
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    {{ __("You're logged in as Admin!") }}
-                </div>
-            </div>
-        </div>
-    </div>
+@section('page-title', 'Daftar Pengguna')
 
-</x-app-layout>
+@section('content')
+<h1>Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam in temporibus perferendis repudiandae placeat dolorem ea, at corrupti quibusdam deleniti nulla totam nihil consectetur neque nisi ipsam doloribus? In enim voluptatum minima labore? Repudiandae nemo labore ducimus eveniet dolorum vel, eos, et impedit facilis nam molestiae officiis atque similique doloremque nobis ipsa aliquam, tempore consequatur! Delectus, quos alias ipsum sint cupiditate, aliquid corrupti dicta, deserunt impedit optio recusandae sequi culpa. Praesentium, fuga ea. Soluta, in omnis? Atque fugit, odit aliquam soluta numquam architecto reprehenderit quisquam accusamus nihil excepturi quidem tempora quod eaque necessitatibus neque provident eius. Quisquam ab minima necessitatibus.</h1>
+@endsection
