@@ -1,5 +1,13 @@
 <?php
 
+use App\Http\Controllers\Admin\AnnouncementController;
+use App\Http\Controllers\Admin\CertificateController;
+use App\Http\Controllers\Admin\ClassController;
+use App\Http\Controllers\Admin\FacultyController;
+use App\Http\Controllers\Admin\FaqController;
+use App\Http\Controllers\Admin\HalaqahController;
+use App\Http\Controllers\Admin\ReportController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
@@ -69,4 +77,101 @@ Route::middleware('auth')->group(function () {
         'update' => 'pertemuan.update',
         'destroy' => 'pertemuan.destroy',
     ]);
+
+    Route::resource('daftar-pengguna', UserController::class)
+    ->middleware('admin')
+    ->names([
+        'index' => 'daftar-pengguna.index',
+        'create' => 'daftar-pengguna.create',
+        'store' => 'daftar-pengguna.store',
+        'show' => 'daftar-pengguna.show',         
+        'edit' => 'daftar-pengguna.edit',
+        'update' => 'daftar-pengguna.update',
+        'destroy' => 'daftar-pengguna.destroy',
+    ]);
+    
+    Route::resource('daftar-fakultas', FacultyController::class)
+    ->middleware('admin')
+    ->names([
+        'index' => 'daftar-fakultas.index',
+        'create' => 'daftar-fakultas.create',
+        'store' => 'daftar-fakultas.store',
+        'show' => 'daftar-fakultas.show',         
+        'edit' => 'daftar-fakultas.edit',
+        'update' => 'daftar-fakultas.update',
+        'destroy' => 'daftar-fakultas.destroy',
+    ]);
+
+    Route::resource('daftar-kelas', ClassController::class)
+    ->middleware('admin')
+    ->names([
+        'index' => 'daftar-kelas.index',
+        'create' => 'daftar-kelas.create',
+        'store' => 'daftar-kelas.store',
+        'show' => 'daftar-kelas.show',         
+        'edit' => 'daftar-kelas.edit',
+        'update' => 'daftar-kelas.update',
+        'destroy' => 'daftar-kelas.destroy',
+    ]);
+    
+    Route::resource('daftar-halaqah', HalaqahController::class)
+    ->middleware('admin')
+    ->names([
+        'index' => 'daftar-halaqah.index',
+        'create' => 'daftar-halaqah.create',
+        'store' => 'daftar-halaqah.store',
+        'show' => 'daftar-halaqah.show',         
+        'edit' => 'daftar-halaqah.edit',
+        'update' => 'daftar-halaqah.update',
+        'destroy' => 'daftar-halaqah.destroy',
+    ]);
+
+    Route::resource('faq', FaqController::class)
+    ->middleware('admin')
+    ->names([
+        'index' => 'faq.index',
+        'create' => 'faq.create',
+        'store' => 'faq.store',
+        'show' => 'faq.show',         
+        'edit' => 'faq.edit',
+        'update' => 'faq.update',
+        'destroy' => 'faq.destroy',
+    ]);
+
+    Route::resource('pengumuman', AnnouncementController::class)
+    ->middleware('admin')
+    ->names([
+        'index' => 'pengumuman.index',
+        'create' => 'pengumuman.create',
+        'store' => 'pengumuman.store',
+        'show' => 'pengumuman.show',         
+        'edit' => 'pengumuman.edit',
+        'update' => 'pengumuman.update',
+        'destroy' => 'pengumuman.destroy',
+    ]);
+
+    Route::resource('sertifikat', CertificateController::class)
+    ->middleware('admin')
+    ->names([
+        'index' => 'sertifikat.index',
+        'create' => 'sertifikat.create',
+        'store' => 'sertifikat.store',
+        'show' => 'sertifikat.show',         
+        'edit' => 'sertifikat.edit',
+        'update' => 'sertifikat.update',
+        'destroy' => 'sertifikat.destroy',
+    ]);
+
+    Route::resource('laporan', ReportController::class)
+    ->middleware('admin')
+    ->names([
+        'index' => 'laporan.index',
+        'create' => 'laporan.create',
+        'store' => 'laporan.store',
+        'show' => 'laporan.show',         
+        'edit' => 'laporan.edit',
+        'update' => 'laporan.update',
+        'destroy' => 'laporan.destroy',
+    ]);
+
 });
