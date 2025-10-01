@@ -8,6 +8,9 @@ use App\Http\Controllers\Admin\FaqController;
 use App\Http\Controllers\Admin\HalaqahController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Asisten\AnnouncementAsistenController;
+use App\Http\Controllers\Asisten\FaqAsistenController;
+use App\Http\Controllers\Asisten\HalaqahAsistenController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
@@ -172,6 +175,46 @@ Route::middleware('auth')->group(function () {
         'edit' => 'laporan.edit',
         'update' => 'laporan.update',
         'destroy' => 'laporan.destroy',
+    ]);
+
+
+
+
+    // ASISTEN
+    Route::resource('halaqah-asisten', HalaqahAsistenController::class)
+    ->middleware('asisten')
+    ->names([
+        'index' => 'halaqah-asisten.index',
+        'create' => 'halaqah-asisten.create',
+        'store' => 'halaqah-asisten.store',
+        'show' => 'halaqah-asisten.show',         
+        'edit' => 'halaqah-asisten.edit',
+        'update' => 'halaqah-asisten.update',
+        'destroy' => 'halaqah-asisten.destroy',
+    ]);
+
+    Route::resource('pengumuman-asisten', AnnouncementAsistenController::class)
+    ->middleware('asisten')
+    ->names([
+        'index' => 'pengumuman-asisten.index',
+        'create' => 'pengumuman-asisten.create',
+        'store' => 'pengumuman-asisten.store',
+        'show' => 'pengumuman-asisten.show',         
+        'edit' => 'pengumuman-asisten.edit',
+        'update' => 'pengumuman-asisten.update',
+        'destroy' => 'pengumuman-asisten.destroy',
+    ]);
+
+    Route::resource('faq-asisten', FaqAsistenController::class)
+    ->middleware('asisten')
+    ->names([
+        'index' => 'faq-asisten.index',
+        'create' => 'faq-asisten.create',
+        'store' => 'faq-asisten.store',
+        'show' => 'faq-asisten.show',         
+        'edit' => 'faq-asisten.edit',
+        'update' => 'faq-asisten.update',
+        'destroy' => 'faq-asisten.destroy',
     ]);
 
 });

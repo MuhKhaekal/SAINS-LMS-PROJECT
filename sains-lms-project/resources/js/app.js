@@ -2,6 +2,7 @@ import './bootstrap';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import Alpine from 'alpinejs';
+import 'flowbite';
 
 window.Alpine = Alpine;
 

@@ -6,6 +6,15 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Studi Al-Qur'an Intensif Unhas (SAINS)</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <style>
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover, 
+        input:-webkit-autofill:focus, 
+        input:-webkit-autofill:active{
+            -webkit-box-shadow: 0 0 0 30px #093B3B inset !important;
+            -webkit-text-fill-color: white !important;
+        }
+    </style>
 </head>
 <body class="bg-primary text-white font-poppins">
     <section class="flex md:flex-row flex-col">
