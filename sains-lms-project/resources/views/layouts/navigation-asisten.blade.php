@@ -17,17 +17,17 @@
                     </x-nav-link>
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('pertemuan.index')">
+                    <x-nav-link :href="route('halaqah-asisten.index')" :active="request()->routeIs('halaqah-asisten.*')">
                         {{ __('Halaqah') }}
                     </x-nav-link>
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('pertemuan.index')">
+                    <x-nav-link :href="route('pengumuman-asisten.index')" :active="request()->routeIs('pengumuman-asisten.*')">
                         {{ __('Pengumuman') }}
                     </x-nav-link>
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('pertemuan.index')">
+                    <x-nav-link :href="route('faq-asisten.index')" :active="request()->routeIs('faq-asisten.*')">
                         {{ __('FAQ') }}
                     </x-nav-link>
                 </div>

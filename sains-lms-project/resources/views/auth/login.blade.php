@@ -17,14 +17,14 @@
     </style>
 </head>
 <body class="bg-primary text-white font-poppins">
-    <section class="flex md:flex-row flex-col">
+    <section class="flex md:flex-row flex-col md:items-center md:justify-center">
         <div style="background-image: url('/assets/images/background-login.png')" class="bg-cover bg-center md:min-h-screen md:flex-1  md:p-20 h-80">
             <div class="md:me-32 mx-5 md:mx-0">
                 <h1 class="md:text-5xl font-semibold md:leading-normal mt-48 md:mt-0 text-xl" data-aos="fade-right">Selangkah Lebih Dekat dengan Tajwid</h1>
                 <p class="text-xs md:text-base leading-loose" data-aos="fade-up">Sebuah layanan E-Learning gratis yang siap membantumu menjadi seorang ahli!</p>
             </div>
         </div>
-        <div class="md:flex-1 md:py-20 md:px-28 mx-5 md:mx-0 my-10 md:my-0">
+        <div class="md:flex-1 md:px-28 mx-5 md:mx-0 my-10 md:my-0 md:items-center">
             <h1 class="md:text-2xl font-semibold md:leading-normal text-xl" data-aos="fade-down">Login</h1>
             <p class="md:font-light md:me-28 md:my-5 hidden md:block" data-aos="fade-left">Persiapkan diri untuk masa depan yang penuh dengan bintang</p>
 
