@@ -106,17 +106,15 @@
                     <li class="text-lg font-semibold mx-2 px-5">
                         <p class="text-gray-300">{{ Auth::user()->name }}</p>
                     </li>
-                    <li class="text-lg font-semibold rounded-lg mx-2 px-5 py-3 flex justify-items-center hover:bg-gray-700 text-red-500">
+                    <li class="text-lg font-semibold rounded-lg mx-2 px-5 py-3 flex items-center hover:bg-gray-700 text-red-500">
                         <svg class="w-7 h-7 me-5 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H8m12 0-4 4m4-4-4-4M9 4H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h2"/>
                         </svg>
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
-                                <x-dropdown-link :href="route('logout')" 
-                                onclick="event.preventDefault();
-                                            this.closest('form').submit();">
-                                {{ __('Log Out') }}
-                            </x-dropdown-link>
+                            <button type="submit" class="hover:text-red-400">
+                                Logout
+                            </button>
                         </form>
                     </li>
                     
