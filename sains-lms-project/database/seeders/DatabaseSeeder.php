@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             HalaqahSeeder::class,
             ClassPaiSeeder::class,
             FaqSeeder::class,
+            AnnouncementSeeder::class,
         ]);
     }
 }

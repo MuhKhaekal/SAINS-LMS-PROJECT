@@ -77,8 +77,6 @@ class FaqController extends Controller
             'answer' => $request->answer,
         ];
 
-        $faq->update($data);
-
         return redirect()->route('faq.index')->with('success', 'Pertanyaan Faq berhasil dijawab');
     }
 
