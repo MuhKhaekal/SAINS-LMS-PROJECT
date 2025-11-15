@@ -3,7 +3,7 @@
 @section('page-title', 'Beranda')
 
 @section('content')
-<div style="background-image: linear-gradient(rgba(9, 59, 59, 0.7), rgba(9, 59, 59, 0.7)), url('/assets/images/background-home.png');" class="bg-no-repeat mx-0 bg-center bg-cover h-80 md:h-screen bg-primary md:flex md:items-center">
+<div style="background-image: linear-gradient(rgba(9, 59, 59, 0.7), rgba(9, 59, 59, 0.7)), url('/assets/images/background-home.png');" class="bg-no-repeat mx-0 bg-top bg-cover h-80 md:h-screen bg-primary md:flex md:items-center">
     <div class="relative mx-5 text-secondary pt-36 md:pt-0 md:w-1/2 md:mx-24">
         <h1 class="font-semibold text-xl md:text-4xl" data-aos="fade-right">Bangun dan Wujudkan Cita-cita Bersama SAINS</h1>
         <p class="text-xs leading-loose font-light md:text-lg md:mt-7" data-aos="fade-up">SAINS adalah program pengajaran Al-Qur'an yang membantu mahasiswa Universitas Hasanuddin (Unhas) meraih cita-cita dan mewujudkan kampus bebas buta aksara.</p>
@@ -18,9 +18,9 @@
 <section class="hidden md:block mx-24 my-24">
     <div class="flex items-center">
         <div class="flex-1 mx-5" data-aos="fade-right">
-            <h1 class="text-primary font-semibold text-md mb-4">Tentang Kami</h1>
+            <h1 class="text-primary font-semibold text-base mb-4">Tentang Kami</h1>
             <h1 class="text-black font-semibold text-2xl mb-2">SAINS: Program untuk Meningkatkan Pemahaman Al-Qur'an</h1>
-            <p class="text-xs font-light leading-loose text-gray-700">SAINS diharapkan menjadi program yang bermanfaat dalam pendidikan, meningkatkan pemahaman Al-Qur'an dan praktik ajaran Islam bagi mahasiswa.</p>
+            <p class="text-sm font-light leading-loose text-gray-700">SAINS diharapkan menjadi program yang bermanfaat dalam pendidikan, meningkatkan pemahaman Al-Qur'an dan praktik ajaran Islam bagi mahasiswa.</p>
         </div>
         <div class="flex-1 mx-5" data-aos="fade-left">
             <img class="my-2" src="{{ asset('assets/images/picture-home-1.png') }}" alt="">
@@ -28,9 +28,9 @@
     </div>
     <div class="flex flex-row-reverse items-center">
         <div class="flex-1 mx-5" data-aos="fade-left">
-            <h1 class="text-primary font-semibold text-md mb-4">Tentang Kami</h1>
+            <h1 class="text-primary font-semibold text-base mb-4">Tentang Kami</h1>
             <h1 class="text-black font-semibold text-2xl mb-2">SAINS: Program untuk Meningkatkan Pemahaman Al-Qur'an</h1>
-            <p class="text-xs font-light leading-loose text-gray-700">SAINS diharapkan menjadi program yang bermanfaat dalam pendidikan, meningkatkan pemahaman Al-Qur'an dan praktik ajaran Islam bagi mahasiswa.</p>
+            <p class="text-sm font-light leading-loose text-gray-700">SAINS diharapkan menjadi program yang bermanfaat dalam pendidikan, meningkatkan pemahaman Al-Qur'an dan praktik ajaran Islam bagi mahasiswa.</p>
         </div>
         <div class="flex-1 mx-5" data-aos="fade-right">
             <img class="my-2" src="{{ asset('assets/images/picture-home-1.png') }}" alt="">
@@ -40,9 +40,9 @@
 
 {{-- MOBILE --}}
 <section class="tentang-kami-mobile md:hidden p-4 mb-2">
-    <h1 class="text-primary font-semibold text-sm text-center mb-4" data-aos="fade-up">Tentang Kami</h1>
-    <h1 class="text-black font-semibold text-xs mb-2" data-aos="fade-right">SAINS: Program untuk Meningkatkan Pemahaman Al-Qur'an</h1>
-    <p class="text-xs font-light leading-loose" data-aos="fade-right">SAINS diharapkan menjadi program yang bermanfaat dalam pendidikan, meningkatkan pemahaman Al-Qur'an dan praktik ajaran Islam bagi mahasiswa.</p>
+    <h1 class="text-primary font-semibold text-base text-center mb-4" data-aos="fade-up">Tentang Kami</h1>
+    <h1 class="text-black font-semibold text-2xl mb-2" data-aos="fade-right">SAINS: Program untuk Meningkatkan Pemahaman Al-Qur'an</h1>
+    <p class="text-sm font-light leading-loose" data-aos="fade-right">SAINS diharapkan menjadi program yang bermanfaat dalam pendidikan, meningkatkan pemahaman Al-Qur'an dan praktik ajaran Islam bagi mahasiswa.</p>
     <img class="my-2" src="{{ asset('assets/images/picture-home-1.png') }}" alt="" data-aos="fade-left">
     <img class="" src="{{ asset('assets/images/picture-home-2.png') }}" alt="" data-aos="fade-right">
 </section>
@@ -63,8 +63,8 @@
                     </div>
                     <p class="text-center text-secondary -mt-3 ms-1 font-bold text-sm">1</p>
                 </div>
-                <h1 class="font-bold text-xs md:text-lg">Peningkatan Pemahaman</h1>
-                <p class="text-xs font-thin text-gray-700 md:text-sm">Memperdalam pemahaman terhadap Al-Qur'an dan aplikasinya dalam kehidupan sehari-hari.</p>
+                <h1 class="font-bold text-lg md:text-lg">Peningkatan Pemahaman</h1>
+                <p class="text-base font-thin text-gray-700 md:text-sm">Memperdalam pemahaman terhadap Al-Qur'an dan aplikasinya dalam kehidupan sehari-hari.</p>
             </div>
         </div>
         <div class="bg-gray-200 flex p-4 rounded-lg" data-aos="fade-left">
@@ -79,8 +79,8 @@
                     </div>
                     <p class="text-center text-secondary -mt-3 ms-1 font-bold text-sm">2</p>
                 </div>
-                <h1 class="font-bold text-xs md:text-lg">Keterampilan Membaca</h1>
-                <p class="text-xs font-thin text-gray-700 md:text-sm">Latihan membaca Al-Qur'an dengan tajwid yang benar, meningkatkan kemampuan membaca secara umum.</p>
+                <h1 class="font-bold text-lg md:text-lg">Keterampilan Membaca</h1>
+                <p class="text-base font-thin text-gray-700 md:text-sm">Latihan membaca Al-Qur'an dengan tajwid yang benar, meningkatkan kemampuan membaca secara umum.</p>
             </div>
         </div>
         <div class="bg-gray-200 flex p-4 rounded-lg" data-aos="fade-left">
@@ -95,8 +95,8 @@
                     </div>
                     <p class="text-center text-secondary -mt-3 ms-1 font-bold text-sm">3</p>
                 </div>
-                <h1 class="font-bold text-xs md:text-lg">Karakter Positif</h1>
-                <p class="text-xs font-thin text-gray-700 md:text-sm">Mengembangkan karakter positif, seperti disiplin dan empati, melalui nilai-nilai ajaran Al-Qur'an.</p>
+                <h1 class="font-bold text-lg md:text-lg">Karakter Positif</h1>
+                <p class="text-base font-thin text-gray-700 md:text-sm">Mengembangkan karakter positif, seperti disiplin dan empati, melalui nilai-nilai ajaran Al-Qur'an.</p>
             </div>
         </div>
         <div class="bg-gray-200 flex p-4 rounded-lg" data-aos="fade-right">
@@ -112,7 +112,7 @@
                     <p class="text-center text-secondary -mt-3 ms-1 font-bold text-sm">4</p>
                 </div>
                 <h1 class="font-bold text-xs md:text-lg">Lingkungan Positif</h1>
-                <p class="text-xs font-thin text-gray-700 md:text-sm">Menciptakan atmosfer kampus yang mendukung pembelajaran dan mengurangi buta aksara.</p>
+                <p class="text-base font-thin text-gray-700 md:text-sm">Menciptakan atmosfer kampus yang mendukung pembelajaran dan mengurangi buta aksara.</p>
             </div>
         </div>
         <div class="bg-gray-200 flex p-4 rounded-lg" data-aos="fade-right">
@@ -127,8 +127,8 @@
                     </div>
                     <p class="text-center text-secondary -mt-3 ms-1 font-bold text-sm">5</p>
                 </div>
-                <h1 class="font-bold text-xs md:text-lg">Akses Fleksibel</h1>
-                <p class="text-xs font-thin text-gray-700 md:text-sm">Program ini gratis dan dapat diakses secara online, memberikan kemudahan bagi mahasiswa.</p>
+                <h1 class="font-bold text-lg md:text-lg">Akses Fleksibel</h1>
+                <p class="text-basse font-thin text-gray-700 md:text-sm">Program ini gratis dan dapat diakses secara online, memberikan kemudahan bagi mahasiswa.</p>
             </div>
         </div>
         <div class="bg-gray-200 flex p-4 rounded-lg" data-aos="fade-right">
@@ -143,8 +143,8 @@
                     </div>
                     <p class="text-center text-secondary -mt-3 ms-1 font-bold text-sm">6</p>
                 </div>
-                <h1 class="font-bold text-xs md:text-lg">Komunitas Solid</h1>
-                <p class="text-xs font-thin text-gray-700 md:text-sm">Kesempatan untuk berinteraksi dan bersinergi dengan mahasiswa lain yang memiliki minat yang sama.</p>
+                <h1 class="font-bold text-lg md:text-lg">Komunitas Solid</h1>
+                <p class="text-base font-thin text-gray-700 md:text-sm">Kesempatan untuk berinteraksi dan bersinergi dengan mahasiswa lain yang memiliki minat yang sama.</p>
             </div>
         </div>
 

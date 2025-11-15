@@ -9,7 +9,7 @@
     import 'flowbite';
 
 </head>
-<body class="font-poppins bg-slate-100 flex flex-col min-h-screen">
+<body class="font-poppins bg-slate-100 flex flex-col min-h-screen" style="background-color: #f4f6f9">
     
     <div class="hidden md:block relative">
         <div class="fixed top-0 w-full z-10">

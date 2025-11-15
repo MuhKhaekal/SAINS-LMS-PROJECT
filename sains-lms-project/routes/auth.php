@@ -21,6 +21,8 @@ use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Admin\ProdiController;
+use App\Models\ClassPai;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
@@ -80,7 +82,9 @@ Route::middleware('auth')->group(function () {
         'update' => 'pertemuan.update',
         'destroy' => 'pertemuan.destroy',
     ]);
-
+    
+    Route::post('/daftar-pengguna/importExcel', [UserController::class, 'importExcel'])->name('daftar-pengguna.importExcel');
+    Route::delete('daftar-pengguna/destroy-multiple', [UserController::class, 'destroyMultiple'])->name('daftar-pengguna.destroy-multiple');
     Route::resource('daftar-pengguna', UserController::class)
     ->middleware('admin')
     ->names([
@@ -92,7 +96,9 @@ Route::middleware('auth')->group(function () {
         'update' => 'daftar-pengguna.update',
         'destroy' => 'daftar-pengguna.destroy',
     ]);
-    
+
+
+    Route::delete('daftar-fakultas/destroy-multiple', [FacultyController::class, 'destroyMultiple'])->name('daftar-fakultas.destroy-multiple');
     Route::resource('daftar-fakultas', FacultyController::class)
     ->middleware('admin')
     ->names([
@@ -104,7 +110,22 @@ Route::middleware('auth')->group(function () {
         'update' => 'daftar-fakultas.update',
         'destroy' => 'daftar-fakultas.destroy',
     ]);
+    
+    Route::delete('daftar-prodi/destroy-multiple', [ProdiController::class, 'destroyMultiple'])->name('daftar-prodi.destroy-multiple');
+    Route::resource('daftar-prodi', ProdiController::class)
+    ->middleware('admin')
+    ->names([
+        'index' => 'daftar-prodi.index',
+        'create' => 'daftar-prodi.create',
+        'store' => 'daftar-prodi.store',
+        'show' => 'daftar-prodi.show',         
+        'edit' => 'daftar-prodi.edit',
+        'update' => 'daftar-prodi.update',
+        'destroy' => 'daftar-prodi.destroy',
+    ]);
 
+
+    Route::delete('daftar-kelas/destroy-multiple', [ClassController::class, 'destroyMultiple'])->name('daftar-kelas.destroy-multiple');
     Route::resource('daftar-kelas', ClassController::class)
     ->middleware('admin')
     ->names([
@@ -116,7 +137,8 @@ Route::middleware('auth')->group(function () {
         'update' => 'daftar-kelas.update',
         'destroy' => 'daftar-kelas.destroy',
     ]);
-    
+
+    Route::delete('daftar-halaqah/destroy-multiple', [HalaqahController::class, 'destroyMultiple'])->name('daftar-halaqah.destroy-multiple');
     Route::resource('daftar-halaqah', HalaqahController::class)
     ->middleware('admin')
     ->names([
@@ -129,6 +151,8 @@ Route::middleware('auth')->group(function () {
         'destroy' => 'daftar-halaqah.destroy',
     ]);
 
+    Route::put('faq/add-to-list-faq/{id}', [FaqController::class, 'addToListFaq'])->name('faq.addToListFaq');
+    Route::put('faq/delete-from-list-faq/{id}', [FaqController::class, 'deleteFromListFaq'])->name('faq.deleteFromListFaq');
     Route::resource('faq', FaqController::class)
     ->middleware('admin')
     ->names([

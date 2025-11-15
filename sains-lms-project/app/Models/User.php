@@ -18,12 +18,12 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name',
+        'nama',
         'nim',
-        'gender',
         'password',
-        'image_profile',
-
+        'halaqah_id',
+        'gender',
+        'role'
     ];
 
     /**
@@ -48,4 +48,11 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function halaqahs()
+    {
+        return $this->belongsToMany(Halaqah::class, 'pivot_halaqah_users', 'user_id', 'halaqah_id')
+                    ->withTimestamps();
+    }
+
 }

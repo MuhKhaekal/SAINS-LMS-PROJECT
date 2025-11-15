@@ -12,7 +12,7 @@
         input:-webkit-autofill:focus, 
         input:-webkit-autofill:active{
             -webkit-box-shadow: 0 0 0 30px #093B3B inset !important;
-            -webkit-text-fill-color: white !important;
+            -webkit-text-fill-color: #E6E6E2 !important;
         }
     </style>
 </head>
