@@ -21,7 +21,7 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $query = User::query();
+        $query = User::with('halaqahs');
         $halaqahs = Halaqah::orderBy('halaqah_name', 'asc')->get();
 
 
@@ -69,7 +69,6 @@ class UserController extends Controller
             'password.confirmed' => 'Konfirmasi password tidak cocok.',
             'gender.required' => 'Jenis kelamin wajib dipilih.',
             'role.required' => 'Role wajib dipilih.',
-            'halaqah_id.exists' => 'Halaqah yang dipilih tidak valid.',
         ];
         
         $validator = Validator::make($request->all(), [
@@ -78,7 +77,6 @@ class UserController extends Controller
             'password' => 'required|string|min:8|confirmed',
             'gender' => 'required|string',
             'role' => 'required|string',
-            'halaqah_id' => 'nullable|exists:halaqahs,id',
         ], $messages);
     
         if ($validator->fails()) {
@@ -94,17 +92,14 @@ class UserController extends Controller
             'password' => Hash::make($request->password),
             'gender' => $request->gender,
             'role' => $request->role,
-            'halaqah_id' => $request->halaqah_id ?: null,
         ]);
-    
+
         if ($request->filled('halaqah_id')) {
             PivotHalaqahUser::create([
                 'halaqah_id' => $request->halaqah_id,
                 'user_id' => $user->id, 
             ]);
         }
-       
-
     
         return redirect()->route('daftar-pengguna.index')->with('success', 'Akun berhasil ditambahkan');
     }
@@ -139,7 +134,6 @@ class UserController extends Controller
             'password.confirmed' => 'Konfirmasi password tidak cocok.',
             'gender.required' => 'Jenis kelamin wajib dipilih.',
             'role.required' => 'Role wajib dipilih.',
-            'halaqah_id.exists' => 'Halaqah yang dipilih tidak valid.',
         ];
     
         $validator = Validator::make($request->all(), [
@@ -148,7 +142,6 @@ class UserController extends Controller
             'password' => 'nullable|string|min:8|confirmed',
             'gender' => 'required|string',
             'role' => 'required|string',
-            'halaqah_id' => 'nullable|exists:halaqahs,id',
         ], $messages);
     
         if ($validator->fails()) {
@@ -165,7 +158,6 @@ class UserController extends Controller
             'nim' => $request->nim,
             'gender' => $request->gender,
             'role' => $request->role,
-            'halaqah_id' => $request->halaqah_id,
         ];
     
         if ($request->filled('password')) {
@@ -174,16 +166,22 @@ class UserController extends Controller
     
 
         $user->update($data);
-    
 
-        if (!empty($request->halaqah_id)) {
-            PivotHalaqahUser::updateOrCreate(
-                ['user_id' => $id],
-                ['halaqah_id' => $request->halaqah_id]
-            );
+        if ($request->role === 'praktikan') {
+            // Praktikan wajib punya halaqah
+            if (!empty($request->halaqah_id)) {
+                PivotHalaqahUser::updateOrCreate(
+                    ['user_id' => $id],
+                    ['halaqah_id' => $request->halaqah_id]
+                );
+            }
         } else {
+            // Jika role berubah bukan praktikan → hapus halaqah
             PivotHalaqahUser::where('user_id', $id)->delete();
         }
+        
+
+    
     
         return redirect()->route('daftar-pengguna.index')->with('success', 'Akun berhasil diperbarui');
     }
@@ -209,9 +207,10 @@ class UserController extends Controller
         }
     
         User::whereIn('id', $ids)->delete();
-
         PivotHalaqahUser::whereIn('user_id', $ids)->delete();
         return redirect()->back()->with('success', 'Data pengguna berhasil dihapus.');
+        return redirect()->back()->with('success', 'Data pengguna berhasil dihapus.');
+
     }
 
     public function importExcel(Request $request)

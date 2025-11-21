@@ -23,4 +23,11 @@ class Halaqah extends Model
         return $this->belongsToMany(User::class, 'pivot_halaqah_users', 'halaqah_id', 'user_id')
                     ->withTimestamps();
     }
+
+    public function asisten()
+    {
+        return $this->belongsToMany(User::class, 'pivot_halaqah_users')
+                    ->where('role', 'asisten');
+    }
+
 }

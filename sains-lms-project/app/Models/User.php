@@ -21,7 +21,6 @@ class User extends Authenticatable
         'nama',
         'nim',
         'password',
-        'halaqah_id',
         'gender',
         'role'
     ];

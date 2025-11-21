@@ -18,12 +18,6 @@ return new class extends Migration
             $table->string('password');
             $table->string('gender');
             $table->string('role');
-            $table->foreignId('halaqah_id')
-                    ->nullable()
-                    ->constrained('halaqahs')
-                    ->onUpdate('cascade')
-                    ->onDelete('cascade');
-        
             $table->rememberToken();
             $table->timestamps();
         });

@@ -10,4 +10,14 @@ class PivotHalaqahUser extends Model
         'halaqah_id',
         'user_id'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+    public function halaqah()
+    {
+        return $this->belongsTo(Halaqah::class, 'halaqah_id');
+    }
+
 }

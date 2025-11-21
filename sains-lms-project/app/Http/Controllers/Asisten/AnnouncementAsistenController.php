@@ -12,7 +12,7 @@ class AnnouncementAsistenController extends Controller
      */
     public function index()
     {
-        return view('dashboard.asisten.asisten-index-pengumuman');
+        return view('dashboard.asisten.announcement.index');
     }
 
     /**

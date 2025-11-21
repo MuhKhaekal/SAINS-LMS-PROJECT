@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\ClassController;
 use App\Http\Controllers\Admin\FacultyController;
 use App\Http\Controllers\Admin\FaqController;
 use App\Http\Controllers\Admin\HalaqahController;
+use App\Http\Controllers\Admin\MeetingController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Asisten\AnnouncementAsistenController;
@@ -71,17 +72,17 @@ Route::middleware('auth')->group(function () {
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
         ->name('logout');
 
-    Route::resource('pertemuan', HomeController::class)
-    ->middleware('asisten')
-    ->names([
-        'index' => 'pertemuan.index',
-        'create' => 'pertemuan.create',
-        'store' => 'pertemuan.store',
-        'show' => 'pertemuan.show',         
-        'edit' => 'pertemuan.edit',
-        'update' => 'pertemuan.update',
-        'destroy' => 'pertemuan.destroy',
-    ]);
+    // Route::resource('pertemuan', HomeController::class)
+    // ->middleware('asisten')
+    // ->names([
+    //     'index' => 'pertemuan.index',
+    //     'create' => 'pertemuan.create',
+    //     'store' => 'pertemuan.store',
+    //     'show' => 'pertemuan.show',         
+    //     'edit' => 'pertemuan.edit',
+    //     'update' => 'pertemuan.update',
+    //     'destroy' => 'pertemuan.destroy',
+    // ]);
     
     Route::post('/daftar-pengguna/importExcel', [UserController::class, 'importExcel'])->name('daftar-pengguna.importExcel');
     Route::delete('daftar-pengguna/destroy-multiple', [UserController::class, 'destroyMultiple'])->name('daftar-pengguna.destroy-multiple');
@@ -201,6 +202,18 @@ Route::middleware('auth')->group(function () {
         'destroy' => 'laporan.destroy',
     ]);
 
+    Route::resource('pertemuan', MeetingController::class)
+    ->middleware('admin')
+    ->names([
+        'index' => 'pertemuan.index',
+        'create' => 'pertemuan.create',
+        'store' => 'pertemuan.store',
+        'show' => 'pertemuan.show',         
+        'edit' => 'pertemuan.edit',
+        'update' => 'pertemuan.update',
+        'destroy' => 'pertemuan.destroy',
+    ]);
+
 
 
 
@@ -240,5 +253,7 @@ Route::middleware('auth')->group(function () {
         'update' => 'faq-asisten.update',
         'destroy' => 'faq-asisten.destroy',
     ]);
+
+
 
 });

@@ -153,13 +153,24 @@ class HalaqahController extends Controller
     
 
         if (!empty($request->user_id)) {
-            PivotHalaqahUser::updateOrCreate(
-                ['halaqah_id' => $id],
-                ['user_id' => $request->user_id]
-            );
+            PivotHalaqahUser::where('halaqah_id', $id)
+                ->whereHas('user', function ($q) {
+                    $q->where('role', 'asisten');
+                })
+                ->delete();
+            PivotHalaqahUser::create([
+                'halaqah_id' => $id,
+                'user_id' => $request->user_id,
+            ]);
+        
         } else {
-            PivotHalaqahUser::where('halaqah_id', $id)->delete();
+            PivotHalaqahUser::where('halaqah_id', $id)
+                ->whereHas('user', function ($q) {
+                    $q->where('role', 'asisten');
+                })
+                ->delete();
         }
+        
     
         return redirect()->route('daftar-halaqah.index')->with('success', 'Data halaqah berhasil diperbarui');
     }

@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             ClassPaiSeeder::class,
             FaqSeeder::class,
             AnnouncementSeeder::class,
+            MeetingSeeder::class,
         ]);
     }
 }

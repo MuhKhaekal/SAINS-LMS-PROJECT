@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -11,7 +12,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+
     }
 
     /**
@@ -19,6 +20,16 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        view()->composer('*', function ($view) {
+
+            if (Auth::check()) {
+                $user = Auth::user();
+                $halaqahs = $user->halaqahs()->get(); 
+            } else {
+                $halaqahs = collect();
+            }
+    
+            $view->with('halaqahsNavbar', $halaqahs);
+        });
     }
 }

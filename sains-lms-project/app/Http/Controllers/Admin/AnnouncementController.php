@@ -66,7 +66,6 @@ class AnnouncementController extends Controller
             'user_id'    => Auth::id(),
         ]);
 
-        dd($request->file('file_location')->getMimeType());
 
         return redirect()->route('pengumuman.index')->with('success', 'Pengumuman berhasil diunggah');
 

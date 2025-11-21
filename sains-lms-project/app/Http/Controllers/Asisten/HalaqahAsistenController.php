@@ -3,16 +3,31 @@
 namespace App\Http\Controllers\Asisten;
 
 use App\Http\Controllers\Controller;
+use App\Models\Halaqah;
+use App\Models\Meeting;
 use Illuminate\Http\Request;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+
 
 class HalaqahAsistenController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    use AuthorizesRequests;
+    public function index(Request $request)
     {
-        return view('dashboard.asisten.asisten-index-halaqah');
+        $meetings = Meeting::all();
+        $halaqahName = $request->halaqah_name;
+
+        $selectedHalaqah = null;
+    
+        if ($halaqahName) {
+            $selectedHalaqah = Halaqah::where('halaqah_name', $halaqahName)->first();
+        }
+    
+        if ($selectedHalaqah) {
+            $this->authorize('view', $selectedHalaqah);
+        }
+    
+        return view('dashboard.asisten.halaqah.index', compact('selectedHalaqah', 'meetings'));
     }
 
     /**

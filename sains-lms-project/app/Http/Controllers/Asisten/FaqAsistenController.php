@@ -12,7 +12,7 @@ class FaqAsistenController extends Controller
      */
     public function index()
     {
-        return view('dashboard.asisten.asisten-index-faq');
+        return view('dashboard.asisten.faq.index');
     }
 
     /**
