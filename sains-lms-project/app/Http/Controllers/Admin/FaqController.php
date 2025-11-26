@@ -77,6 +77,8 @@ class FaqController extends Controller
             'answer' => $request->answer,
         ];
 
+        $faq->update($data);
+
         return redirect()->route('faq.index')->with('success', 'Pertanyaan Faq berhasil dijawab');
     }
 
@@ -85,7 +87,10 @@ class FaqController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $faq = Faq::findOrFail($id);
+
+        $faq->delete();
+        return redirect()->route('faq.index')->with('success', 'Data FAQ berhasil dihapus');
     }
 
     public function addToListFaq(string $id)

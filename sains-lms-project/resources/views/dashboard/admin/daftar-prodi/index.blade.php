@@ -7,7 +7,7 @@
 
     <section class="md:mx-12">
         <form method="GET" action="{{ route('daftar-prodi.index') }}"
-            class="flex flex-wrap md:flex-nowrap gap-2 items-center mt-6 w-full border border-dashed rounded-md p-4">
+            class="flex flex-wrap md:flex-nowrap gap-2 items-center mt-6 w-full bg-white shadow-sm border-2 rounded-md p-4">
 
             <input type="text" name="search" placeholder="Cari ..." value="{{ request('search') }}"
                 class="border border-gray-300 focus:border-gray-500 text-sm focus:ring-blue-500 rounded-md px-3 py-2 flex-grow md:basis-5/12 focus:outline-none">
@@ -83,7 +83,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($prodies as $prodi)
+                        @foreach ($prodies as $index => $prodi)
                             <tr class="bg-white hover:bg-gray-100 text-primary border-b">
                                 <td class="px-6 py-4">
                                     <input type="checkbox" name="ids[]" value="{{ $prodi->id }}" class="checkItem"
@@ -99,9 +99,9 @@
                                     {{ $prodi->faculty->faculty_name }}
                                 </td>
                                 <td class="px-6 py-4 flex gap-2">
-                                    <button type="button" data-modal-target="default-modal-update"
-                                        data-modal-toggle="default-modal-update" data-id="{{ $prodi->id }}"
-                                        data-prodi-code="{{ $prodi->prodi_code }}"
+                                    <button type="button" data-tooltip-target="tooltip-edit-{{ $index }}"
+                                        data-modal-target="default-modal-update" data-modal-toggle="default-modal-update"
+                                        data-id="{{ $prodi->id }}" data-prodi-code="{{ $prodi->prodi_code }}"
                                         data-prodi-name="{{ $prodi->prodi_name }}" data-faculty="{{ $prodi->faculty_id }}"
                                         class="font-medium hover:underline">
                                         <svg class="w-7 h-7 text-secondary bg-yellow-500 hover:bg-yellow-600 hover:text-white rounded-md p-1"
@@ -112,8 +112,14 @@
                                                 clip-rule="evenodd" />
                                         </svg>
                                     </button>
+                                    <div id="tooltip-edit-{{ $index }}" role="tooltip"
+                                        class="absolute z-10 invisible inline-block px-3 py-2 font-medium text-white transition-opacity duration-300 bg-dark rounded-base shadow-xs opacity-0 tooltip bg-primary rounded-md text-xs">
+                                        Edit
+                                        <div class="tooltip-arrow" data-popper-arrow></div>
+                                    </div>
 
                                     <button type="button" class="font-medium hover:underline"
+                                        data-tooltip-target="tooltip-delete-{{ $index }}"
                                         data-modal-target="default-modal-delete" data-modal-toggle="default-modal-delete"
                                         data-id="{{ $prodi->id }}" data-nama="{{ $prodi->prodi_name }}">
                                         <svg class="w-7 h-7 text-secondary bg-red-500 hover:bg-red-600 hover:text-white rounded-md p-1"
@@ -124,6 +130,11 @@
                                                 clip-rule="evenodd" />
                                         </svg>
                                     </button>
+                                    <div id="tooltip-delete-{{ $index }}" role="tooltip"
+                                        class="absolute z-10 invisible inline-block px-3 py-2 font-medium text-white transition-opacity duration-300 bg-dark rounded-base shadow-xs opacity-0 tooltip bg-primary rounded-md text-xs">
+                                        Hapus
+                                        <div class="tooltip-arrow" data-popper-arrow></div>
+                                    </div>
                                 </td>
                             </tr>
                         @endforeach
@@ -614,8 +625,8 @@
             <svg class="shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                 viewBox="0 0 20 20">
                 <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3
-                   1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1
-                   1 1v4h1a1 1 0 0 1 0 2Z" />
+                               1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1
+                               1 1v4h1a1 1 0 0 1 0 2Z" />
             </svg>
             <div class="ms-3 text-sm font-medium">{{ session('success') }}</div>
         </div>
@@ -638,8 +649,8 @@
             <svg class="shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                 viewBox="0 0 20 20">
                 <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3
-                   1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1
-                   1 1v4h1a1 1 0 0 1 0 2Z" />
+                               1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1
+                               1 1v4h1a1 1 0 0 1 0 2Z" />
             </svg>
             <div class="ms-3 text-sm font-medium">{{ session('error') }}</div>
         </div>
@@ -651,6 +662,15 @@
                 alertError.classList.add('opacity-0', 'translate-x-10');
                 setTimeout(() => alertError.remove(), 500);
             }, 5000);
+            window.addEventListener("pageshow", function(event) {
+                if (event.persisted) {
+                    const alertSuccess = document.getElementById("alert-success");
+                    const alertError = document.getElementById("alert-error");
+
+                    if (alertSuccess) alertSuccess.remove();
+                    if (alertError) alertError.remove();
+                }
+            });
         </script>
     @endif
 

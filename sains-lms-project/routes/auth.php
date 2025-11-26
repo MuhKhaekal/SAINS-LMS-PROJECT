@@ -23,6 +23,8 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\ProdiController;
+use App\Http\Controllers\Asisten\AssignmentController;
+use App\Http\Controllers\Asisten\MaterialController;
 use App\Models\ClassPai;
 use Illuminate\Support\Facades\Route;
 
@@ -72,187 +74,189 @@ Route::middleware('auth')->group(function () {
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
         ->name('logout');
 
-    // Route::resource('pertemuan', HomeController::class)
-    // ->middleware('asisten')
-    // ->names([
-    //     'index' => 'pertemuan.index',
-    //     'create' => 'pertemuan.create',
-    //     'store' => 'pertemuan.store',
-    //     'show' => 'pertemuan.show',         
-    //     'edit' => 'pertemuan.edit',
-    //     'update' => 'pertemuan.update',
-    //     'destroy' => 'pertemuan.destroy',
-    // ]);
     
-    Route::post('/daftar-pengguna/importExcel', [UserController::class, 'importExcel'])->name('daftar-pengguna.importExcel');
-    Route::delete('daftar-pengguna/destroy-multiple', [UserController::class, 'destroyMultiple'])->name('daftar-pengguna.destroy-multiple');
-    Route::resource('daftar-pengguna', UserController::class)
-    ->middleware('admin')
-    ->names([
-        'index' => 'daftar-pengguna.index',
-        'create' => 'daftar-pengguna.create',
-        'store' => 'daftar-pengguna.store',
-        'show' => 'daftar-pengguna.show',         
-        'edit' => 'daftar-pengguna.edit',
-        'update' => 'daftar-pengguna.update',
-        'destroy' => 'daftar-pengguna.destroy',
-    ]);
-
-
-    Route::delete('daftar-fakultas/destroy-multiple', [FacultyController::class, 'destroyMultiple'])->name('daftar-fakultas.destroy-multiple');
-    Route::resource('daftar-fakultas', FacultyController::class)
-    ->middleware('admin')
-    ->names([
-        'index' => 'daftar-fakultas.index',
-        'create' => 'daftar-fakultas.create',
-        'store' => 'daftar-fakultas.store',
-        'show' => 'daftar-fakultas.show',         
-        'edit' => 'daftar-fakultas.edit',
-        'update' => 'daftar-fakultas.update',
-        'destroy' => 'daftar-fakultas.destroy',
-    ]);
+    Route::middleware('admin')->group(function () {
+        Route::post('/daftar-pengguna/importExcel', [UserController::class, 'importExcel'])->name('daftar-pengguna.importExcel');
+        Route::delete('daftar-pengguna/destroy-multiple', [UserController::class, 'destroyMultiple'])->name('daftar-pengguna.destroy-multiple');
+        Route::resource('daftar-pengguna', UserController::class)
+        ->names([
+            'index' => 'daftar-pengguna.index',
+            'create' => 'daftar-pengguna.create',
+            'store' => 'daftar-pengguna.store',
+            'show' => 'daftar-pengguna.show',         
+            'edit' => 'daftar-pengguna.edit',
+            'update' => 'daftar-pengguna.update',
+            'destroy' => 'daftar-pengguna.destroy',
+        ]);
     
-    Route::delete('daftar-prodi/destroy-multiple', [ProdiController::class, 'destroyMultiple'])->name('daftar-prodi.destroy-multiple');
-    Route::resource('daftar-prodi', ProdiController::class)
-    ->middleware('admin')
-    ->names([
-        'index' => 'daftar-prodi.index',
-        'create' => 'daftar-prodi.create',
-        'store' => 'daftar-prodi.store',
-        'show' => 'daftar-prodi.show',         
-        'edit' => 'daftar-prodi.edit',
-        'update' => 'daftar-prodi.update',
-        'destroy' => 'daftar-prodi.destroy',
-    ]);
+    
+        Route::delete('daftar-fakultas/destroy-multiple', [FacultyController::class, 'destroyMultiple'])->name('daftar-fakultas.destroy-multiple');
+        Route::resource('daftar-fakultas', FacultyController::class)
+        ->names([
+            'index' => 'daftar-fakultas.index',
+            'create' => 'daftar-fakultas.create',
+            'store' => 'daftar-fakultas.store',
+            'show' => 'daftar-fakultas.show',         
+            'edit' => 'daftar-fakultas.edit',
+            'update' => 'daftar-fakultas.update',
+            'destroy' => 'daftar-fakultas.destroy',
+        ]);
+        
+        Route::delete('daftar-prodi/destroy-multiple', [ProdiController::class, 'destroyMultiple'])->name('daftar-prodi.destroy-multiple');
+        Route::resource('daftar-prodi', ProdiController::class)
+        ->names([
+            'index' => 'daftar-prodi.index',
+            'create' => 'daftar-prodi.create',
+            'store' => 'daftar-prodi.store',
+            'show' => 'daftar-prodi.show',         
+            'edit' => 'daftar-prodi.edit',
+            'update' => 'daftar-prodi.update',
+            'destroy' => 'daftar-prodi.destroy',
+        ]);
+    
+    
+        Route::delete('daftar-kelas/destroy-multiple', [ClassController::class, 'destroyMultiple'])->name('daftar-kelas.destroy-multiple');
+        Route::resource('daftar-kelas', ClassController::class)
+        ->names([
+            'index' => 'daftar-kelas.index',
+            'create' => 'daftar-kelas.create',
+            'store' => 'daftar-kelas.store',
+            'show' => 'daftar-kelas.show',         
+            'edit' => 'daftar-kelas.edit',
+            'update' => 'daftar-kelas.update',
+            'destroy' => 'daftar-kelas.destroy',
+        ]);
+    
+        Route::delete('daftar-halaqah/destroy-multiple', [HalaqahController::class, 'destroyMultiple'])->name('daftar-halaqah.destroy-multiple');
+        Route::resource('daftar-halaqah', HalaqahController::class)
+        ->names([
+            'index' => 'daftar-halaqah.index',
+            'create' => 'daftar-halaqah.create',
+            'store' => 'daftar-halaqah.store',
+            'show' => 'daftar-halaqah.show',         
+            'edit' => 'daftar-halaqah.edit',
+            'update' => 'daftar-halaqah.update',
+            'destroy' => 'daftar-halaqah.destroy',
+        ]);
+    
+        Route::put('faq/add-to-list-faq/{id}', [FaqController::class, 'addToListFaq'])->name('faq.addToListFaq');
+        Route::put('faq/delete-from-list-faq/{id}', [FaqController::class, 'deleteFromListFaq'])->name('faq.deleteFromListFaq');
+        Route::resource('faq', FaqController::class)
+        ->names([
+            'index' => 'faq.index',
+            'create' => 'faq.create',
+            'store' => 'faq.store',
+            'show' => 'faq.show',         
+            'edit' => 'faq.edit',
+            'update' => 'faq.update',
+            'destroy' => 'faq.destroy',
+        ]);
+    
+        Route::resource('pengumuman', AnnouncementController::class)
+        ->names([
+            'index' => 'pengumuman.index',
+            'create' => 'pengumuman.create',
+            'store' => 'pengumuman.store',
+            'show' => 'pengumuman.show',         
+            'edit' => 'pengumuman.edit',
+            'update' => 'pengumuman.update',
+            'destroy' => 'pengumuman.destroy',
+        ]);
+    
+        Route::resource('sertifikat', CertificateController::class)
+        ->names([
+            'index' => 'sertifikat.index',
+            'create' => 'sertifikat.create',
+            'store' => 'sertifikat.store',
+            'show' => 'sertifikat.show',         
+            'edit' => 'sertifikat.edit',
+            'update' => 'sertifikat.update',
+            'destroy' => 'sertifikat.destroy',
+        ]);
+    
+        Route::resource('laporan', ReportController::class)
+        ->names([
+            'index' => 'laporan.index',
+            'create' => 'laporan.create',
+            'store' => 'laporan.store',
+            'show' => 'laporan.show',         
+            'edit' => 'laporan.edit',
+            'update' => 'laporan.update',
+            'destroy' => 'laporan.destroy',
+        ]);
+    
+        Route::resource('pertemuan', MeetingController::class)
+        ->names([
+            'index' => 'pertemuan.index',
+            'create' => 'pertemuan.create',
+            'store' => 'pertemuan.store',
+            'show' => 'pertemuan.show',         
+            'edit' => 'pertemuan.edit',
+            'update' => 'pertemuan.update',
+            'destroy' => 'pertemuan.destroy',
+        ]);
+    });
+
+    Route::middleware('asisten')->group(function () {
+        Route::resource('halaqah-asisten', HalaqahAsistenController::class)
+        ->names([
+            'index' => 'halaqah-asisten.index',
+            'create' => 'halaqah-asisten.create',
+            'store' => 'halaqah-asisten.store',
+            'show' => 'halaqah-asisten.show',         
+            'edit' => 'halaqah-asisten.edit',
+            'update' => 'halaqah-asisten.update',
+            'destroy' => 'halaqah-asisten.destroy',
+        ]);
+
+        Route::resource('pengumuman-asisten', AnnouncementAsistenController::class)
+        ->names([
+            'index' => 'pengumuman-asisten.index',
+            'create' => 'pengumuman-asisten.create',
+            'store' => 'pengumuman-asisten.store',
+            'show' => 'pengumuman-asisten.show',         
+            'edit' => 'pengumuman-asisten.edit',
+            'update' => 'pengumuman-asisten.update',
+            'destroy' => 'pengumuman-asisten.destroy',
+        ]);
+
+        Route::put('faq/add-to-list-faq-asisten/{id}', [FaqAsistenController::class, 'addToListFaq'])->name('faq.addToListFaqAsisten');
+        Route::put('faq/delete-from-list-faq-asisten/{id}', [FaqAsistenController::class, 'deleteFromListFaq'])->name('faq.deleteFromListFaqAsisten');
+        Route::resource('faq-asisten', FaqAsistenController::class)
+        ->names([
+            'index' => 'faq-asisten.index',
+            'create' => 'faq-asisten.create',
+            'store' => 'faq-asisten.store',
+            'show' => 'faq-asisten.show',         
+            'edit' => 'faq-asisten.edit',
+            'update' => 'faq-asisten.update',
+            'destroy' => 'faq-asisten.destroy',
+        ]);
 
 
-    Route::delete('daftar-kelas/destroy-multiple', [ClassController::class, 'destroyMultiple'])->name('daftar-kelas.destroy-multiple');
-    Route::resource('daftar-kelas', ClassController::class)
-    ->middleware('admin')
-    ->names([
-        'index' => 'daftar-kelas.index',
-        'create' => 'daftar-kelas.create',
-        'store' => 'daftar-kelas.store',
-        'show' => 'daftar-kelas.show',         
-        'edit' => 'daftar-kelas.edit',
-        'update' => 'daftar-kelas.update',
-        'destroy' => 'daftar-kelas.destroy',
-    ]);
+        Route::resource('materi-asisten', MaterialController::class)
+            ->names([
+                'index' => 'materi-asisten.index',
+                'create' => 'materi-asisten.create',
+                'store' => 'materi-asisten.store',
+                'show' => 'materi-asisten.show',         
+                'edit' => 'materi-asisten.edit',
+                'update' => 'materi-asisten.update',
+                'destroy' => 'materi-asisten.destroy',
+        ]);
+        
+        Route::resource('tugas-asisten', AssignmentController::class)
+            ->names([
+                'index' => 'tugas-asisten.index',
+                'create' => 'tugas-asisten.create',
+                'store' => 'tugas-asisten.store',
+                'show' => 'tugas-asisten.show',         
+                'edit' => 'tugas-asisten.edit',
+                'update' => 'tugas-asisten.update',
+                'destroy' => 'tugas-asisten.destroy',
+        ]);
+    });
 
-    Route::delete('daftar-halaqah/destroy-multiple', [HalaqahController::class, 'destroyMultiple'])->name('daftar-halaqah.destroy-multiple');
-    Route::resource('daftar-halaqah', HalaqahController::class)
-    ->middleware('admin')
-    ->names([
-        'index' => 'daftar-halaqah.index',
-        'create' => 'daftar-halaqah.create',
-        'store' => 'daftar-halaqah.store',
-        'show' => 'daftar-halaqah.show',         
-        'edit' => 'daftar-halaqah.edit',
-        'update' => 'daftar-halaqah.update',
-        'destroy' => 'daftar-halaqah.destroy',
-    ]);
-
-    Route::put('faq/add-to-list-faq/{id}', [FaqController::class, 'addToListFaq'])->name('faq.addToListFaq');
-    Route::put('faq/delete-from-list-faq/{id}', [FaqController::class, 'deleteFromListFaq'])->name('faq.deleteFromListFaq');
-    Route::resource('faq', FaqController::class)
-    ->middleware('admin')
-    ->names([
-        'index' => 'faq.index',
-        'create' => 'faq.create',
-        'store' => 'faq.store',
-        'show' => 'faq.show',         
-        'edit' => 'faq.edit',
-        'update' => 'faq.update',
-        'destroy' => 'faq.destroy',
-    ]);
-
-    Route::resource('pengumuman', AnnouncementController::class)
-    ->middleware('admin')
-    ->names([
-        'index' => 'pengumuman.index',
-        'create' => 'pengumuman.create',
-        'store' => 'pengumuman.store',
-        'show' => 'pengumuman.show',         
-        'edit' => 'pengumuman.edit',
-        'update' => 'pengumuman.update',
-        'destroy' => 'pengumuman.destroy',
-    ]);
-
-    Route::resource('sertifikat', CertificateController::class)
-    ->middleware('admin')
-    ->names([
-        'index' => 'sertifikat.index',
-        'create' => 'sertifikat.create',
-        'store' => 'sertifikat.store',
-        'show' => 'sertifikat.show',         
-        'edit' => 'sertifikat.edit',
-        'update' => 'sertifikat.update',
-        'destroy' => 'sertifikat.destroy',
-    ]);
-
-    Route::resource('laporan', ReportController::class)
-    ->middleware('admin')
-    ->names([
-        'index' => 'laporan.index',
-        'create' => 'laporan.create',
-        'store' => 'laporan.store',
-        'show' => 'laporan.show',         
-        'edit' => 'laporan.edit',
-        'update' => 'laporan.update',
-        'destroy' => 'laporan.destroy',
-    ]);
-
-    Route::resource('pertemuan', MeetingController::class)
-    ->middleware('admin')
-    ->names([
-        'index' => 'pertemuan.index',
-        'create' => 'pertemuan.create',
-        'store' => 'pertemuan.store',
-        'show' => 'pertemuan.show',         
-        'edit' => 'pertemuan.edit',
-        'update' => 'pertemuan.update',
-        'destroy' => 'pertemuan.destroy',
-    ]);
-
-
-
-
-    // ASISTEN
-    Route::resource('halaqah-asisten', HalaqahAsistenController::class)
-    ->middleware('asisten')
-    ->names([
-        'index' => 'halaqah-asisten.index',
-        'create' => 'halaqah-asisten.create',
-        'store' => 'halaqah-asisten.store',
-        'show' => 'halaqah-asisten.show',         
-        'edit' => 'halaqah-asisten.edit',
-        'update' => 'halaqah-asisten.update',
-        'destroy' => 'halaqah-asisten.destroy',
-    ]);
-
-    Route::resource('pengumuman-asisten', AnnouncementAsistenController::class)
-    ->middleware('asisten')
-    ->names([
-        'index' => 'pengumuman-asisten.index',
-        'create' => 'pengumuman-asisten.create',
-        'store' => 'pengumuman-asisten.store',
-        'show' => 'pengumuman-asisten.show',         
-        'edit' => 'pengumuman-asisten.edit',
-        'update' => 'pengumuman-asisten.update',
-        'destroy' => 'pengumuman-asisten.destroy',
-    ]);
-
-    Route::resource('faq-asisten', FaqAsistenController::class)
-    ->middleware('asisten')
-    ->names([
-        'index' => 'faq-asisten.index',
-        'create' => 'faq-asisten.create',
-        'store' => 'faq-asisten.store',
-        'show' => 'faq-asisten.show',         
-        'edit' => 'faq-asisten.edit',
-        'update' => 'faq-asisten.update',
-        'destroy' => 'faq-asisten.destroy',
-    ]);
 
 
 

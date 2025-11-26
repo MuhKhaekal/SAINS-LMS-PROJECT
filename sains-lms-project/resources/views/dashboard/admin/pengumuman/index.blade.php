@@ -19,7 +19,7 @@
                 <input
                     class="p-2 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none"
                     id="file_input" type="file" name="file_location"
-                    accept=".pdf,.doc,.docx,.xls,.xlsx,.mp3,.wav,.m4a,.jpg,.jpeg,.png">
+                    accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.mp3,.wav,.m4a,.jpg,.jpeg,.png">
                 <x-input-error :messages="$errors->get('file_location')" />
 
                 <div class="flex justify-end mt-5">
@@ -160,7 +160,7 @@
                                 <input
                                     class="p-2 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none"
                                     id="file_input" type="file" name="file_location"
-                                    accept=".pdf,.doc,.docx,.xls,.xlsx,.mp3,.wav,.m4a,.jpg,.jpeg,.png">
+                                    accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.mp3,.wav,.m4a,.jpg,.jpeg,.png">
                                 <x-input-error :messages="$errors->get('file_location')" />
                             </div>
                             <div id="file-info" class="text-sm text-secondary mt-1"></div>
@@ -188,8 +188,7 @@
                 const modal = document.getElementById('default-modal-update');
                 const contentInput = modal.querySelector('#content');
                 const form = modal.querySelector('#formUpdate');
-                const fileInfo = modal.querySelector('#file-info'); // tempat menampilkan file lama (opsional)
-
+                const fileInfo = modal.querySelector('#file-info');
                 document.querySelectorAll('[data-modal-target="default-modal-update"]').forEach(button => {
                     button.addEventListener('click', () => {
 
@@ -198,13 +197,9 @@
                         const fileLocation = button.getAttribute('data-file-location');
 
                         contentInput.value = content;
-
-                        // tampilkan file lama (opsional)
-                        if (fileInfo) {
-                            fileInfo.innerHTML = fileLocation ?
-                                `<a href="/storage/${fileLocation}" target="_blank" class="text-blue-500 underline">Lihat File Lama</a>` :
-                                `<span class="text-gray-400">Tidak ada file</span>`;
-                        }
+                        fileInfo.innerHTML = fileLocation ?
+                            `<a href="/storage/${fileLocation}" target="_blank" class="text-blue-500 underline">Lihat File Lama</a>` :
+                            `<span class="text-gray-400">Tidak ada file</span>`;
 
                         form.action = `/pengumuman/${id}`;
                     });
@@ -293,8 +288,8 @@
             <svg class="shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                 viewBox="0 0 20 20">
                 <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3
-                   1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1
-                   1 1v4h1a1 1 0 0 1 0 2Z" />
+                                   1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1
+                                   1 1v4h1a1 1 0 0 1 0 2Z" />
             </svg>
             <div class="ms-3 text-sm font-medium">{{ session('success') }}</div>
         </div>
@@ -317,8 +312,8 @@
             <svg class="shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                 viewBox="0 0 20 20">
                 <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3
-                   1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1
-                   1 1v4h1a1 1 0 0 1 0 2Z" />
+                                   1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1
+                                   1 1v4h1a1 1 0 0 1 0 2Z" />
             </svg>
             <div class="ms-3 text-sm font-medium">{{ session('error') }}</div>
         </div>
@@ -330,6 +325,15 @@
                 alertError.classList.add('opacity-0', 'translate-x-10');
                 setTimeout(() => alertError.remove(), 500);
             }, 5000);
+            window.addEventListener("pageshow", function(event) {
+                if (event.persisted) {
+                    const alertSuccess = document.getElementById("alert-success");
+                    const alertError = document.getElementById("alert-error");
+
+                    if (alertSuccess) alertSuccess.remove();
+                    if (alertError) alertError.remove();
+                }
+            });
         </script>
     @endif
 @endsection

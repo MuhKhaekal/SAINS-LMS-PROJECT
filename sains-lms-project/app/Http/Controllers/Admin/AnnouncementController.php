@@ -43,7 +43,8 @@ class AnnouncementController extends Controller
 
         $validator = Validator::make($request->all(), [
             'content' => 'required|string',
-            'file_location' => 'nullable|mimetypes:application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,image/jpeg,image/png,audio/mpeg,audio/wav|max:10000'
+            'file_location' => 'nullable|mimetypes:application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation,image/jpeg,image/png,audio/mpeg,audio/wav|max:10000'
+
 
         ], $messages);
 
@@ -53,12 +54,12 @@ class AnnouncementController extends Controller
                 ->withInput()
                 ->with('error', 'Periksa kembali input Anda!');
         }
-
         $filePath = null;
-        
+
         if ($request->hasFile('file_location')) {
             $filePath = $request->file('file_location')->store('announcement_files', 'public');
         }
+        
 
         Announcement::create([
             'content'    => $request->content,
@@ -94,38 +95,49 @@ class AnnouncementController extends Controller
     {
         $announcement = Announcement::findOrFail($id);
     
-        $request->validate([
-            'content' => 'required|string',
-            'file_location' => 'nullable|mimes:pdf,doc,docx,xls,xlsx,mp3,wav,m4a,jpg,jpeg,png|max:10000'
-        ], [
+        $messages = [
             'content.required' => 'Isi pesan terlebih dahulu.',
-            'file_location.mimes' => 'Periksa format file terlebih dahulu',
+            'file_location.mimetypes' => 'Periksa format file terlebih dahulu',
             'file_location.max' => 'Ukuran file maksimal 10MB'
-        ]);
+        ];
     
-        $filePath = $announcement->file_location; 
+        $validator = Validator::make($request->all(), [
+            'content' => 'required|string',
+            'file_location' => 'nullable|mimetypes:application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation,image/jpeg,image/png,audio/mpeg,audio/wav|max:10000'
+            
+        ], $messages);
     
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput()
+                ->with('error', 'Periksa kembali input Anda!');
+        }
+    
+        // update content
+        $announcement->content = $request->content;
+    
+        // handle file
         if ($request->hasFile('file_location')) {
-
-            if ($announcement->file_location &&
-                Storage::disk('public')->exists($announcement->file_location)) {
+    
+            // hapus file lama
+            if ($announcement->file_location) {
                 Storage::disk('public')->delete($announcement->file_location);
             }
     
-            $filePath = $request->file('file_location')
-                ->store('announcement_files', 'public');
+            // upload file baru
+            $filePath = $request->file('file_location')->store('announcement_files', 'public');
+    
+            $announcement->file_location = $filePath;
         }
     
-        $announcement->update([
-            'content' => $request->content,
-            'file_location' => $filePath,
-            'user_id' => Auth::id()
-        ]);
+        $announcement->save();
     
         return redirect()
             ->route('pengumuman.index')
             ->with('success', 'Pengumuman berhasil diperbarui');
     }
+    
     
 
     /**
@@ -134,7 +146,17 @@ class AnnouncementController extends Controller
     public function destroy(string $id)
     {
         $announcement = Announcement::findOrFail($id);
+    
+        if($announcement->file_location){
+            Storage::disk('public')->delete($announcement->file_location);
+            $publicPath = public_path($announcement->file_location);
+            if(file_exists($publicPath)){
+                unlink($publicPath);
+            }
+        }
+
         $announcement->delete();
-        return redirect()->route('pengumuman.index')->with('success', 'Pengumuman berhasil dihapus');
+    
+        return redirect()->back()->with('success', 'Pengumuman berhasil dihapus');
     }
 }

@@ -6,7 +6,7 @@
     <h1 class="font-extrabold text-2xl mt-20 md:mt-6 md:mx-12">Kelola Pengumuman</h1>
 
     <section class="mx-4 mt-4 md:mx-12 md:mt-5 md:gap-24">
-        @foreach ($meetings as $meeting)
+        @foreach ($meetings as $index => $meeting)
             <div
                 class="shadow-md flex items-center justify-between w-full p-5 text-xs font-medium rounded-t-xl bg-white transition-colors duration-300 focus:outline-none">
                 <div class="flex items-center md:justify-start md:gap-3 w-full md:text-sm">
@@ -22,12 +22,26 @@
                 <p class="w-2/3">{{ $meeting->description }}</p>
                 <div class="flex-1 flex items-center justify-end">
                     @if ($meeting->type == 'pretest' || $meeting->type == 'posttest')
-                        <a
-                            class="text-xs px-4 py-2 bg-green-500 text-white rounded-md  hover:bg-green-600 focus:bg-gray-400 active:bg-green-700 focus:outline-none cursor-pointer focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 text-center transition ease-in-out duration-150">
-                            Buat Soal
+                        <a data-tooltip-target="tooltip-pretest-{{ $index }}">
+                            <svg class="w-7 h-7 cursor-pointer text-secondary bg-green-500 hover:bg-green-600 hover:text-white rounded-md p-1"
+                                aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                fill="currentColor" viewBox="0 0 24 24">
+                                <path fill-rule="evenodd"
+                                    d="M9 7V2.221a2 2 0 0 0-.5.365L4.586 6.5a2 2 0 0 0-.365.5H9Zm2 0V2h7a2 2 0 0 1 2 2v6.41A7.5 7.5 0 1 0 10.5 22H6a2 2 0 0 1-2-2V9h5a2 2 0 0 0 2-2Z"
+                                    clip-rule="evenodd" />
+                                <path fill-rule="evenodd"
+                                    d="M9 16a6 6 0 1 1 12 0 6 6 0 0 1-12 0Zm6-3a1 1 0 0 1 1 1v1h1a1 1 0 1 1 0 2h-1v1a1 1 0 1 1-2 0v-1h-1a1 1 0 1 1 0-2h1v-1a1 1 0 0 1 1-1Z"
+                                    clip-rule="evenodd" />
+                            </svg>
                         </a>
+                        <div id="tooltip-pretest-{{ $index }}" role="tooltip"
+                            class="absolute z-10 invisible inline-block px-3 py-2 font-medium text-white transition-opacity duration-300 bg-dark rounded-base shadow-xs opacity-0 tooltip bg-primary rounded-md text-xs">
+                            Buat Soal Pretest
+                            <div class="tooltip-arrow" data-popper-arrow></div>
+                        </div>
                     @endif
-                    <button type="button" data-modal-target="default-modal-update" data-modal-toggle="default-modal-update"
+                    <button type="button" data-tooltip-target="tooltip-edit-{{ $index }}"
+                        data-modal-target="default-modal-update" data-modal-toggle="default-modal-update"
                         data-id = "{{ $meeting->id }}" data-meeting-name = "{{ $meeting->meeting_name }}"
                         data-topic = "{{ $meeting->topic }}" data-type = "{{ $meeting->type }}""
                         data-description = "{{ $meeting->description }}" class="font-medium hover:underline mx-2">
@@ -38,8 +52,14 @@
                                 clip-rule="evenodd" />
                         </svg>
                     </button>
+                    <div id="tooltip-edit-{{ $index }}" role="tooltip"
+                        class="absolute z-10 invisible inline-block px-3 py-2 font-medium text-white transition-opacity duration-300 bg-dark rounded-base shadow-xs opacity-0 tooltip bg-primary rounded-md text-xs">
+                        Edit
+                        <div class="tooltip-arrow" data-popper-arrow></div>
+                    </div>
 
-                    <button type="button" class="font-medium hover:underline" data-modal-target="default-modal-delete"
+                    <button type="button" class="font-medium hover:underline"
+                        data-tooltip-target="tooltip-delete-{{ $index }}" data-modal-target="default-modal-delete"
                         data-modal-toggle="default-modal-delete" data-id="{{ $meeting->id }}">
                         <svg class="w-7 h-7 text-secondary bg-red-500 hover:bg-red-600 hover:text-white rounded-md p-1"
                             aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
@@ -48,6 +68,11 @@
                                 clip-rule="evenodd" />
                         </svg>
                     </button>
+                    <div id="tooltip-delete-{{ $index }}" role="tooltip"
+                        class="absolute z-10 invisible inline-block px-3 py-2 font-medium text-white transition-opacity duration-300 bg-dark rounded-base shadow-xs opacity-0 tooltip bg-primary rounded-md text-xs">
+                        Hapus
+                        <div class="tooltip-arrow" data-popper-arrow></div>
+                    </div>
                 </div>
             </div>
         @endforeach
@@ -342,8 +367,8 @@
             <svg class="shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                 viewBox="0 0 20 20">
                 <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3
-                       1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1
-                       1 1v4h1a1 1 0 0 1 0 2Z" />
+                               1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1
+                               1 1v4h1a1 1 0 0 1 0 2Z" />
             </svg>
             <div class="ms-3 text-sm font-medium">{{ session('success') }}</div>
         </div>
@@ -366,8 +391,8 @@
             <svg class="shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                 viewBox="0 0 20 20">
                 <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3
-                       1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1
-                       1 1v4h1a1 1 0 0 1 0 2Z" />
+                               1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1
+                               1 1v4h1a1 1 0 0 1 0 2Z" />
             </svg>
             <div class="ms-3 text-sm font-medium">{{ session('error') }}</div>
         </div>
@@ -379,6 +404,15 @@
                 alertError.classList.add('opacity-0', 'translate-x-10');
                 setTimeout(() => alertError.remove(), 500);
             }, 5000);
+            window.addEventListener("pageshow", function(event) {
+                if (event.persisted) {
+                    const alertSuccess = document.getElementById("alert-success");
+                    const alertError = document.getElementById("alert-error");
+
+                    if (alertSuccess) alertSuccess.remove();
+                    if (alertError) alertError.remove();
+                }
+            });
         </script>
     @endif
 
