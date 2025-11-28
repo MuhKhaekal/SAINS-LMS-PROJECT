@@ -25,7 +25,9 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\ProdiController;
 use App\Http\Controllers\Asisten\AssignmentController;
 use App\Http\Controllers\Asisten\MaterialController;
+use App\Http\Controllers\Asisten\PresenceController;
 use App\Models\ClassPai;
+use App\Models\Presence;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
@@ -254,6 +256,17 @@ Route::middleware('auth')->group(function () {
                 'edit' => 'tugas-asisten.edit',
                 'update' => 'tugas-asisten.update',
                 'destroy' => 'tugas-asisten.destroy',
+        ]);
+
+        Route::resource('presensi-asisten', PresenceController::class)
+            ->names([
+                'index' => 'presensi-asisten.index',
+                'create' => 'presensi-asisten.create',
+                'store' => 'presensi-asisten.store',
+                'show' => 'presensi-asisten.show',         
+                'edit' => 'presensi-asisten.edit',
+                'update' => 'presensi-asisten.update',
+                'destroy' => 'presensi-asisten.destroy',
         ]);
     });
 
