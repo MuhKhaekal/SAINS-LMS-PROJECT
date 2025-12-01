@@ -26,6 +26,11 @@ use App\Http\Controllers\Admin\ProdiController;
 use App\Http\Controllers\Asisten\AssignmentController;
 use App\Http\Controllers\Asisten\MaterialController;
 use App\Http\Controllers\Asisten\PresenceController;
+use App\Http\Controllers\Praktikan\AnnouncementPraktikanController;
+use App\Http\Controllers\Praktikan\AssignmentPraktikanController;
+use App\Http\Controllers\Praktikan\FaqPraktikanController;
+use App\Http\Controllers\Praktikan\HalaqahPraktikanController;
+use App\Http\Controllers\Praktikan\MaterialPraktikanController;
 use App\Models\ClassPai;
 use App\Models\Presence;
 use Illuminate\Support\Facades\Route;
@@ -270,6 +275,64 @@ Route::middleware('auth')->group(function () {
         ]);
     });
 
+    Route::middleware('praktikan')->group(function () {
+        Route::resource('halaqah-praktikan', HalaqahPraktikanController::class)
+        ->names([
+            'index' => 'halaqah-praktikan.index',
+            'create' => 'halaqah-praktikan.create',
+            'store' => 'halaqah-praktikan.store',
+            'show' => 'halaqah-praktikan.show',         
+            'edit' => 'halaqah-praktikan.edit',
+            'update' => 'halaqah-praktikan.update',
+            'destroy' => 'halaqah-praktikan.destroy',
+        ]);
+
+        Route::resource('pengumuman-praktikan', AnnouncementPraktikanController::class)
+        ->names([
+            'index' => 'pengumuman-praktikan.index',
+            'create' => 'pengumuman-praktikan.create',
+            'store' => 'pengumuman-praktikan.store',
+            'show' => 'pengumuman-praktikan.show',         
+            'edit' => 'pengumuman-praktikan.edit',
+            'update' => 'pengumuman-praktikan.update',
+            'destroy' => 'pengumuman-praktikan.destroy',
+        ]);
+
+        Route::resource('faq-praktikan', FaqPraktikanController::class)
+        ->names([
+            'index' => 'faq-praktikan.index',
+            'create' => 'faq-praktikan.create',
+            'store' => 'faq-praktikan.store',
+            'show' => 'faq-praktikan.show',         
+            'edit' => 'faq-praktikan.edit',
+            'update' => 'faq-praktikan.update',
+            'destroy' => 'faq-praktikan.destroy',
+        ]);
+
+
+        Route::resource('materi-praktikan', MaterialPraktikanController::class)
+            ->names([
+                'index' => 'materi-praktikan.index',
+                'create' => 'materi-praktikan.create',
+                'store' => 'materi-praktikan.store',
+                'show' => 'materi-praktikan.show',         
+                'edit' => 'materi-praktikan.edit',
+                'update' => 'materi-praktikan.update',
+                'destroy' => 'materi-praktikan.destroy',
+        ]);
+        
+        Route::resource('tugas-praktikan', AssignmentPraktikanController::class)
+            ->names([
+                'index' => 'tugas-praktikan.index',
+                'create' => 'tugas-praktikan.create',
+                'store' => 'tugas-praktikan.store',
+                'show' => 'tugas-praktikan.show',         
+                'edit' => 'tugas-praktikan.edit',
+                'update' => 'tugas-praktikan.update',
+                'destroy' => 'tugas-praktikan.destroy',
+        ]);
+
+    });
 
 
 

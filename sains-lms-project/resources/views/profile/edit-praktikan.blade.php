@@ -1,5 +1,5 @@
 
-@extends('dashboard.asisten.asisten-base')
+@extends('dashboard.praktikan.praktikan-base')
 
 @section('page-title', 'Profil')
 

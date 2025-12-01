@@ -1,6 +1,6 @@
 <nav x-data="{ open: false }" class="bg-primary border-b border-gray-100">
     <!-- Primary Navigation Menu -->
-    <div class="max-w-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-auto px-4 sm:px-6 lg:px-24">
         <div class="flex justify-between h-16">
             <div class="flex justify-start">
                 <!-- Logo -->
@@ -17,17 +17,17 @@
                     </x-nav-link>
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('pertemuan.index')">
+                    <x-nav-link :href="route('halaqah-praktikan.index')" :active="request()->routeIs('halaqah-praktikan.index')">
                         {{ __('Halaqah') }}
                     </x-nav-link>
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('pertemuan.index')">
+                    <x-nav-link :href="route('pengumuman-praktikan.index')" :active="request()->routeIs('pengumuman-praktikan.*')">
                         {{ __('Pengumuman') }}
                     </x-nav-link>
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('pertemuan.index')">
+                    <x-nav-link :href="route('faq-praktikan.index')" :active="request()->routeIs('faq-praktikan.*')">
                         {{ __('FAQ') }}
                     </x-nav-link>
                 </div>
@@ -38,7 +38,7 @@
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-secondary bg-primary hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
-                            <div>{{ Auth::user()->name }}</div>
+                            <div>{{ Auth::user()->nama }}</div>
 
                             <div class="ms-1">
                                 <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
@@ -49,7 +49,7 @@
                     </x-slot>
 
                     <x-slot name="content">
-                        <x-dropdown-link :href="route('profile.edit')">
+                        <x-dropdown-link :href="route('profile-praktikan.edit')">
                             {{ __('Profile') }}
                         </x-dropdown-link>
 

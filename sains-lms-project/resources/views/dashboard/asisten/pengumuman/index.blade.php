@@ -3,7 +3,7 @@
 @section('page-title', 'SAINS | Pengumuman')
 
 @section('content')
-    <section class="mx-4 md:mx-24 md:mt-20 md:flex md:gap-24">
+    <section class="mx-4 md:mx-24 md:mt-24 md:flex md:gap-24">
         <section class="md:flex-1">
             <form action="{{ route('pengumuman-asisten.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
