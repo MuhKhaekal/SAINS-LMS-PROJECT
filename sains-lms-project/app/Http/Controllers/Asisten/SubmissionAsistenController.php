@@ -1,32 +1,19 @@
 <?php
 
-namespace App\Http\Controllers\Praktikan;
+namespace App\Http\Controllers\Asisten;
 
 use App\Http\Controllers\Controller;
+use App\Models\Submission;
 use Illuminate\Http\Request;
-use App\Models\Halaqah;
-use App\Models\Meeting;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
-class HalaqahPraktikanController extends Controller
+class SubmissionAsistenController extends Controller
 {
-    use AuthorizesRequests;
-    public function index(Request $request)
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
     {
-        $meetings = Meeting::all();
-        $halaqahName = $request->halaqah_name;
-
-        $selectedHalaqah = null;
-    
-        if ($halaqahName) {
-            $selectedHalaqah = Halaqah::where('halaqah_name', $halaqahName)->first();
-        }
-    
-        if ($selectedHalaqah) {
-            $this->authorize('view', $selectedHalaqah);
-        }
-    
-        return view('dashboard.praktikan.halaqah.index', compact('selectedHalaqah', 'meetings'));
+        //
     }
 
     /**
@@ -76,4 +63,21 @@ class HalaqahPraktikanController extends Controller
     {
         //
     }
+
+    public function updateAll(Request $request)
+    {
+        $scores = $request->input('score', []);
+    
+        foreach ($scores as $submissionId => $score) {
+            Submission::where('id', $submissionId)
+                ->update([
+                    'score' => $score,
+                ]);
+        }
+    
+        return back()->with('success', 'Nilai berhasil diperbarui untuk semua praktikan.');
+    }
+    
+    
+
 }

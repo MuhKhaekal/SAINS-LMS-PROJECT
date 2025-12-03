@@ -42,9 +42,6 @@ class AnnouncementAsistenController extends Controller
         $validator = Validator::make($request->all(), [
             'content' => 'required|string',
             'file_location' => 'nullable|mimetypes:application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation,image/jpeg,image/png,audio/mpeg,audio/wav|max:10000'
-
-        
-
         ], $messages);
 
         if ($validator->fails()) {

@@ -96,6 +96,8 @@ class AssignmentController extends Controller
 
     public function show(Assignment $tugas_asisten)
     {
+
+        $tugas_asisten->load(['submissions.user']);
         return view('dashboard.asisten.tugas.show', [
             'assignment' => $tugas_asisten
         ]);

@@ -66,17 +66,7 @@ class MaterialController extends Controller
         $filePath = null;
 
         if ($request->hasFile('file_location')) {
-            // simpan di storage public
             $filePath = $request->file('file_location')->store('material_files', 'public');
-
-            // copy ke public agar bisa dibuka iframe
-            // ⬅️ PERUBAHAN
-            $storagePath = storage_path('app/public/' . $filePath);
-            $publicPath = public_path($filePath);
-            if (!file_exists(dirname($publicPath))) {
-                mkdir(dirname($publicPath), 0777, true);
-            }
-            copy($storagePath, $publicPath);
         }
 
         $selectedMeeting = Meeting::find($request->meeting_id);
@@ -134,8 +124,6 @@ class MaterialController extends Controller
 
         if ($request->hasFile('file_location')) {
 
-            // Hapus file lama (storage + public)
-            // ⬅️ PERUBAHAN
             if ($material->file_location) {
                 Storage::disk('public')->delete($material->file_location);
 
@@ -145,11 +133,8 @@ class MaterialController extends Controller
                 }
             }
 
-            // Upload baru
             $filePath = $request->file('file_location')->store('material_files', 'public');
 
-            // Copy ke public
-            // ⬅️ PERUBAHAN
             $storagePath = storage_path('app/public/' . $filePath);
             $publicPath = public_path($filePath);
             if (!file_exists(dirname($publicPath))) {

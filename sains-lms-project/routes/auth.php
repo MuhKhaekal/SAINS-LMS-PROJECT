@@ -26,11 +26,13 @@ use App\Http\Controllers\Admin\ProdiController;
 use App\Http\Controllers\Asisten\AssignmentController;
 use App\Http\Controllers\Asisten\MaterialController;
 use App\Http\Controllers\Asisten\PresenceController;
+use App\Http\Controllers\Asisten\SubmissionAsistenController;
 use App\Http\Controllers\Praktikan\AnnouncementPraktikanController;
 use App\Http\Controllers\Praktikan\AssignmentPraktikanController;
 use App\Http\Controllers\Praktikan\FaqPraktikanController;
 use App\Http\Controllers\Praktikan\HalaqahPraktikanController;
 use App\Http\Controllers\Praktikan\MaterialPraktikanController;
+use App\Http\Controllers\Praktikan\SubmissionPraktikanController;
 use App\Models\ClassPai;
 use App\Models\Presence;
 use Illuminate\Support\Facades\Route;
@@ -273,6 +275,10 @@ Route::middleware('auth')->group(function () {
                 'update' => 'presensi-asisten.update',
                 'destroy' => 'presensi-asisten.destroy',
         ]);
+
+        Route::post('/periksa-tugas/update', [SubmissionAsistenController::class, 'updateAll'])
+        ->name('periksa-tugas.update');
+    
     });
 
     Route::middleware('praktikan')->group(function () {
@@ -330,6 +336,17 @@ Route::middleware('auth')->group(function () {
                 'edit' => 'tugas-praktikan.edit',
                 'update' => 'tugas-praktikan.update',
                 'destroy' => 'tugas-praktikan.destroy',
+        ]);
+
+        Route::resource('pengajuan-tugas', SubmissionPraktikanController::class)
+            ->names([
+                'index' => 'pengajuan-tugas.index',
+                'create' => 'pengajuan-tugas.create',
+                'store' => 'pengajuan-tugas.store',
+                'show' => 'pengajuan-tugas.show',         
+                'edit' => 'pengajuan-tugas.edit',
+                'update' => 'pengajuan-tugas.update',
+                'destroy' => 'pengajuan-tugas.destroy',
         ]);
 
     });

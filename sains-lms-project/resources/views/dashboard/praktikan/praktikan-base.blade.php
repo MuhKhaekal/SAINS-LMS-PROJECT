@@ -5,6 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+
     <title>@yield('page-title')</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
@@ -47,19 +51,35 @@
                     </a>
                 </li>
                 <li
-                    class="flex-1 text-xs font-semibold rounded-lg py-3 hover:bg-gray-700 hover:text-gray-300 {{ request()->routeIs('halaqah-praktikan.*') ? 'text-secondary bg-gray-600' : 'text-gray-500 hover:bg-gray-700 group' }}">
-                    <a class="font-thin flex flex-col justify-center items-center" href="{{ route('halaqah-praktikan.index') }}">
+                    class="flex-1 text-xs font-semibold rounded-lg py-3 hover:bg-gray-700 hover:text-gray-300 
+                {{ request()->routeIs('halaqah-praktikan.*') ? 'text-secondary bg-gray-600' : 'text-gray-500 hover:bg-gray-700 group' }}">
+
+                    @php
+                        $halaqahName = $halaqahsNavbar->first()->halaqah_name ?? 'Halaqah';
+                    @endphp
+
+                    <a class="font-thin flex flex-col justify-center items-center"
+                        href="{{ route('halaqah-praktikan.index', ['halaqah_name' => $halaqahName]) }}">
+
                         <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
                             height="24" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M16 10c0-.55228-.4477-1-1-1h-3v2h3c.5523 0 1-.4477 1-1Z" />
+                            <path d="M13 15v-2h2c1.6569 0 3-1.3431 3-3 0-1.65685-1.3431-3-3-3h-2.256c.1658-.46917.256-.97405.256-1.5
+                            0-.51464-.0864-1.0091-.2454-1.46967C12.8331 4.01052 12.9153 4 13 4h7c.5523 0 1 .44772 1 1v9c0 .5523-.4477
+                            1-1 1h-2.5l1.9231 4.6154c.2124.5098-.0287 1.0953-.5385 1.3077-.5098.2124-1.0953-.0287-1.3077-.5385L15.75 16l-1.827
+                            4.3846c-.1825.438-.6403.6776-1.0889.6018.1075-.3089.1659-.6408.1659-.9864v-2.6002L14 15h-1ZM6 5.5C6 4.11929
+                            7.11929 3 8.5 3S11 4.11929 11 5.5 9.88071 8 8.5 8 6 6.88071 6 5.5Z" />
                             <path
-                                d="M13 15v-2h2c1.6569 0 3-1.3431 3-3 0-1.65685-1.3431-3-3-3h-2.256c.1658-.46917.256-.97405.256-1.5 0-.51464-.0864-1.0091-.2454-1.46967C12.8331 4.01052 12.9153 4 13 4h7c.5523 0 1 .44772 1 1v9c0 .5523-.4477 1-1 1h-2.5l1.9231 4.6154c.2124.5098-.0287 1.0953-.5385 1.3077-.5098.2124-1.0953-.0287-1.3077-.5385L15.75 16l-1.827 4.3846c-.1825.438-.6403.6776-1.0889.6018.1075-.3089.1659-.6408.1659-.9864v-2.6002L14 15h-1ZM6 5.5C6 4.11929 7.11929 3 8.5 3S11 4.11929 11 5.5 9.88071 8 8.5 8 6 6.88071 6 5.5Z" />
-                            <path
-                                d="M15 11h-4v9c0 .5523-.4477 1-1 1-.55228 0-1-.4477-1-1v-4H8v4c0 .5523-.44772 1-1 1s-1-.4477-1-1v-6.6973l-1.16797 1.752c-.30635.4595-.92722.5837-1.38675.2773-.45952-.3063-.5837-.9272-.27735-1.3867l2.99228-4.48843c.09402-.14507.2246-.26423.37869-.34445.11427-.05949.24148-.09755.3763-.10887.03364-.00289.06747-.00408.10134-.00355H15c.5523 0 1 .44772 1 1 0 .5523-.4477 1-1 1Z" />
+                                d="M15 11h-4v9c0 .5523-.4477 1-1 1-.55228 0-1-.4477-1-1v-4H8v4c0 .5523-.44772 1-1
+                            1s-1-.4477-1-1v-6.6973l-1.16797 1.752c-.30635.4595-.92722.5837-1.38675.2773-.45952-.3063-.5837-.9272-.27735-1.3867l2.99228-4.48843c.09402-.14507.2246-.26423.37869-.34445.11427-.05949.24148-.09755.3763-.10887.03364-.00289.06747-.00408.10134-.00355H15c.5523 0 1 .44772 1 1 0 .5523-.4477 1-1 1Z" />
                         </svg>
+
+                        {{-- Nama halaqah tampil di sini --}}
                         <p>Halaqah</p>
+
                     </a>
                 </li>
+
 
 
                 <li
@@ -89,7 +109,8 @@
 
                 <li
                     class="flex-1 text-xs font-semibold rounded-lg py-3 hover:bg-gray-700 hover:text-gray-300 {{ request()->routeIs('profile-praktikan.*') ? 'text-secondary bg-gray-600' : 'text-gray-500 hover:bg-gray-700 group' }}">
-                    <a class="font-thin flex flex-col justify-center items-center" href="{{ route('profile-praktikan.edit') }}">
+                    <a class="font-thin flex flex-col justify-center items-center"
+                        href="{{ route('profile-praktikan.edit') }}">
                         <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
                             <path fill-rule="evenodd"
                                 d="M4 4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2H4Zm10 5a1 1 0 0 1 1-1h3a1 1 0 1 1 0 2h-3a1 1 0 0 1-1-1Z" />
@@ -104,7 +125,7 @@
     </div>
 
 
-    <div class="hidden md:block bg-white shadow-inner mt-auto" data-aos="fade">
+    <div class="hidden md:block bg-white shadow-inner mt-auto">
         @include('layouts.footer')
 
     </div>
