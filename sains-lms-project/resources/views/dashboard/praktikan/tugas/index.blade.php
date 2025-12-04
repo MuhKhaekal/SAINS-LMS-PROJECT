@@ -96,7 +96,8 @@
                             </div>
 
                             @if (is_null($submitted->score))
-                                <a href="{{ route('pengajuan-tugas.edit', $submitted->id) }}" class="">
+                                <a href="{{ route('pengajuan-tugas.edit', $submitted->id) }}" class=""
+                                    data-tooltip-target="tooltip-edit-{{ $index }}">
                                     <svg class="w-7 h-7 text-secondary p-1 bg-yellow-500 hover:bg-yellow-600 hover:text-white rounded-md"
                                         aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                                         viewBox="0 0 24 24">
@@ -105,9 +106,15 @@
                                             clip-rule="evenodd" />
                                     </svg>
                                 </a>
+                                <div id="tooltip-edit-{{ $index }}" role="tooltip"
+                                    class="absolute z-10 invisible inline-block px-3 py-2 font-medium text-white transition-opacity duration-300 bg-dark rounded-base shadow-xs opacity-0 tooltip bg-primary rounded-md text-xs">
+                                    Edit Jawaban
+                                    <div class="tooltip-arrow" data-popper-arrow></div>
+                                </div>
 
-                                <button class="py-2" data-modal-target="default-modal-delete"
-                                    data-modal-toggle="default-modal-delete" data-id="{{ $submitted->id }}">
+                                <button class="py-2" data-tooltip-target="tooltip-delete-{{ $index }}"
+                                    data-modal-target="default-modal-delete" data-modal-toggle="default-modal-delete"
+                                    data-id="{{ $submitted->id }}">
                                     <svg class="w-7 h-7 text-secondary bg-red-500 hover:bg-red-600 hover:text-white rounded-md p-1"
                                         aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                                         viewBox="0 0 24 24">
@@ -116,6 +123,12 @@
                                             clip-rule="evenodd" />
                                     </svg>
                                 </button>
+
+                                <div id="tooltip-delete-{{ $index }}" role="tooltip"
+                                    class="absolute z-10 invisible inline-block px-3 py-2 font-medium text-white transition-opacity duration-300 bg-dark rounded-base shadow-xs opacity-0 tooltip bg-primary rounded-md text-xs">
+                                    Hapus Jawaban
+                                    <div class="tooltip-arrow" data-popper-arrow></div>
+                                </div>
                             @else
                                 <span class="text-gray-500 text-xs font-semibold ml-2">
                                     | Nilai: {{ $submitted->score }}
@@ -165,8 +178,8 @@
                             data-modal-hide="default-modal-delete">
                             <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                                 viewBox="0 0 14 14">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
                             </svg>
                             <span class="sr-only">Close modal</span>
                         </button>

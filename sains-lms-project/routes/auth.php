@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AnnouncementController;
 use App\Http\Controllers\Admin\CertificateController;
 use App\Http\Controllers\Admin\ClassController;
+use App\Http\Controllers\Admin\CreatePreTestController;
 use App\Http\Controllers\Admin\FacultyController;
 use App\Http\Controllers\Admin\FaqController;
 use App\Http\Controllers\Admin\HalaqahController;
@@ -203,6 +204,17 @@ Route::middleware('auth')->group(function () {
             'edit' => 'pertemuan.edit',
             'update' => 'pertemuan.update',
             'destroy' => 'pertemuan.destroy',
+        ]);
+
+        Route::resource('buat-pre-test', CreatePreTestController::class)
+        ->names([
+            'index' => 'buat-pre-test.index',
+            'create' => 'buat-pre-test.create',
+            'store' => 'buat-pre-test.store',
+            'show' => 'buat-pre-test.show',         
+            'edit' => 'buat-pre-test.edit',
+            'update' => 'buat-pre-test.update',
+            'destroy' => 'buat-pre-test.destroy',
         ]);
     });
 
