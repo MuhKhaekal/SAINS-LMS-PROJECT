@@ -22,7 +22,7 @@
                 <p class="w-2/3">{{ $meeting->description }}</p>
                 <div class="flex-1 flex items-center justify-end">
                     @if ($meeting->type == 'pretest' || $meeting->type == 'posttest')
-                        <a data-tooltip-target="tooltip-pretest-{{ $index }}" href="{{ route('buat-pre-test.create') }}">
+                        <a data-tooltip-target="tooltip-pretest-{{ $index }}" href="{{ route('buat-test.create') }}">
                             <svg class="w-7 h-7 cursor-pointer text-secondary bg-green-500 hover:bg-green-600 hover:text-white rounded-md p-1"
                                 aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                 fill="currentColor" viewBox="0 0 24 24">

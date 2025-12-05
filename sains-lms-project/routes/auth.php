@@ -24,6 +24,7 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\ProdiController;
+use App\Http\Controllers\Admin\TestController;
 use App\Http\Controllers\Asisten\AssignmentController;
 use App\Http\Controllers\Asisten\MaterialController;
 use App\Http\Controllers\Asisten\PresenceController;
@@ -206,15 +207,16 @@ Route::middleware('auth')->group(function () {
             'destroy' => 'pertemuan.destroy',
         ]);
 
-        Route::resource('buat-pre-test', CreatePreTestController::class)
+        Route::get('/buat-test/review/pretest', [TestController::class, 'reviewPretest'])->name('questions.review-pretest');
+        Route::resource('buat-test', TestController::class)
         ->names([
-            'index' => 'buat-pre-test.index',
-            'create' => 'buat-pre-test.create',
-            'store' => 'buat-pre-test.store',
-            'show' => 'buat-pre-test.show',         
-            'edit' => 'buat-pre-test.edit',
-            'update' => 'buat-pre-test.update',
-            'destroy' => 'buat-pre-test.destroy',
+            'index' => 'buat-test.index',
+            'create' => 'buat-test.create',
+            'store' => 'buat-test.store',
+            'show' => 'buat-test.show',         
+            'edit' => 'buat-test.edit',
+            'update' => 'buat-test.update',
+            'destroy' => 'buat-test.destroy',
         ]);
     });
 

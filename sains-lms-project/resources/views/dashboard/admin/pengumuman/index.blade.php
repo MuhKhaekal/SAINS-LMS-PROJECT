@@ -210,6 +210,15 @@
     </section>
 
     <section>
+        <style>
+            body>div.bg-gray-900\/50,
+            body>div.dark\:bg-gray-900\/80,
+            body>div[data-modal-backdrop] {
+                background-color: rgba(12, 11, 11, 0.2) !important;
+                backdrop-filter: blur(6px) !important;
+            }
+        </style>
+        
         <div id="default-modal-delete" tabindex="-1" aria-hidden="true"
             class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-full] max-h-full backdrop-blur-sm
          ">
