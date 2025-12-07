@@ -3,7 +3,7 @@
 @section('page-title', 'SAINS - Pertemuan')
 
 @section('content')
-    <h1 class="font-extrabold text-2xl mt-20 md:mt-6 md:mx-12">Kelola Pengumuman</h1>
+    <h1 class="font-extrabold text-2xl mt-20 md:mt-6 md:mx-12">Kelola Pertemuan</h1>
 
     <section class="mx-4 mt-4 md:mx-12 md:mt-5 md:gap-24">
         @foreach ($meetings as $index => $meeting)

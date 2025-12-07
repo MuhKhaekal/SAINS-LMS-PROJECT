@@ -128,7 +128,7 @@
                                                     x-model="q.answer">
                                                 <input type="text" x-model="q.options[optIndex]"
                                                     placeholder="Pilihan jawaban..."
-                                                    class="flex-1 border rounded p-2 text-sm" />
+                                                    class="flex-1 border rounded p-2 text-sm w-full" />
                                                 <button @click="removeOption(q, optIndex)"
                                                     class="text-red-400 text-xs">x</button>
                                             </div>

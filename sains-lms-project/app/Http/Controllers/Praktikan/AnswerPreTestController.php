@@ -1,35 +1,18 @@
 <?php
 
-namespace App\Http\Controllers\Asisten;
+namespace App\Http\Controllers\Praktikan;
 
 use App\Http\Controllers\Controller;
-use App\Models\Halaqah;
-use App\Models\Meeting;
-use App\Models\Test;
 use Illuminate\Http\Request;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
-
-class HalaqahAsistenController extends Controller
+class AnswerPreTestController extends Controller
 {
-    use AuthorizesRequests;
+    /**
+     * Display a listing of the resource.
+     */
     public function index(Request $request)
     {
-        $meetings = Meeting::all();
-        $halaqahName = $request->halaqah_name;
-
-        $selectedHalaqah = null;
-    
-        if ($halaqahName) {
-            $selectedHalaqah = Halaqah::where('halaqah_name', $halaqahName)->first();
-        }
-    
-        if ($selectedHalaqah) {
-            $this->authorize('view', $selectedHalaqah);
-        }
-
-        
-        return view('dashboard.asisten.halaqah.index', compact('selectedHalaqah', 'meetings'));
+        return view('dashboard.praktikan.tests.pretest.index');
     }
 
     /**
@@ -37,7 +20,7 @@ class HalaqahAsistenController extends Controller
      */
     public function create()
     {
-        //
+        return view('dashboard.praktikan.tests.pretest.create');
     }
 
     /**

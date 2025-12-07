@@ -25,15 +25,18 @@ use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\ProdiController;
 use App\Http\Controllers\Admin\TestController;
+use App\Http\Controllers\Asisten\AsistenTestController;
 use App\Http\Controllers\Asisten\AssignmentController;
 use App\Http\Controllers\Asisten\MaterialController;
 use App\Http\Controllers\Asisten\PresenceController;
 use App\Http\Controllers\Asisten\SubmissionAsistenController;
 use App\Http\Controllers\Praktikan\AnnouncementPraktikanController;
+use App\Http\Controllers\Praktikan\AnswerPreTestController;
 use App\Http\Controllers\Praktikan\AssignmentPraktikanController;
 use App\Http\Controllers\Praktikan\FaqPraktikanController;
 use App\Http\Controllers\Praktikan\HalaqahPraktikanController;
 use App\Http\Controllers\Praktikan\MaterialPraktikanController;
+use App\Http\Controllers\Praktikan\PraktikanTestController;
 use App\Http\Controllers\Praktikan\SubmissionPraktikanController;
 use App\Models\ClassPai;
 use App\Models\Presence;
@@ -292,6 +295,12 @@ Route::middleware('auth')->group(function () {
 
         Route::post('/periksa-tugas/update', [SubmissionAsistenController::class, 'updateAll'])
         ->name('periksa-tugas.update');
+
+        Route::get('/tests/pretest', [AsistenTestController::class, 'indexPretest'])->name('pretest-asisten.index');
+
+        Route::post('/tests/pretest/buka/{id}', [AsistenTestController::class, 'open'])->name('pretest-asisten.open');
+
+        Route::post('/tests/pretest/tutup/{id}', [AsistenTestController::class, 'close'])->name('pretest-asisten.close');
     
     });
 
@@ -362,7 +371,30 @@ Route::middleware('auth')->group(function () {
                 'update' => 'pengajuan-tugas.update',
                 'destroy' => 'pengajuan-tugas.destroy',
         ]);
+        
 
+        Route::resource('mulai-pretest', AnswerPreTestController::class)
+            ->names([
+                'index' => 'mulai-pretest.index',
+                'create' => 'mulai-pretest.create',
+                'store' => 'mulai-pretest.store',
+                'show' => 'mulai-pretest.show',         
+                'edit' => 'mulai-pretest.edit',
+                'update' => 'mulai-pretest.update',
+                'destroy' => 'mulai-pretest.destroy',
+        ]);
+
+        
+        // Ubah parameter {submission} menjadi {testId} untuk submit agar konsisten
+        Route::get('/pretest', [PraktikanTestController::class, 'index'])->name('pretest-praktikan.index');
+        Route::post('/pretest/mulai/{id}', [PraktikanTestController::class, 'start'])->name('pretest-praktikan.start');
+
+        // Route GET untuk menampilkan soal (Halaman Pengerjaan)
+        // Kita pakai {submissionId} agar spesifik
+        Route::get('/pretest/{submissionId}/jawab', [PraktikanTestController::class, 'take'])->name('pretest-praktikan.take');
+
+        // Route POST untuk submit
+        Route::post('/pretest/{testId}/kumpul', [PraktikanTestController::class, 'submit'])->name('pretest-praktikan.submit');
     });
 
 

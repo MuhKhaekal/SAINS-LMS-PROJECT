@@ -21,4 +21,13 @@ class Test extends Model
     public function questions() {
         return $this->hasMany(Question::class)->orderBy('order_number');
     } 
+
+    public function session() {
+        return $this->hasOne(TestSession::class);
+    } 
+
+    public function submissions()
+    {
+        return $this->hasMany(TestSubmission::class);
+    }
 }

@@ -7,7 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 class Question extends Model
 {
     protected $fillable = [
-        'test_id', 'user_id', 'type', 'question', 'image', 'correct_answer', 'order_number'
+        'test_id', 
+        'user_id',
+        'type',
+        'question',
+        'image',
+        'correct_answer',
+        'order_number'
     ];
 
     public function test() {

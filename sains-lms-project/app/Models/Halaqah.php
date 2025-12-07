@@ -30,4 +30,8 @@ class Halaqah extends Model
                     ->where('role', 'asisten');
     }
 
+    public function testsessions() {
+        return $this->hasMany(TestSession::class);
+    }
+
 }
