@@ -9,8 +9,7 @@ class Test extends Model
     protected $fillable = [
         'user_id', 
         'title', 
-        'description', 
-        'test_type', 
+        'description',  
         'duration'
     ];
 

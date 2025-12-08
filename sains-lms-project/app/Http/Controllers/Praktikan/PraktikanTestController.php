@@ -15,24 +15,32 @@ class PraktikanTestController extends Controller
 {
     public function index()
     {
-        $test = Test::where('test_type', 'pretest')->latest()->first();
-
-        if (!$test) {
-            return view('dashboard.praktikan.tests.pretest.index')->with('error', 'Belum ada pretest.');
+        // 1. Ambil data test (bisa berisi object, bisa null)
+        $test = Test::latest()->first();
+    
+        // 2. Siapkan variabel default null
+        $session = null;
+        $existingSubmission = null;
+    
+        // 3. Jika test ada, baru cari data lainnya
+        if ($test) {
+            $halaqahId = null;
+            if (Auth::user()->halaqahs()->exists()) {
+                $halaqahId = Auth::user()->halaqahs()->first()->id;
+            }
+    
+            $session = TestSession::where('test_id', $test->id)
+                ->where('halaqah_id', $halaqahId)
+                ->first();
+    
+            $existingSubmission = TestSubmission::where('test_id', $test->id)
+                ->where('user_id', Auth::id())
+                ->whereNotNull('submitted_at')
+                ->first();
         }
-
-        $halaqahId = Auth::user()->halaqahs()->first()->id ?? null;
-
-        $session = TestSession::where('test_id', $test->id)
-            ->where('halaqah_id', $halaqahId)
-            ->first();
-
-        $existingSubmission = TestSubmission::where('test_id', $test->id)
-            ->where('user_id', Auth::id())
-            ->whereNotNull('submitted_at')
-            ->first();
-
-        return view('dashboard.praktikan.tests.pretest.index', compact('test', 'session', 'existingSubmission'));
+    
+        // 4. Return view dengan compact (PENTING: variabel tetap dikirim meski null)
+        return view('dashboard.praktikan.tests.index', compact('test', 'session', 'existingSubmission'));
     }
 
     public function start($id)
@@ -40,8 +48,11 @@ class PraktikanTestController extends Controller
         $test = Test::findOrFail($id);
         $user = Auth::user();
         
-        $halaqahId = $user->halaqahs()->first()->id ?? null;
-        if (!$halaqahId) abort(403, 'Anda tidak terdaftar pada halaqah.');
+        if (!$user->halaqahs()->exists()) {
+            abort(403, 'Anda tidak terdaftar pada halaqah manapun.');
+        }
+
+        $halaqahId = $user->halaqahs()->first()->id;
 
         $session = TestSession::where('test_id', $test->id)
             ->where('halaqah_id', $halaqahId)
@@ -64,11 +75,11 @@ class PraktikanTestController extends Controller
         );
 
         if ($submission->submitted_at) {
-            return redirect()->route('pretest-praktikan.index')
-                ->with('error', 'Anda sudah mengerjakan pretest.');
+            return redirect()->route('ujian-praktikan.index')
+                ->with('error', 'Anda sudah mengerjakan test ini.');
         }
 
-        return redirect()->route('pretest-praktikan.take', ['submissionId' => $submission->id]);
+        return redirect()->route('ujian-praktikan.take', ['submissionId' => $submission->id]);
     }
 
     public function take($submissionId)
@@ -81,7 +92,7 @@ class PraktikanTestController extends Controller
         $test = $submission->test;
 
         if ($submission->submitted_at) {
-             return redirect()->route('pretest-praktikan.index')->with('error', 'Test sudah dikumpulkan.');
+             return redirect()->route('ujian-praktikan.index')->with('error', 'Test sudah dikumpulkan.');
         }
 
         $endTime = $submission->started_at->copy()->addMinutes($test->duration);
@@ -91,12 +102,11 @@ class PraktikanTestController extends Controller
             $remainingSeconds = 0;
         }
 
-        return view('dashboard.praktikan.tests.pretest.take', compact('test', 'submission', 'remainingSeconds'));
+        return view('dashboard.praktikan.tests.take', compact('test', 'submission', 'remainingSeconds'));
     }
 
     public function submit(Request $request, $testId)
     {
-
         $submission = TestSubmission::where('test_id', $testId)
                         ->where('user_id', Auth::id())
                         ->firstOrFail();
@@ -112,9 +122,7 @@ class PraktikanTestController extends Controller
         $questions = $submission->test->questions; 
         
         $totalQuestions = $questions->count();
-
         $scorePerQuestion = $totalQuestions > 0 ? (100 / $totalQuestions) : 0;
-
 
         DB::transaction(function () use ($submission, $questions, $answers, $scorePerQuestion, &$totalScore, &$mcqCorrect) {
             
@@ -135,38 +143,39 @@ class PraktikanTestController extends Controller
                     }
 
                     TestAnswer::create([
-                        'submission_id' => $submission->id,
-                        'question_id' => $question->id,
+                        'submission_id'      => $submission->id,
+                        'question_id'        => $question->id,
                         'question_option_id' => $selectedOptionId,
-                        'answer_text' => null,
-                        'is_correct' => $isCorrect,
-                        'score' => $scoreForQ,
+                        'answer_text'        => null,
+                        'is_correct'         => $isCorrect,
+                        'score'              => $scoreForQ,
                     ]);
 
                     $totalScore += $scoreForQ;
                     if ($isCorrect) $mcqCorrect++;
 
                 } else {
+
                     $text = $given['essay'] ?? null;
                     
                     TestAnswer::create([
-                        'submission_id' => $submission->id,
-                        'question_id' => $question->id,
+                        'submission_id'      => $submission->id,
+                        'question_id'        => $question->id,
                         'question_option_id' => null,
-                        'answer_text' => $text,
-                        'is_correct' => null, 
-                        'score' => 0,
+                        'answer_text'        => $text,
+                        'is_correct'         => null, 
+                        'score'              => 0,  
                     ]);
                 }
             }
 
             $submission->update([
-                'score' => $totalScore,
+                'score'        => $totalScore,
                 'submitted_at' => now(),
             ]);
         });
 
-        return redirect()->route('pretest-praktikan.index')
-            ->with('success', 'Jawaban berhasil dikumpulkan. Skor MCQ Sementara: ' . round($totalScore, 2));
+        return redirect()->route('ujian-praktikan.index')
+            ->with('success', 'Jawaban berhasil dikumpulkan. Skor Sementara: ' . round($totalScore, 2));
     }
 }

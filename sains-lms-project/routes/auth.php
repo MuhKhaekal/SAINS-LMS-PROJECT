@@ -30,6 +30,7 @@ use App\Http\Controllers\Asisten\AssignmentController;
 use App\Http\Controllers\Asisten\MaterialController;
 use App\Http\Controllers\Asisten\PresenceController;
 use App\Http\Controllers\Asisten\SubmissionAsistenController;
+use App\Http\Controllers\Asisten\WeeklyScoreController;
 use App\Http\Controllers\Praktikan\AnnouncementPraktikanController;
 use App\Http\Controllers\Praktikan\AnswerPreTestController;
 use App\Http\Controllers\Praktikan\AssignmentPraktikanController;
@@ -296,12 +297,22 @@ Route::middleware('auth')->group(function () {
         Route::post('/periksa-tugas/update', [SubmissionAsistenController::class, 'updateAll'])
         ->name('periksa-tugas.update');
 
-        Route::get('/tests/pretest', [AsistenTestController::class, 'indexPretest'])->name('pretest-asisten.index');
+        Route::get('/ujian', [AsistenTestController::class, 'indexPretest'])->name('ujian-asisten.index');
 
-        Route::post('/tests/pretest/buka/{id}', [AsistenTestController::class, 'open'])->name('pretest-asisten.open');
+        Route::post('/ujian/buka/{id}', [AsistenTestController::class, 'open'])->name('ujian-asisten.open');
 
-        Route::post('/tests/pretest/tutup/{id}', [AsistenTestController::class, 'close'])->name('pretest-asisten.close');
-    
+        Route::post('/ujian/tutup/{id}', [AsistenTestController::class, 'close'])->name('ujian-asisten.close');
+
+        Route::resource('nilai-perpekan', WeeklyScoreController::class)
+            ->names([
+                'index' => 'nilai-perpekan.index',
+                'create' => 'nilai-perpekan.create',
+                'store' => 'nilai-perpekan.store',
+                'show' => 'nilai-perpekan.show',         
+                'edit' => 'nilai-perpekan.edit',
+                'update' => 'nilai-perpekan.update',
+                'destroy' => 'nilai-perpekan.destroy',
+        ]);
     });
 
     Route::middleware('praktikan')->group(function () {
@@ -372,29 +383,12 @@ Route::middleware('auth')->group(function () {
                 'destroy' => 'pengajuan-tugas.destroy',
         ]);
         
+        Route::get('/ujian-praktikan', [PraktikanTestController::class, 'index'])->name('ujian-praktikan.index');
+        Route::post('/ujian-praktikan/mulai/{id}', [PraktikanTestController::class, 'start'])->name('ujian-praktikan.start');
 
-        Route::resource('mulai-pretest', AnswerPreTestController::class)
-            ->names([
-                'index' => 'mulai-pretest.index',
-                'create' => 'mulai-pretest.create',
-                'store' => 'mulai-pretest.store',
-                'show' => 'mulai-pretest.show',         
-                'edit' => 'mulai-pretest.edit',
-                'update' => 'mulai-pretest.update',
-                'destroy' => 'mulai-pretest.destroy',
-        ]);
+        Route::get('/ujian-praktikan/{submissionId}/jawab', [PraktikanTestController::class, 'take'])->name('ujian-praktikan.take');
 
-        
-        // Ubah parameter {submission} menjadi {testId} untuk submit agar konsisten
-        Route::get('/pretest', [PraktikanTestController::class, 'index'])->name('pretest-praktikan.index');
-        Route::post('/pretest/mulai/{id}', [PraktikanTestController::class, 'start'])->name('pretest-praktikan.start');
-
-        // Route GET untuk menampilkan soal (Halaman Pengerjaan)
-        // Kita pakai {submissionId} agar spesifik
-        Route::get('/pretest/{submissionId}/jawab', [PraktikanTestController::class, 'take'])->name('pretest-praktikan.take');
-
-        // Route POST untuk submit
-        Route::post('/pretest/{testId}/kumpul', [PraktikanTestController::class, 'submit'])->name('pretest-praktikan.submit');
+        Route::post('/ujian-praktikan/{testId}/kumpul', [PraktikanTestController::class, 'submit'])->name('ujian-praktikan.submit');
     });
 
 

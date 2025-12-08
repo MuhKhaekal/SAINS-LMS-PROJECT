@@ -30,16 +30,9 @@
                     <p class="text-xs mt-2">Judul Tes</p>
                     <input type="text" id="visitors"
                         class="bg-neutral-secondary-medium border rounded-md text-heading text-xs rounded-base focus:ring-brand focus:border-brand block w-full px-2.5 py-2 shadow-xs placeholder:text-body mt-1"
-                        placeholder="Pre-test" value="{{ old('title', $test->title ?? '') }}" required />
+                        placeholder="Ujian AKhir" value="{{ old('title', $test->title ?? '') }}" required />
                 </div>
 
-                <div class="mt-2">
-                    <p class="text-xs mt-2">Tipe Tes</p>
-                    <select name="test_type" class="border rounded p-2 w-full mt-1 text-xs" x-model="test_type">
-                        <option value="pretest">Pretest</option>
-                        <option value="posttest">Posttest</option>
-                    </select>
-                </div>
 
                 <div class="mt-2">
                     <p class="text-xs mt-2">Deskripsi</p>

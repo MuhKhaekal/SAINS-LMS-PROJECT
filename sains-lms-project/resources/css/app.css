@@ -1,17 +1,21 @@
-@import "@fontsource/poppins";
+/* 1. Tempel Import di sini */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* 2. Directive Tailwind */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer utilities {
-    /* Hide scrollbar for Chrome, Safari and Opera */
     .no-scrollbar::-webkit-scrollbar {
         display: none;
     }
-   /* Hide scrollbar for IE, Edge and Firefox */
     .no-scrollbar {
-        -ms-overflow-style: none;  /* IE and Edge */
-        scrollbar-width: none;  /* Firefox */
+        -ms-overflow-style: none;
+        scrollbar-width: none; 
   }
 }

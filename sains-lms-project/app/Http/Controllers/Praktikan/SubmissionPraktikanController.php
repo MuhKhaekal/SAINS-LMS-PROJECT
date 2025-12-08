@@ -144,8 +144,7 @@ class SubmissionPraktikanController extends Controller
             'description' => $request->description,
             'file_location' => $filePath,
         ]);
-    
-        // FIXED RELATION
+
         $assignment = Assignment::find($submission->assignment_id);
         $meeting = Meeting::find($assignment->meeting_id);
         $halaqah = Halaqah::find($assignment->halaqah_id);

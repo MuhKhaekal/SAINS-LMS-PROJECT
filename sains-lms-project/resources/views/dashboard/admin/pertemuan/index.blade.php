@@ -21,8 +21,8 @@
                 class="flex justify-between items-center bg-white border-t p-5 text-xs md:text-sm shadow-md rounded-b-xl mb-4">
                 <p class="w-2/3">{{ $meeting->description }}</p>
                 <div class="flex-1 flex items-center justify-end">
-                    @if ($meeting->type == 'pretest' || $meeting->type == 'posttest')
-                        <a data-tooltip-target="tooltip-pretest-{{ $index }}" href="{{ route('buat-test.create') }}">
+                    @if ($meeting->type == 'ujian')
+                        <a data-tooltip-target="tooltip-ujian-{{ $index }}" href="{{ route('buat-test.create') }}">
                             <svg class="w-7 h-7 cursor-pointer text-secondary bg-green-500 hover:bg-green-600 hover:text-white rounded-md p-1"
                                 aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                 fill="currentColor" viewBox="0 0 24 24">
@@ -34,9 +34,9 @@
                                     clip-rule="evenodd" />
                             </svg>
                         </a>
-                        <div id="tooltip-pretest-{{ $index }}" role="tooltip"
+                        <div id="tooltip-ujian-{{ $index }}" role="tooltip"
                             class="absolute z-10 invisible inline-block px-3 py-2 font-medium text-white transition-opacity duration-300 bg-dark rounded-base shadow-xs opacity-0 tooltip bg-primary rounded-md text-xs">
-                            Buat Soal Pretest
+                            Buat Soal Ujian Akhir
                             <div class="tooltip-arrow" data-popper-arrow></div>
                         </div>
                     @endif
@@ -140,10 +140,11 @@
                                 <select id="type" name="type"
                                     class="mt-1 bg-secondary border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                                     <option value="pretest">Pre Test</option>
-                                    <option value="weekly">Kelas Besar</option>
-                                    <option value="">Kelas Kecil</option>
-                                    <option value="">Post Test</option>
-                                    <option value="">Ramah Tamah</option>
+                                    <option value="skb">Kelas Besar</option>
+                                    <option value="skk">Kelas Kecil</option>
+                                    <option value="posttest">Post Test</option>
+                                    <option value="ujian">Ujian Akhir</option>
+                                    <option value="ramah-tamah">Ramah Tamah</option>
                                 </select>
                             </div>
                             <div class="">
@@ -227,6 +228,7 @@
                                     <option value="skb">Kelas Besar</option>
                                     <option value="skk">Kelas Kecil</option>
                                     <option value="posttest">Post Test</option>
+                                    <option value="ujian">Ujian Akhir</option>
                                     <option value="ramah-tamah">Ramah Tamah</option>
                                 </select>
                             </div>

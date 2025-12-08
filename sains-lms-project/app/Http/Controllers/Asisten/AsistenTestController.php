@@ -5,10 +5,8 @@ namespace App\Http\Controllers\Asisten;
 use App\Http\Controllers\Controller;
 use App\Models\Halaqah;
 use App\Models\Meeting;
-use App\Models\Question;
 use App\Models\Test;
 use App\Models\TestSession;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -19,52 +17,45 @@ class AsistenTestController extends Controller
 
     public function indexPretest(Request $request)
     {
-        // Ambil parameter dari query
         $meetingName = $request->meeting_name;
         $halaqahName = $request->halaqah_name;
     
-        // Cari meeting dan halaqah berdasarkan nama
         $selectedMeeting = Meeting::where('meeting_name', $meetingName)->first();
         $selectedHalaqah = Halaqah::where('halaqah_name', $halaqahName)->first();
     
-        // Authorization (hanya jika halaqah ditemukan)
         if ($selectedHalaqah) {
             $this->authorize('view', $selectedHalaqah);
         }
     
-        // Ambil test pretest pertama
-        $tests = Test::where('test_type', 'pretest')->first();
+        $test = Test::with('questions')->first();
     
-        // Jika belum ada test, hindari error
-        if (!$tests) {
-            return view('dashboard.asisten.tests.pretest.index', compact(
+        if (!$test) {
+            return view('dashboard.asisten.tests.index', compact(
                 'selectedMeeting',
                 'selectedHalaqah'
-            ))->with('error', 'Belum ada pretest yang dibuat!');
+            ))->with('error', 'Belum ada soal tes yang dibuat oleh Admin!');
         }
     
-        // Ambil halaqah ID yang sedang digunakan user asisten
         $halaqahId = null;
-        if (Auth::check()) {
-            $halaqahId = User::find(Auth::id())->halaqahs()->first()->id ?? null;
+        $user = Auth::user();
+        
+        if ($user && $user->halaqahs()->exists()) {
+            $halaqahId = $user->halaqahs()->first()->id;
         }
     
-        // Ambil test session untuk menentukan apakah test sedang dibuka
         $testSession = null;
         if ($halaqahId) {
-            $testSession = TestSession::where('test_id', $tests->id)
+            $testSession = TestSession::where('test_id', $test->id)
                 ->where('halaqah_id', $halaqahId)
                 ->first();
         }
 
-        $questions = Question::whereHas('test', function ($q) {
-            $q->where('test_type', 'pretest');
-        })->get();
+        $questions = $test->questions;
     
-        return view('dashboard.asisten.tests.pretest.index', compact(
+        return view('dashboard.asisten.tests.index', compact(
             'selectedMeeting',
             'selectedHalaqah',
-            'tests',
+            'test', 
             'testSession',
             'questions',
         ));
@@ -75,7 +66,13 @@ class AsistenTestController extends Controller
     {
         $test = Test::findOrFail($id);
     
-        $halaqahId = User::find(Auth::id())->halaqahs()->first()->id;
+        $user = Auth::user();
+        
+        if (!$user->halaqahs()->exists()) {
+            return back()->with('error', 'Anda belum terdaftar dalam halaqah manapun.');
+        }
+
+        $halaqahId = $user->halaqahs()->first()->id;
     
         TestSession::updateOrCreate(
             [
@@ -92,25 +89,29 @@ class AsistenTestController extends Controller
     }
 
     public function close($id)
-{
-    $test = Test::findOrFail($id);
+    {
+        $test = Test::findOrFail($id);
 
-    $halaqahId = User::find(Auth::id())->halaqahs()->first()->id;
+        $user = Auth::user();
 
-    TestSession::updateOrCreate(
-        [
-            'test_id' => $id,
-            'halaqah_id' => $halaqahId,
-        ],
-        [
-            'is_open' => false,
-            'closed_at' => now(),
-        ]
-    );
+        if (!$user->halaqahs()->exists()) {
+            return back()->with('error', 'Anda belum terdaftar dalam halaqah manapun.');
+        }
 
-    return back()->with('success', 'Test berhasil ditutup');
-}
+        $halaqahId = $user->halaqahs()->first()->id;
 
-    
+        TestSession::updateOrCreate(
+            [
+                'test_id' => $id,
+                'halaqah_id' => $halaqahId,
+            ],
+            [
+                'is_open' => false,
+                'closed_at' => now(),
+            ]
+        );
+
+        return back()->with('success', 'Test berhasil ditutup');
+    }
 
 }

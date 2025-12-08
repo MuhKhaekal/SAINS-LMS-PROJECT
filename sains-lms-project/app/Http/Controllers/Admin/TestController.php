@@ -11,32 +11,17 @@ use Illuminate\Support\Facades\Auth;
 
 class TestController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function create()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-
-     public function create()
-    {
-        // Cari data pretest yang sudah ada
         $test = Test::with(['questions.options'])
-                    ->where('test_type', 'pretest')
                     ->first();
 
         $jsQuestions = [];
 
-        // Jika data ditemukan, format ulang untuk Javascript
         if ($test) {
             foreach ($test->questions as $q) {
                 $optionsText = [];
-                $correctIndex = null; // Default null jika essay
+                $correctIndex = null; 
 
                 if ($q->type === 'mcq') {
                     foreach ($q->options as $idx => $opt) {
@@ -53,35 +38,28 @@ class TestController extends Controller
                     'question' => $q->question,
                     'options'  => $q->type === 'mcq' ? $optionsText : [''],
                     'answer'   => $correctIndex, 
-                    'maxWords' => 100 // Atau ambil dari DB jika ada kolomnya
+                    'maxWords' => 100 
                 ];
             }
         }
 
-        // Kirim $test dan $jsQuestions ke view
-        // Jika $test null (belum ada data), blade akan menangani form kosong
         return view('dashboard.admin.test.create', compact('test', 'jsQuestions'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $data = $request->validate([
-            'title' => 'required|string',
-            'test_type' => 'required|in:pretest,posttest',
+            'title'       => 'required|string',
             'description' => 'nullable|string',
-            'duration' => 'required|integer|min:1',
-            'questions' => 'required|array',
+            'duration'    => 'required|integer|min:1',
+            'questions'   => 'required|array',
         ]);
     
         $test = Test::create([
-            'user_id'    => Auth::id(),
-            'title'      => $data['title'],
-            'test_type'  => $data['test_type'],
-            'duration' => $data['duration'],
-            'description'=> $data['description'] ?? null,
+            'user_id'     => Auth::id(),
+            'title'       => $data['title'],
+            'duration'    => $data['duration'],
+            'description' => $data['description'] ?? null,
         ]);
     
         foreach ($data['questions'] as $index => $q) {
@@ -89,68 +67,44 @@ class TestController extends Controller
             $q = json_decode($q, true);
     
             $question = Question::create([
-                'test_id'       => $test->id,
-                'user_id'       => Auth::id(),
-                'type'          => $q['type'],        
-                'question'      => $q['question'],
-                'correct_answer'=> $q['type'] === 'essay' ? null : ($q['answer'] ?? null),
-                'order_number'  => $index + 1,       
+                'test_id'        => $test->id,
+                'user_id'        => Auth::id(),
+                'type'           => $q['type'],        
+                'question'       => $q['question'],
+                'correct_answer' => $q['type'] === 'essay' ? null : ($q['answer'] ?? null),
+                'order_number'   => $index + 1,       
             ]);
     
             if ($q['type'] === 'mcq') {
-    
                 foreach ($q['options'] as $optIndex => $optText) {
-    
                     QuestionOption::create([
-                        'question_id'  => $question->id,
-                        'option_text'  => $optText,
-                        'is_correct'   => $optIndex == $q['answer'],
+                        'question_id' => $question->id,
+                        'option_text' => $optText,
+                        'is_correct'  => $optIndex == $q['answer'],
                     ]);
                 }
             }
         }
+
         return redirect()
             ->route('pertemuan.index')
             ->with('success', 'Soal berhasil disimpan!');
-            
     }
     
-    
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
         $data = $request->validate([
-            'title' => 'required|string',
-            'test_type' => 'required|in:pretest,posttest',
+            'title'       => 'required|string',
             'description' => 'nullable|string',
-            'duration' => 'required|integer|min:1',
-            'questions' => 'required|array',
+            'duration'    => 'required|integer|min:1',
+            'questions'   => 'required|array',
         ]);
 
         $test = Test::findOrFail($id);
         
         $test->update([
             'title'       => $data['title'],
-            'test_type'   => $data['test_type'],
             'duration'    => $data['duration'],
             'description' => $data['description'] ?? null,
         ]);
@@ -175,9 +129,9 @@ class TestController extends Controller
             if ($q['type'] === 'mcq') {
                 foreach ($q['options'] as $optIndex => $optText) {
                     QuestionOption::create([
-                        'question_id'  => $question->id,
-                        'option_text'  => $optText,
-                        'is_correct'   => $optIndex == $q['answer'],
+                        'question_id' => $question->id,
+                        'option_text' => $optText,
+                        'is_correct'  => $optIndex == $q['answer'],
                     ]);
                 }
             }
@@ -188,7 +142,6 @@ class TestController extends Controller
             ->with('success', 'Soal berhasil diperbarui!');
     }
 
-
     public function destroy(string $id)
     {
         $question = Question::with('options')->findOrFail($id);
@@ -197,7 +150,6 @@ class TestController extends Controller
             $question->options()->delete();
         }
 
-
         $question->delete();
 
         return back()->with('success', 'Soal berhasil dihapus!');
@@ -205,10 +157,8 @@ class TestController extends Controller
 
     public function reviewPretest()
     {
-        $questions = Question::whereHas('test', function ($q) {
-            $q->where('test_type', 'pretest');
-        })->get();
+        $questions = Question::with('test')->get();
         
-        return view('dashboard.admin.test.pretest.index', compact('questions'));
+        return view('dashboard.admin.test.index', compact('questions'));
     }
 }

@@ -7,8 +7,8 @@
 
         <div class="mb-6 flex items-center justify-between">
             <div>
-                <h2 class="text-2xl font-bold text-gray-800">Review Soal Pretest</h2>
-                <p class="text-sm text-gray-600 mt-1">Kelola dan tinjau semua soal pretest</p>
+                <h2 class="text-2xl font-bold text-gray-800">Review Soal Ujian</h2>
+                <p class="text-sm text-gray-600 mt-1">Kelola dan tinjau semua soal ujian</p>
             </div>
             <div class="text-sm bg-blue-50 text-blue-700 px-4 py-2 rounded-lg border border-blue-200">
                 Total: <span class="font-bold">{{ count($questions) }}</span> soal

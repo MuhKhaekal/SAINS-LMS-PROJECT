@@ -71,6 +71,12 @@ class MeetingSeeder extends Seeder
                 'type' => 'posttest'
             ],
             [
+                'meeting_name' => 'Ujian Akhir',
+                'topic' => 'Ujian Akhir SAINS',
+                'description' => 'Sebagai tes materi penutup untuk mengukur sejauh mana pengetahuan.',
+                'type' => 'ujian'
+            ],
+            [
                 'meeting_name' => 'Ramah Tamah',
                 'topic' => 'Penutupan SAINS',
                 'description' => 'Penutupan SAINS yang dilakukan dan pemberian sertifikat sebagai bukti telah mengikuti SAINS',

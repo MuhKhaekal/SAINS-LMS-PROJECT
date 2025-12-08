@@ -6,7 +6,7 @@
     <section class="mt-4 mx-4 md:mx-24 md:mt-24">
         <h1 class="text-center mb-6 text-xl md:text-3xl font-bold">Daftar Tugas: {{ $selectedMeeting->meeting_name }}</h1>
         @forelse ($assignments as $index => $assignment)
-            <div class=" bg-white shadow-md rounded-lg p-6 border mb-4">
+            <div class="bg-white shadow-md rounded-lg p-6 border mb-4">
 
                 <h2 class="md:block font-bold md:text-2xl border-b w-fit border-gray-300">Tugas {{ $index + 1 }}:
                     {{ $assignment->assignment_name }}
@@ -236,8 +236,7 @@
 
     @if (session('success'))
         <div id="alert-success"
-            class="fixed top-4 right-4 z-50 flex items-center p-4 mb-4 text-green-800 border-t-4 border-green-300 bg-green-50 rounded-lg shadow-lg 
-  opacity-0 translate-x-10 transition-all duration-500 ease-out"
+            class="fixed top-4 right-4 z-50 flex items-center p-4 mb-4 text-green-800 border-t-4 border-green-300 bg-green-50 rounded-lg shadow-lg opacity-0 translate-x-10 transition-all duration-500 ease-out"
             role="alert">
             <svg class="shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                 viewBox="0 0 20 20">
@@ -259,8 +258,7 @@
 
     @if (session('error'))
         <div id="alert-error"
-            class="fixed top-4 right-4 z-50 flex items-center p-4 mb-4 text-red-800 border-t-4 border-red-300 bg-red-50 rounded-lg shadow-lg 
-  opacity-0 translate-x-10 transition-all duration-500 ease-out"
+            class="fixed top-4 right-4 z-50 flex items-center p-4 mb-4 text-red-800 border-t-4 border-red-300 bg-red-50 rounded-lg shadow-lg opacity-0 translate-x-10 transition-all duration-500 ease-out"
             role="alert">
             <svg class="shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                 viewBox="0 0 20 20">

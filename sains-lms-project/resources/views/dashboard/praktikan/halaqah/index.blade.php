@@ -14,7 +14,6 @@
         </div>
     </div>
 
-
     <section class="mx-4 md:mx-32">
         @forelse ($meetings as $index => $meeting)
             <div id="accordion-{{ $index }}" class="my-2">
@@ -43,9 +42,9 @@
                             {{ $meeting->description }}
                         </p>
                         <div class="grid grid-cols-1 md:grid-cols-2 md:gap-0 mt-3">
-                            @if ($meeting->type == 'pretest')
+                            @if ($meeting->type == 'ujian')
                                 <div class="border p-3 ">
-                                    <a href="{{ route('pretest-praktikan.index', ['meeting_name' => $meeting->meeting_name, 'halaqah_name' => $selectedHalaqah->halaqah_name]) }}"
+                                    <a href="{{ route('ujian-praktikan.index', ['meeting_name' => $meeting->meeting_name, 'halaqah_name' => $selectedHalaqah->halaqah_name]) }}"
                                         class="flex md:flex-col md:py-4 items-center">
                                         <div class="bg-yellow-500 rounded p-2 me-3 md:me-0">
                                             <svg class="w-6 h-6 md:w-12 md:h-12 text-white" aria-hidden="true"
@@ -62,24 +61,7 @@
                                     </a>
                                 </div>
                             @endif
-                            @if ($meeting->type == 'posttest')
-                                <div class="border p-3 ">
-                                    <a href="" class="flex md:flex-col md:py-4 items-center ">
-                                        <div class="bg-cyan-800 rounded p-2">
-                                            <svg class="w-6 h-6 md:w-12 md:h-12 text-white" aria-hidden="true"
-                                                xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                fill="currentColor" viewBox="0 0 24 24">
-                                                <path fill-rule="evenodd"
-                                                    d="M8 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1h2a2 2 0 0 1 2 2v15a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h2Zm6 1h-4v2H9a1 1 0 0 0 0 2h6a1 1 0 1 0 0-2h-1V4Zm-3 8a1 1 0 0 1 1-1h3a1 1 0 1 1 0 2h-3a1 1 0 0 1-1-1Zm-2-1a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H9Zm2 5a1 1 0 0 1 1-1h3a1 1 0 1 1 0 2h-3a1 1 0 0 1-1-1Zm-2-1a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H9Z"
-                                                    clip-rule="evenodd" />
-                                            </svg>
-                                        </div>
-                                        <p class="font-bold md:mt-4">
-                                            Mulai Post-Test
-                                        </p>
-                                    </a>
-                                </div>
-                            @endif
+
                             @if ($meeting->type == 'skk')
                                 <div class="border p-3">
                                     <a href="{{ route('materi-praktikan.index', ['meeting_name' => $meeting->meeting_name, 'halaqah_name' => $selectedHalaqah->halaqah_name]) }}"
