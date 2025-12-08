@@ -3,138 +3,173 @@
 @section('page-title', 'SAINS | Presensi')
 
 @section('content')
-    <section class="m-4 md:mx-24 md:mt-24 bg-white shadow-md p-8 rounded-md border-2">
-        <h1 class="text-center font-bold text-xl mb-4">Kehadiran Mahasiswa: {{ $selectedMeeting->meeting_name }}</h1>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:mt-24">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-800">Presensi Mahasiswa</h1>
+                <div class="flex items-center gap-2 mt-1 text-sm text-gray-500">
+                    <span>{{ $selectedHalaqah->halaqah_name }}</span>
+                    <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                    <span class="font-medium text-gray-700">{{ $selectedMeeting->meeting_name }}</span>
+                </div>
+            </div>
+            <div>
+                <a href="{{ url()->previous() }}"
+                    class="inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-lg font-medium text-sm text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                    <svg class="w-4 h-4 mr-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                    </svg>
+                    Kembali
+                </a>
+            </div>
+        </div>
 
         <form action="{{ route('presensi-asisten.store') }}" method="POST">
             @csrf
             <input type="hidden" name="halaqah_id" value="{{ $selectedHalaqah->id }}">
             <input type="hidden" name="meeting_id" value="{{ $selectedMeeting->id }}">
 
-            {{-- Header Section: Tanggal di Kiri, Tombol di Kanan --}}
-            <section class="flex flex-col md:flex-row md:justify-between items-end md:items-center mb-6">
-                {{-- Info Tanggal --}}
-                <div class="flex items-center gap-3 text-gray-600 bg-gray-50 px-4 py-2 rounded-lg border border-gray-200">
-                    <svg class="w-5 h-5 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-                        height="24" fill="currentColor" viewBox="0 0 24 24">
-                        <path fill-rule="evenodd"
-                            d="M5 5a1 1 0 0 0 1-1 1 1 0 1 1 2 0 1 1 0 0 0 1 1h1a1 1 0 0 0 1-1 1 1 0 1 1 2 0 1 1 0 0 0 1 1 2 2 0 0 1 2 2v1a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7a2 2 0 0 1 2-2ZM3 19v-7a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Zm6.01-6a1 1 0 1 0-2 0 1 1 0 0 0 2 0Zm2 0a1 1 0 1 1 2 0 1 1 0 0 1-2 0Zm6 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0Zm-10 4a1 1 0 1 1 2 0 1 1 0 0 1-2 0Zm6 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0Zm2 0a1 1 0 1 1 2 0 1 1 0 0 1-2 0Z"
-                            clip-rule="evenodd" />
+            <div
+                class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 mb-6 flex flex-col md:flex-row items-center justify-between gap-4 sticky top-4 z-10">
+                <div
+                    class="flex items-center gap-3 text-gray-700 bg-gray-50 px-4 py-2 rounded-lg border border-gray-200 w-full md:w-auto justify-center md:justify-start">
+                    <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
+                        </path>
                     </svg>
-                    <span class="text-sm font-medium">{{ $todayDate }}</span>
+                    <span class="font-medium text-sm">{{ $todayDate }}</span>
                 </div>
 
-                {{-- Tombol Simpan --}}
-                <div class="mt-4 md:mt-0">
-                    <x-secondary-button type="submit">
-                        Simpan Kehadiran
-                    </x-secondary-button>
-                </div>
-            </section>
+                <x-primary-button type="submit" class="w-full md:w-auto justify-center">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    Simpan Kehadiran
+                </x-primary-button>
+            </div>
 
-            {{-- Table Section --}}
-            <section class="mt-5 overflow-x-auto">
-                <table class="w-full text-sm text-left rtl:text-right">
-                    <thead class="text-xs uppercase bg-gray-100 text-gray-500">
-                        <tr>
-                            <th scope="col" class="px-6 py-3 w-1/12 text-center">No</th>
-                            <th scope="col" class="px-6 py-3 w-2/12">NIM</th>
-                            <th scope="col" class="px-6 py-3 w-3/12">Nama</th>
-                            <th scope="col" class="px-6 py-3 w-4/12 text-center">Status Kehadiran</th>
-                            <th scope="col" class="px-6 py-3 w-2/12">Catatan</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($praktikans as $index => $praktikan)
-                            @php
-                                $presence = $presences[$praktikan->id] ?? null;
-                                $status = $presence->status ?? null;
-                            @endphp
-
-                            <tr class="bg-white hover:bg-gray-100 text-primary border-b">
-                                <input type="hidden" name="presence[{{ $praktikan->id }}][user_id]"
-                                    value="{{ $praktikan->id }}">
-
-                                <td class="px-6 py-4 text-center">
-                                    {{ $index + 1 }}
-                                </td>
-                                <td class="px-6 py-4 font-medium">
-                                    {{ $praktikan->nim }}
-                                </td>
-                                <td class="px-6 py-4">
-                                    {{ $praktikan->nama }}
-                                </td>
-
-                                {{-- Kolom Radio Button (Horizontal Layout) --}}
-                                <td class="px-6 py-4">
-                                    <div class="flex flex-wrap gap-4 justify-center items-center">
-
-                                        {{-- Hadir --}}
-                                        <div class="flex items-center">
-                                            <input type="radio" id="status-hadir-{{ $praktikan->id }}"
-                                                name="presence[{{ $praktikan->id }}][status]" value="Hadir"
-                                                {{ $status == 'Hadir' ? 'checked' : '' }}
-                                                class="w-4 h-4 text-emerald-600 bg-gray-100 border-gray-300 focus:ring-emerald-500 focus:ring-2">
-                                            <label for="status-hadir-{{ $praktikan->id }}"
-                                                class="ms-2 text-sm font-medium text-gray-900 cursor-pointer">Hadir</label>
-                                        </div>
-
-                                        {{-- Sakit --}}
-                                        <div class="flex items-center">
-                                            <input type="radio" id="status-sakit-{{ $praktikan->id }}"
-                                                name="presence[{{ $praktikan->id }}][status]" value="Sakit"
-                                                {{ $status == 'Sakit' ? 'checked' : '' }}
-                                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
-                                            <label for="status-sakit-{{ $praktikan->id }}"
-                                                class="ms-2 text-sm font-medium text-gray-900 cursor-pointer">Sakit</label>
-                                        </div>
-
-                                        {{-- Izin --}}
-                                        <div class="flex items-center">
-                                            <input type="radio" id="status-izin-{{ $praktikan->id }}"
-                                                name="presence[{{ $praktikan->id }}][status]" value="Izin"
-                                                {{ $status == 'Izin' ? 'checked' : '' }}
-                                                class="w-4 h-4 text-yellow-400 bg-gray-100 border-gray-300 focus:ring-yellow-500 focus:ring-2">
-                                            <label for="status-izin-{{ $praktikan->id }}"
-                                                class="ms-2 text-sm font-medium text-gray-900 cursor-pointer">Izin</label>
-                                        </div>
-
-                                        {{-- Alfa --}}
-                                        <div class="flex items-center">
-                                            <input type="radio" id="status-alfa-{{ $praktikan->id }}"
-                                                name="presence[{{ $praktikan->id }}][status]" value="Alfa"
-                                                {{ $status == 'Alfa' ? 'checked' : '' }}
-                                                class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 focus:ring-red-500 focus:ring-2">
-                                            <label for="status-alfa-{{ $praktikan->id }}"
-                                                class="ms-2 text-sm font-medium text-gray-900 cursor-pointer">Alfa</label>
-                                        </div>
-
-                                    </div>
-                                </td>
-
-                                {{-- Kolom Catatan --}}
-                                <td class="px-6 py-4">
-                                    <textarea rows="1" name="presence[{{ $praktikan->id }}][description]"
-                                        class="block w-full text-xs rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 placeholder:text-gray-400"
-                                        placeholder="Catatan...">{{ $presence->description ?? '' }}</textarea>
-                                </td>
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-left">
+                        <thead class="text-xs text-gray-500 uppercase bg-gray-50 border-b border-gray-100">
+                            <tr>
+                                <th scope="col" class="px-6 py-4 w-12 text-center">No</th>
+                                <th scope="col" class="px-6 py-4 w-32 font-semibold">NIM</th>
+                                <th scope="col" class="px-6 py-4 font-semibold">Nama Mahasiswa</th>
+                                <th scope="col" class="px-6 py-4 text-center font-semibold">Status Kehadiran</th>
+                                <th scope="col" class="px-6 py-4 w-64 font-semibold">Catatan</th>
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </section>
-        </form>
-    </section>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100">
+                            @foreach ($praktikans as $index => $praktikan)
+                                @php
+                                    $presence = $presences[$praktikan->id] ?? null;
+                                    $status = $presence->status ?? null;
+                                @endphp
 
-    {{-- Tombol Kembali --}}
-    <div class="md:mx-24 mx-4 mt-8 mb-8 md:mb-0">
-        <a href="{{ url()->previous() }}"
-            class="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400 transition ease-in-out duration-150 md:basis-2/12 text-center flex items-center justify-center gap-2 w-fit text-sm">
-            Kembali
-        </a>
+                                <tr class="bg-white hover:bg-gray-50 transition-colors group">
+                                    <input type="hidden" name="presence[{{ $praktikan->id }}][user_id]"
+                                        value="{{ $praktikan->id }}">
+
+                                    <td class="px-6 py-4 text-center text-gray-500">
+                                        {{ $index + 1 }}
+                                    </td>
+                                    <td class="px-6 py-4 font-mono text-gray-600">
+                                        {{ $praktikan->nim }}
+                                    </td>
+                                    <td
+                                        class="px-6 py-4 font-medium text-gray-900 group-hover:text-indigo-600 transition-colors">
+                                        {{ $praktikan->nama }}
+                                    </td>
+
+                                    <td class="px-6 py-4">
+                                        <div class="flex flex-wrap gap-6 justify-center items-center">
+                                            <label class="flex items-center gap-2 cursor-pointer group/radio">
+                                                <input type="radio" name="presence[{{ $praktikan->id }}][status]"
+                                                    value="Hadir" {{ $status == 'Hadir' ? 'checked' : '' }}
+                                                    class="w-4 h-4 text-emerald-600 bg-gray-100 border-gray-300 focus:ring-emerald-500 focus:ring-2 cursor-pointer transition">
+                                                <span
+                                                    class="text-sm text-gray-700 group-hover/radio:text-emerald-700 font-medium">Hadir</span>
+                                            </label>
+
+                                            <label class="flex items-center gap-2 cursor-pointer group/radio">
+                                                <input type="radio" name="presence[{{ $praktikan->id }}][status]"
+                                                    value="Sakit" {{ $status == 'Sakit' ? 'checked' : '' }}
+                                                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2 cursor-pointer transition">
+                                                <span
+                                                    class="text-sm text-gray-700 group-hover/radio:text-blue-700 font-medium">Sakit</span>
+                                            </label>
+
+                                            <label class="flex items-center gap-2 cursor-pointer group/radio">
+                                                <input type="radio" name="presence[{{ $praktikan->id }}][status]"
+                                                    value="Izin" {{ $status == 'Izin' ? 'checked' : '' }}
+                                                    class="w-4 h-4 text-yellow-400 bg-gray-100 border-gray-300 focus:ring-yellow-500 focus:ring-2 cursor-pointer transition">
+                                                <span
+                                                    class="text-sm text-gray-700 group-hover/radio:text-yellow-700 font-medium">Izin</span>
+                                            </label>
+
+                                            <label class="flex items-center gap-2 cursor-pointer group/radio">
+                                                <input type="radio" name="presence[{{ $praktikan->id }}][status]"
+                                                    value="Alfa" {{ $status == 'Alfa' ? 'checked' : '' }}
+                                                    class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 focus:ring-red-500 focus:ring-2 cursor-pointer transition">
+                                                <span
+                                                    class="text-sm text-gray-700 group-hover/radio:text-red-700 font-medium">Alfa</span>
+                                            </label>
+
+                                        </div>
+                                    </td>
+
+                                    <td class="px-6 py-4">
+                                        <textarea rows="1" name="presence[{{ $praktikan->id }}][description]"
+                                            class="block w-full text-sm rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 placeholder-gray-400 transition resize-none"
+                                            placeholder="Keterangan...">{{ $presence->description ?? '' }}</textarea>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </form>
+
+        @if (session('success'))
+            <div id="alert-success"
+                class="fixed bottom-4 right-4 z-50 flex items-center p-4 mb-4 text-green-800 border-l-4 border-green-500 bg-green-50 rounded shadow-lg transform transition-all duration-500 translate-y-0 opacity-100"
+                role="alert">
+                <svg class="flex-shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                    fill="currentColor" viewBox="0 0 20 20">
+                    <path
+                        d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+                </svg>
+                <div class="ms-3 text-sm font-medium">{{ session('success') }}</div>
+                <button type="button"
+                    class="ms-auto -mx-1.5 -my-1.5 bg-green-50 text-green-500 rounded-lg focus:ring-2 focus:ring-green-400 p-1.5 hover:bg-green-200 inline-flex items-center justify-center h-8 w-8"
+                    data-dismiss-target="#alert-success" aria-label="Close" onclick="this.parentElement.remove()">
+                    <span class="sr-only">Close</span>
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                    </svg>
+                </button>
+            </div>
+            <script>
+                setTimeout(() => {
+                    const alert = document.getElementById('alert-success');
+                    if (alert) {
+                        alert.classList.add('opacity-0', 'translate-y-10');
+                        setTimeout(() => alert.remove(), 500);
+                    }
+                }, 3000);
+            </script>
+        @endif
+
     </div>
 
-    {{-- Alert Success --}}
     @if (session('success'))
         <div id="alert-success"
             class="fixed top-4 right-4 z-50 flex items-center p-4 mb-4 text-green-800 border-t-4 border-green-300 bg-green-50 rounded-lg shadow-lg opacity-0 translate-x-10 transition-all duration-500 ease-out"
@@ -156,7 +191,6 @@
         </script>
     @endif
 
-    {{-- Alert Error --}}
     @if (session('error'))
         <div id="alert-error"
             class="fixed top-4 right-4 z-50 flex items-center p-4 mb-4 text-red-800 border-t-4 border-red-300 bg-red-50 rounded-lg shadow-lg opacity-0 translate-x-10 transition-all duration-500 ease-out"

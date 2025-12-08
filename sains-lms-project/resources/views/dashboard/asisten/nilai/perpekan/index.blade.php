@@ -3,87 +3,137 @@
 @section('page-title', 'SAINS | Nilai Pekanan')
 
 @section('content')
-    <section class="m-4 md:mx-24 md:mt-24 bg-white shadow-md p-8 rounded-md border-2">
-        <h1 class="text-center font-bold text-xl mb-4">Nilai Pekanan: {{ $selectedHalaqah->halaqah_name }}</h1>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:mt-24">
 
-        
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-800">Input Nilai Pekanan</h1>
+                <div class="flex items-center gap-2 mt-1 text-sm text-gray-500">
+                    <span>Halaqah</span>
+                    <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                    <span class="font-medium text-gray-700">{{ $selectedHalaqah->halaqah_name }}</span>
+                </div>
+            </div>
+            <div>
+                <a href="{{ url()->previous() }}"
+                    class="inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-lg font-medium text-sm text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                    <svg class="w-4 h-4 mr-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                    </svg>
+                    Kembali
+                </a>
+            </div>
+        </div>
 
-        <form action="{{ route('nilai-perpekan.store') }}" method="POST">
+        <div
+            class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 mb-6 flex flex-col md:flex-row items-center justify-between gap-4 top-4 z-20">
+            <div class="text-sm text-gray-500 flex items-center gap-2">
+                <svg class="w-5 h-5 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                Pastikan nilai antara 0 - 100.
+            </div>
+
+            <div class="flex items-center gap-3 w-full md:w-auto">
+                <x-primary-button onclick="document.getElementById('nilaiForm').submit()"
+                    class="w-full md:w-auto justify-center">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4">
+                        </path>
+                    </svg>
+                    Simpan Perubahan
+                </x-primary-button>
+            </div>
+        </div>
+
+        <form id="nilaiForm" action="{{ route('nilai-perpekan.store') }}" method="POST">
             @csrf
             <input type="hidden" name="halaqah_id" value="{{ $selectedHalaqah->id }}">
 
-            <section class="flex justify-end items-center mb-4">
-                <div class="mt-2 md:mb-0">
-                    <x-secondary-button type="submit">
-                        Simpan Nilai
-                    </x-secondary-button>
-                </div>
-            </section>
-
-            <section class="mt-5 overflow-x-auto">
-                <table class="w-full text-sm text-left rtl:text-right">
-                    <thead class="text-xs uppercase bg-gray-100 text-gray-500">
-                        <tr>
-                            <th scope="col" class="px-4 py-3 text-center">No</th>
-                            <th scope="col" class="px-4 py-3">NIM</th>
-                            <th scope="col" class="px-4 py-3 min-w-[150px]">Nama</th>
-                            <th scope="col" class="px-2 py-3 text-center">Pekan 1</th>
-                            <th scope="col" class="px-2 py-3 text-center">Pekan 2</th>
-                            <th scope="col" class="px-2 py-3 text-center">Pekan 3</th>
-                            <th scope="col" class="px-2 py-3 text-center">Pekan 4</th>
-                            <th scope="col" class="px-2 py-3 text-center">Pekan 5</th>
-                            <th scope="col" class="px-2 py-3 text-center">Pekan 6</th>
-                            <th scope="col" class="px-4 py-3 min-w-[200px]">Catatan</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($praktikans as $index => $praktikan)
-                            @php
-                                $score = $weeklyScores[$praktikan->id] ?? null;
-                            @endphp
-
-                            <tr class="bg-white hover:bg-gray-100 text-primary border-b">
-                                <td class="px-4 py-4 text-center">
-                                    {{ $index + 1 }}
-                                </td>
-                                <td class="px-4 py-4 font-medium">
-                                    {{ $praktikan->nim }}
-                                </td>
-                                <td class="px-4 py-4">
-                                    {{ $praktikan->nama }}
-                                </td>
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-left">
+                        <thead class="text-xs text-gray-500 uppercase bg-gray-50 border-b border-gray-100">
+                            <tr>
+                                <th scope="col" class="px-4 py-4 w-10 text-center left-0 bg-gray-50 z-10">No</th>
+                                <th scope="col"
+                                    class="px-4 py-4 min-w-[120px] font-semibold  left-10 bg-gray-50 z-10 shadow-sm">
+                                    Nama & NIM</th>
 
                                 @for ($i = 1; $i <= 6; $i++)
-                                    <td class="px-2 py-4 text-center">
-                                        <input type="number"
-                                            name="weeklyScore[{{ $praktikan->id }}][score{{ $i }}]"
-                                            value="{{ $score->{'score' . $i} ?? '' }}"  min="0"
-                                            max="100"
-                                            oninput="if(Number(this.value) > 100) this.value = 100; if(Number(this.value) < 0) this.value = 0;"
-                                            class="rounded-md text-sm w-16 border-gray-300 focus:ring-emerald-500 focus:border-emerald-500 p-2 text-center"
-                                            placeholder="0">
-                                    </td>
+                                    <th scope="col" class="px-2 py-4 text-center min-w-[80px]">
+                                        <div class="flex flex-col">
+                                            <span>Pekan</span>
+                                            <span class="text-lg font-bold text-gray-700">{{ $i }}</span>
+                                        </div>
+                                    </th>
                                 @endfor
 
-                                <td class="px-4 py-4">
-                                    <textarea rows="1" name="weeklyScore[{{ $praktikan->id }}][description]"
-                                        class="block w-full text-xs rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-primary placeholder:text-gray-400"
-                                        placeholder="Catatan...">{{ $score->description ?? '' }}</textarea>
-                                </td>
+                                <th scope="col" class="px-4 py-4 min-w-[200px] font-semibold">Catatan</th>
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </section>
-        </form>
-    </section>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100">
+                            @foreach ($praktikans as $index => $praktikan)
+                                @php
+                                    $score = $weeklyScores[$praktikan->id] ?? null;
+                                @endphp
 
-    <div class="md:mx-24 mx-4 mt-8 mb-8 md:mb-0">
-        <a href="{{ url()->previous() }}"
-            class="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400 transition ease-in-out duration-150 text-sm">
-            Kembali
-        </a>
+                                <tr class="bg-white hover:bg-gray-50 transition-colors group">
+                                    <input type="hidden" name="weeklyScore[{{ $praktikan->id }}][user_id]"
+                                        value="{{ $praktikan->id }}">
+                                    <td
+                                        class="px-4 py-4 text-center text-gray-500 left-0 bg-white group-hover:bg-gray-50 z-10">
+                                        {{ $index + 1 }}
+                                    </td>
+
+                                    <td class="px-4 py-4 left-10 bg-white group-hover:bg-gray-50 z-10 shadow-sm">
+                                        <div class="font-medium text-gray-900">{{ $praktikan->nama }}</div>
+                                        <div class="text-xs text-gray-500 font-mono">{{ $praktikan->nim }}</div>
+                                    </td>
+
+                                    @for ($i = 1; $i <= 6; $i++)
+                                        <td class="px-2 py-4 text-center">
+                                            <input type="number"
+                                                name="weeklyScore[{{ $praktikan->id }}][score{{ $i }}]"
+                                                value="{{ $score->{'score' . $i} ?? '' }}" min="0" max="100"
+                                                oninput="if(Number(this.value) > 100) this.value = 100; if(Number(this.value) < 0) this.value = 0;"
+                                                class="no-spinner w-16 text-center text-sm font-medium rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 placeholder-gray-300"
+                                                placeholder="-">
+                                        </td>
+                                    @endfor
+
+                                    <td class="px-4 py-4">
+                                        <textarea rows="1" name="weeklyScore[{{ $praktikan->id }}][description]"
+                                            class="block w-full text-xs rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 placeholder-gray-400 transition resize-none"
+                                            placeholder="Tambahkan catatan...">{{ $score->description ?? '' }}</textarea>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </form>
+
+
     </div>
+
+    <style>
+        input.no-spinner::-webkit-outer-spin-button,
+        input.no-spinner::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input.no-spinner {
+            -moz-appearance: textfield;
+        }
+    </style>
 
     @if (session('success'))
         <div id="alert-success"

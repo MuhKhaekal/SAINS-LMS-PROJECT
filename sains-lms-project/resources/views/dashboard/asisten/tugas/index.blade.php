@@ -3,94 +3,119 @@
 @section('page-title', 'SAINS | Tugas')
 
 @section('content')
-    <section class="mx-4 md:mx-24 mt-5 md:mt-20">
-        <h1 class="font-bold text-lg text-center">Daftar Tugas {{ $selectedMeeting->meeting_name }}</h1>
-
-        @forelse ($assignments as $index => $assignment)
-            <div class="flex items-center bg-white shadow-md p-4 rounded-md mt-2 gap-3">
-                <div class="bg-red-400 rounded-md p-2 text-white">
-                    <svg class="w-6 h-6 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-                        height="24" fill="currentColor" viewBox="0 0 24 24">
-                        <path fill-rule="evenodd"
-                            d="M8 7V2.221a2 2 0 0 0-.5.365L3.586 6.5a2 2 0 0 0-.365.5H8Zm2 0V2h7a2 2 0 0 1 2 2v.126a5.087 5.087 0 0 0-4.74 1.368v.001l-6.642 6.642a3 3 0 0 0-.82 1.532l-.74 3.692a3 3 0 0 0 3.53 3.53l3.694-.738a3 3 0 0 0 1.532-.82L19 15.149V20a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9h5a2 2 0 0 0 2-2Z"
-                            clip-rule="evenodd" />
-                        <path fill-rule="evenodd"
-                            d="M17.447 8.08a1.087 1.087 0 0 1 1.187.238l.002.001a1.088 1.088 0 0 1 0 1.539l-.377.377-1.54-1.542.373-.374.002-.001c.1-.102.22-.182.353-.237Zm-2.143 2.027-4.644 4.644-.385 1.924 1.925-.385 4.644-4.642-1.54-1.54Zm2.56-4.11a3.087 3.087 0 0 0-2.187.909l-6.645 6.645a1 1 0 0 0-.274.51l-.739 3.693a1 1 0 0 0 1.177 1.176l3.693-.738a1 1 0 0 0 .51-.274l6.65-6.646a3.088 3.088 0 0 0-2.185-5.275Z"
-                            clip-rule="evenodd" />
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:mt-24">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-800">Daftar Tugas</h1>
+                <div class="flex items-center gap-2 mt-1 text-sm text-gray-500">
+                    <span>{{ $selectedHalaqah->halaqah_name }}</span>
+                    <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                     </svg>
-                </div>
-
-                <p class="flex-1 break-words">
-                    {{ $assignment->assignment_name }}
-                </p>
-
-
-
-                <div class="flex gap-2 ml-auto">
-                    <a data-tooltip-target="tooltip-preview-{{ $index }}" href="{{ route('tugas-asisten.show', $assignment) }}"
-                        class="font-medium hover:underline">
-                        <svg class="w-7 h-7 text-secondary bg-green-500 hover:bg-green-600 p-1 rounded-md hover:text-white"
-                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                            fill="currentColor" viewBox="0 0 24 24">
-                            <path fill-rule="evenodd"
-                                d="M21.707 21.707a1 1 0 0 1-1.414 0l-3.5-3.5a1 1 0 0 1 1.414-1.414l3.5 3.5a1 1 0 0 1 0 1.414ZM2 10a8 8 0 1 1 16 0 8 8 0 0 1-16 0Zm9-3a1 1 0 1 0-2 0v2H7a1 1 0 0 0 0 2h2v2a1 1 0 1 0 2 0v-2h2a1 1 0 1 0 0-2h-2V7Z"
-                                clip-rule="evenodd" />
-                        </svg>
-
-                    </a>
-                    <div id="tooltip-preview-{{ $index }}" role="tooltip"
-                        class="absolute z-10 invisible inline-block px-3 py-2 font-medium text-white transition-opacity duration-300 bg-dark rounded-base shadow-xs opacity-0 tooltip bg-primary rounded-md text-xs">
-                        Preview
-                        <div class="tooltip-arrow" data-popper-arrow></div>
-                    </div>
-
-                    <button data-tooltip-target="tooltip-edit-{{ $index }}" data-modal-target="default-modal-update"
-                        data-modal-toggle="default-modal-update" data-id="{{ $assignment->id }}"
-                        data-assignment-name="{{ $assignment->assignment_name }}"
-                        data-description="{{ $assignment->description }}"
-                        data-file-location="{{ $assignment->file_location }}" type="button"
-                        class="font-medium hover:underline">
-                        <svg class="w-7 h-7 text-secondary bg-yellow-500 hover:bg-yellow-600 hover:text-white rounded-md p-1"
-                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-                            <path fill-rule="evenodd"
-                                d="M14 4.182A4.136 4.136 0 0 1 16.9 3c1.087 0 2.13.425 2.899 1.182A4.01 4.01 0 0 1 21 7.037c0 1.068-.43 2.092-1.194 2.849L18.5 11.214l-5.8-5.71 1.287-1.31.012-.012Zm-2.717 2.763L6.186 12.13l2.175 2.141 5.063-5.218-2.141-2.108Zm-6.25 6.886-1.98 5.849a.992.992 0 0 0 .245 1.026 1.03 1.03 0 0 0 1.043.242L10.282 19l-5.25-5.168Zm6.954 4.01 5.096-5.186-2.218-2.183-5.063 5.218 2.185 2.15Z"
-                                clip-rule="evenodd" />
-                        </svg>
-                    </button>
-                    <div id="tooltip-edit-{{ $index }}" role="tooltip"
-                        class="absolute z-10 invisible inline-block px-3 py-2 font-medium text-white transition-opacity duration-300 bg-dark rounded-base shadow-xs opacity-0 tooltip bg-primary rounded-md text-xs">
-                        Edit
-                        <div class="tooltip-arrow" data-popper-arrow></div>
-                    </div>
-
-                    <button data-tooltip-target="tooltip-delete-{{ $index }}" data-modal-target="default-modal-delete"
-                        data-id="{{ $assignment->id }}" data-modal-toggle="default-modal-delete" type="button"
-                        class="font-medium hover:underline">
-                        <svg class="w-7 h-7 text-secondary bg-red-500 hover:bg-red-600 hover:text-white rounded-md p-1"
-                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-                            <path fill-rule="evenodd"
-                                d="M8.586 2.586A2 2 0 0 1 10 2h4a2 2 0 0 1 2 2v2h3a1 1 0 1 1 0 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8a1 1 0 0 1 0-2h3V4a2 2 0 0 1 .586-1.414ZM10 6h4V4h-4v2Zm1 4a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Zm4 0a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Z"
-                                clip-rule="evenodd" />
-                        </svg>
-                    </button>
-                    <div id="tooltip-delete-{{ $index }}" role="tooltip"
-                        class="absolute z-10 invisible inline-block px-3 py-2 font-medium text-white transition-opacity duration-300 bg-dark rounded-base shadow-xs opacity-0 tooltip bg-primary rounded-md text-xs">
-                        Hapus
-                        <div class="tooltip-arrow" data-popper-arrow></div>
-                    </div>
+                    <span class="font-medium text-gray-700">{{ $selectedMeeting->meeting_name }}</span>
                 </div>
             </div>
-        @empty
-            <p class="italic text-gray-400 text-center text-xs md:text-sm mt-2">Belum ada tugas yang diunggah</p>
-        @endforelse
+            <div class="flex gap-3">
+                <a href="{{ url()->previous() }}"
+                    class="inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-lg font-medium text-sm text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                    <svg class="w-4 h-4 mr-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                    </svg>
+                    Kembali
+                </a>
+                <x-primary-button data-modal-target="default-modal-add" data-modal-toggle="default-modal-add">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                    </svg>
+                    Tambah Tugas
+                </x-primary-button>
+            </div>
+        </div>
 
+        <div class="space-y-4">
+            @forelse ($assignments as $index => $assignment)
+                <div
+                    class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 hover:shadow-md transition-all duration-200 group">
+                    <div class="flex items-center justify-between gap-4">
+                        <div class="flex items-center gap-4 flex-1 min-w-0">
+                            <div
+                                class="flex-shrink-0 w-12 h-12 bg-orange-50 text-orange-600 rounded-lg flex items-center justify-center border border-orange-100 group-hover:bg-orange-100 transition-colors">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01">
+                                    </path>
+                                </svg>
+                            </div>
 
+                            <div class="min-w-0">
+                                <h3
+                                    class="text-sm font-bold text-gray-900 truncate group-hover:text-orange-700 transition-colors">
+                                    {{ $assignment->assignment_name }}
+                                </h3>
+                                <p class="text-xs text-gray-500 mt-0.5 truncate">
+                                    {{ $assignment->description ?: 'Tidak ada instruksi khusus.' }}
+                                </p>
+                            </div>
+                        </div>
 
-        <x-primary-button-full class="mt-5 text-center" data-modal-target="default-modal-add"
-            data-modal-toggle="default-modal-add">
-            {{ __('+ Tambah Tugas') }}
-        </x-primary-button-full>
-    </section>
+                        <div class="flex items-center gap-2">
+                            <a href="{{ route('tugas-asisten.show', $assignment) }}"
+                                class="p-2 text-gray-400 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors"
+                                title="Lihat Detail Tugas">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
+                                    </path>
+                                </svg>
+                            </a>
+                            <button type="button" data-modal-target="default-modal-update"
+                                data-modal-toggle="default-modal-update" data-id="{{ $assignment->id }}"
+                                data-assignment-name="{{ $assignment->assignment_name }}"
+                                data-description="{{ $assignment->description }}"
+                                data-file-location="{{ $assignment->file_location }}"
+                                class="text-gray-400 hover:text-yellow-600 transition-colors p-1 rounded hover:bg-yellow-50"
+                                title="Edit">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
+                                    </path>
+                                </svg>
+                            </button>
+
+                            <button type="button" data-modal-target="default-modal-delete"
+                                data-modal-toggle="default-modal-delete" data-id="{{ $assignment->id }}"
+                                class="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                                title="Hapus">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                                    </path>
+                                </svg>
+                            </button>
+
+                        </div>
+                    </div>
+                </div>
+            @empty
+                <div
+                    class="flex flex-col items-center justify-center py-12 bg-white rounded-xl border-2 border-dashed border-gray-300 text-center">
+                    <div class="p-4 bg-gray-50 rounded-full mb-3">
+                        <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3 class="text-sm font-medium text-gray-900">Belum ada tugas</h3>
+                    <p class="text-xs text-gray-500 mt-1">Buat tugas baru untuk dikerjakan oleh praktikan.</p>
+                </div>
+            @endforelse
+        </div>
+
+    </div>
 
     <section>
         <style>
@@ -116,8 +141,8 @@
                             data-modal-hide="default-modal-add">
                             <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                                 viewBox="0 0 14 14">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
                             </svg>
                             <span class="sr-only">Close modal</span>
                         </button>
@@ -423,9 +448,7 @@
             role="alert">
             <svg class="shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                 viewBox="0 0 20 20">
-                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3
-                                                                   1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1
-                                                                   1 1v4h1a1 1 0 0 1 0 2Z" />
+                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
             </svg>
             <div class="ms-3 text-sm font-medium">{{ session('success') }}</div>
         </div>
@@ -447,9 +470,7 @@
             role="alert">
             <svg class="shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                 viewBox="0 0 20 20">
-                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3
-                                                                   1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1
-                                                                   1 1v4h1a1 1 0 0 1 0 2Z" />
+                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
             </svg>
             <div class="ms-3 text-sm font-medium">{{ session('error') }}</div>
         </div>

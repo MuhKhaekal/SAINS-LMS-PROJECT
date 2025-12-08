@@ -3,88 +3,148 @@
 @section('page-title', 'SAINS - Pertemuan')
 
 @section('content')
-    <h1 class="font-extrabold text-2xl mt-20 md:mt-6 md:mx-12">Kelola Pertemuan</h1>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
-    <section class="mx-4 mt-4 md:mx-12 md:mt-5 md:gap-24">
-        @foreach ($meetings as $index => $meeting)
-            <div
-                class="shadow-md flex items-center justify-between w-full p-5 text-xs font-medium rounded-t-xl bg-white transition-colors duration-300 focus:outline-none">
-                <div class="flex items-center md:justify-start md:gap-3 w-full md:text-sm">
-                    <span
-                        class="w-40 md:w-52 bg-secondary text-primary font-bold p-1 me-2 rounded-md text-center">{{ $meeting->meeting_name }}</span>
-                    <span class="font-bold text-left w-full">{{ $meeting->topic }}</span>
-
-                </div>
+        {{-- HEADER: Judul & Tombol Tambah --}}
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-800">Daftar Pertemuan</h1>
+                <p class="text-sm text-gray-500 mt-1">Atur topik pembahasan, materi, dan jadwal ujian.</p>
             </div>
+            <div>
+                <x-primary-button data-modal-target="default-modal-add" data-modal-toggle="default-modal-add">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                    </svg>
+                    Tambah Pertemuan
+                </x-primary-button>
+            </div>
+        </div>
 
-            <div
-                class="flex justify-between items-center bg-white border-t p-5 text-xs md:text-sm shadow-md rounded-b-xl mb-4">
-                <p class="w-2/3">{{ $meeting->description }}</p>
-                <div class="flex-1 flex items-center justify-end">
-                    @if ($meeting->type == 'ujian')
-                        <a data-tooltip-target="tooltip-ujian-{{ $index }}" href="{{ route('buat-test.create') }}">
-                            <svg class="w-7 h-7 cursor-pointer text-secondary bg-green-500 hover:bg-green-600 hover:text-white rounded-md p-1"
-                                aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                fill="currentColor" viewBox="0 0 24 24">
-                                <path fill-rule="evenodd"
-                                    d="M9 7V2.221a2 2 0 0 0-.5.365L4.586 6.5a2 2 0 0 0-.365.5H9Zm2 0V2h7a2 2 0 0 1 2 2v6.41A7.5 7.5 0 1 0 10.5 22H6a2 2 0 0 1-2-2V9h5a2 2 0 0 0 2-2Z"
-                                    clip-rule="evenodd" />
-                                <path fill-rule="evenodd"
-                                    d="M9 16a6 6 0 1 1 12 0 6 6 0 0 1-12 0Zm6-3a1 1 0 0 1 1 1v1h1a1 1 0 1 1 0 2h-1v1a1 1 0 1 1-2 0v-1h-1a1 1 0 1 1 0-2h1v-1a1 1 0 0 1 1-1Z"
-                                    clip-rule="evenodd" />
-                            </svg>
-                        </a>
-                        <div id="tooltip-ujian-{{ $index }}" role="tooltip"
-                            class="absolute z-10 invisible inline-block px-3 py-2 font-medium text-white transition-opacity duration-300 bg-dark rounded-base shadow-xs opacity-0 tooltip bg-primary rounded-md text-xs">
-                            Buat Soal Ujian Akhir
-                            <div class="tooltip-arrow" data-popper-arrow></div>
+        {{-- LIST PERTEMUAN --}}
+        <div class="space-y-4">
+            @forelse ($meetings as $index => $meeting)
+                <div
+                    class="group bg-white rounded-xl shadow-sm border border-gray-200 p-5 hover:shadow-md transition-all duration-300 relative overflow-hidden">
+
+                    {{-- Decorative Side Bar based on Type --}}
+                    <div
+                        class="absolute left-0 top-0 bottom-0 w-1 {{ $meeting->type == 'ujian' ? 'bg-red-500' : 'bg-indigo-500' }}">
+                    </div>
+
+                    <div class="flex flex-col md:flex-row md:items-start justify-between gap-4 pl-3">
+
+                        {{-- KONTEN UTAMA --}}
+                        <div class="flex-1">
+                            <div class="flex items-center gap-3 mb-2">
+                                {{-- Badge Nama Pertemuan --}}
+                                <span
+                                    class="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-bold uppercase tracking-wide {{ $meeting->type == 'ujian' ? 'bg-red-50 text-red-700 ring-1 ring-red-600/10' : 'bg-indigo-50 text-indigo-700 ring-1 ring-indigo-600/10' }}">
+                                    {{ $meeting->meeting_name }}
+                                </span>
+
+                                {{-- Badge Tipe --}}
+                                @if ($meeting->type == 'ujian')
+                                    <span
+                                        class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-red-100 text-red-800">
+                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2">
+                                            </path>
+                                        </svg>
+                                        UJIAN
+                                    </span>
+                                @endif
+                            </div>
+
+                            {{-- Topik --}}
+                            <h3 class="text-lg font-bold text-gray-900 mb-1">
+                                {{ $meeting->topic }}
+                            </h3>
+
+                            {{-- Deskripsi --}}
+                            <p class="text-sm text-gray-600 leading-relaxed max-w-3xl">
+                                {{ $meeting->description }}
+                            </p>
                         </div>
-                    @endif
-                    <button type="button" data-tooltip-target="tooltip-edit-{{ $index }}"
-                        data-modal-target="default-modal-update" data-modal-toggle="default-modal-update"
-                        data-id = "{{ $meeting->id }}" data-meeting-name = "{{ $meeting->meeting_name }}"
-                        data-topic = "{{ $meeting->topic }}" data-type = "{{ $meeting->type }}""
-                        data-description = "{{ $meeting->description }}" class="font-medium hover:underline mx-2">
-                        <svg class="w-7 h-7 text-secondary bg-yellow-500 hover:bg-yellow-600 hover:text-white rounded-md p-1"
-                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-                            <path fill-rule="evenodd"
-                                d="M14 4.182A4.136 4.136 0 0 1 16.9 3c1.087 0 2.13.425 2.899 1.182A4.01 4.01 0 0 1 21 7.037c0 1.068-.43 2.092-1.194 2.849L18.5 11.214l-5.8-5.71 1.287-1.31.012-.012Zm-2.717 2.763L6.186 12.13l2.175 2.141 5.063-5.218-2.141-2.108Zm-6.25 6.886-1.98 5.849a.992.992 0 0 0 .245 1.026 1.03 1.03 0 0 0 1.043.242L10.282 19l-5.25-5.168Zm6.954 4.01 5.096-5.186-2.218-2.183-5.063 5.218 2.185 2.15Z"
-                                clip-rule="evenodd" />
-                        </svg>
-                    </button>
-                    <div id="tooltip-edit-{{ $index }}" role="tooltip"
-                        class="absolute z-10 invisible inline-block px-3 py-2 font-medium text-white transition-opacity duration-300 bg-dark rounded-base shadow-xs opacity-0 tooltip bg-primary rounded-md text-xs">
-                        Edit
-                        <div class="tooltip-arrow" data-popper-arrow></div>
-                    </div>
 
-                    <button type="button" class="font-medium hover:underline"
-                        data-tooltip-target="tooltip-delete-{{ $index }}" data-modal-target="default-modal-delete"
-                        data-modal-toggle="default-modal-delete" data-id="{{ $meeting->id }}">
-                        <svg class="w-7 h-7 text-secondary bg-red-500 hover:bg-red-600 hover:text-white rounded-md p-1"
-                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-                            <path fill-rule="evenodd"
-                                d="M8.586 2.586A2 2 0 0 1 10 2h4a2 2 0 0 1 2 2v2h3a1 1 0 1 1 0 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8a1 1 0 0 1 0-2h3V4a2 2 0 0 1 .586-1.414ZM10 6h4V4h-4v2Zm1 4a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Zm4 0a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Z"
-                                clip-rule="evenodd" />
-                        </svg>
-                    </button>
-                    <div id="tooltip-delete-{{ $index }}" role="tooltip"
-                        class="absolute z-10 invisible inline-block px-3 py-2 font-medium text-white transition-opacity duration-300 bg-dark rounded-base shadow-xs opacity-0 tooltip bg-primary rounded-md text-xs">
-                        Hapus
-                        <div class="tooltip-arrow" data-popper-arrow></div>
+                        {{-- AKSI / TOMBOL --}}
+                        <div class="flex items-center gap-2 md:self-start mt-4 md:mt-0">
+
+                            {{-- Tombol Khusus Ujian --}}
+                            @if ($meeting->type == 'ujian')
+                                <a href="{{ route('buat-test.create') }}"
+                                    class="inline-flex items-center gap-2 px-3 py-1.5 bg-emerald-50 text-emerald-700 text-xs font-semibold rounded-lg hover:bg-emerald-100 transition border border-emerald-200 mr-2"
+                                    data-tooltip-target="tooltip-ujian-{{ $index }}">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
+                                        </path>
+                                    </svg>
+                                    Buat Soal
+                                </a>
+                                <div id="tooltip-ujian-{{ $index }}" role="tooltip"
+                                    class="absolute z-10 invisible inline-block px-3 py-2 text-xs font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip">
+                                    Kelola Soal Ujian
+                                    <div class="tooltip-arrow" data-popper-arrow></div>
+                                </div>
+                            @endif
+
+                            {{-- Tombol Edit --}}
+                            <button type="button" data-modal-target="default-modal-update"
+                                data-modal-toggle="default-modal-update" data-id="{{ $meeting->id }}"
+                                data-meeting-name="{{ $meeting->meeting_name }}" data-topic="{{ $meeting->topic }}"
+                                data-type="{{ $meeting->type }}" data-description="{{ $meeting->description }}"
+                                class="text-gray-500 hover:text-yellow-600 transition-colors p-1 rounded hover:bg-yellow-50"
+                                title="Edit">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
+                                    </path>
+                                </svg>
+                            </button>
+                            <div id="tooltip-edit-{{ $index }}" role="tooltip"
+                                class="absolute z-10 invisible inline-block px-3 py-2 text-xs font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip">
+                                Edit Pertemuan
+                                <div class="tooltip-arrow" data-popper-arrow></div>
+                            </div>
+
+                            {{-- Tombol Hapus --}}
+                            <button type="button" data-modal-target="default-modal-delete"
+                                data-modal-toggle="default-modal-delete" data-id="{{ $meeting->id }}"
+                                class="text-gray-500 hover:text-red-600 transition-colors p-1 rounded hover:bg-red-50"
+                                title="Hapus">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                                    </path>
+                                </svg>
+                            </button>
+                            <div id="tooltip-delete-{{ $index }}" role="tooltip"
+                                class="absolute z-10 invisible inline-block px-3 py-2 text-xs font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip">
+                                Hapus Pertemuan
+                                <div class="tooltip-arrow" data-popper-arrow></div>
+                            </div>
+
+                        </div>
                     </div>
                 </div>
-            </div>
-        @endforeach
-
-        <section class="mt-10 flex justify-center md:justify-start md:mt-5">
-            <x-primary-button class="text-center" data-modal-target="default-modal-add"
-                data-modal-toggle="default-modal-add">
-                {{ __('+ Tambah Data Pertemuan') }}
-            </x-primary-button>
-        </section>
-
-    </section>
+            @empty
+                <div
+                    class="flex flex-col items-center justify-center py-12 bg-white rounded-xl border border-dashed border-gray-300">
+                    <div class="p-4 bg-gray-50 rounded-full mb-3">
+                        <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
+                            </path>
+                        </svg>
+                    </div>
+                    <p class="text-gray-500 font-medium">Belum ada pertemuan dibuat</p>
+                    <p class="text-gray-400 text-sm">Klik tombol di atas untuk menambahkan.</p>
+                </div>
+            @endforelse
+        </div>
+    </div>
 
     <section>
         <style>
@@ -111,8 +171,8 @@
                             data-modal-hide="default-modal-add">
                             <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                                 viewBox="0 0 14 14">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
                             </svg>
                             <span class="sr-only">Close modal</span>
                         </button>
@@ -369,8 +429,8 @@
             <svg class="shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                 viewBox="0 0 20 20">
                 <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3
-                               1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1
-                               1 1v4h1a1 1 0 0 1 0 2Z" />
+                                           1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1
+                                           1 1v4h1a1 1 0 0 1 0 2Z" />
             </svg>
             <div class="ms-3 text-sm font-medium">{{ session('success') }}</div>
         </div>
@@ -393,8 +453,8 @@
             <svg class="shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                 viewBox="0 0 20 20">
                 <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3
-                               1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1
-                               1 1v4h1a1 1 0 0 1 0 2Z" />
+                                           1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1
+                                           1 1v4h1a1 1 0 0 1 0 2Z" />
             </svg>
             <div class="ms-3 text-sm font-medium">{{ session('error') }}</div>
         </div>

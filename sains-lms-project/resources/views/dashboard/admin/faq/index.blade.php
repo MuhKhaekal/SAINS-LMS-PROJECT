@@ -3,151 +3,218 @@
 @section('page-title', 'SAINS - FAQ')
 
 @section('content')
-    <h1 class="font-extrabold text-2xl mt-20 md:mt-6 md:mx-12">Kelola FAQ</h1>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
+        {{-- HEADER --}}
+        <div class="mb-8">
+            <h1 class="text-2xl font-bold text-gray-800">Manajemen FAQ</h1>
+            <p class="text-sm text-gray-500 mt-1">Kelola pertanyaan yang sering diajukan oleh praktikan.</p>
+        </div>
 
-    <section class="md:flex md:flex-row-reverse md:mx-12 md:gap-5">
-        <section class="md:flex-1">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
 
-            <section class="">
-                <div id="accordion-1" class="my-2">
-                    @forelse ($faqs->where('status', true) as $index => $faq)
-                        <div class="mb-2">
-                            <button id="accordion-button-{{ $faq->id }}" type="button"
-                                class="shadow-md flex text-xs md:text-sm items-center justify-between w-full p-5 font-medium bg-white transition-colors duration-300 focus:outline-none"
-                                data-target="#accordion-body{{ $faq->id }}" aria-expanded="false"
-                                aria-controls="accordion-body{{ $faq->id }}">
-                                <span class="font-bold flex-1 text-start">{{ $faq->question }}</span>
-                                <svg data-accordion-icon class="w-3 h-3 shrink-0" xmlns="http://www.w3.org/2000/svg"
-                                    fill="none" viewBox="0 0 10 6">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                        stroke-width="2" d="M9 5 5 1 1 5" />
-                                </svg>
-                            </button>
+            {{-- KOLOM KIRI: FAQ DITAMPILKAN (ACTIVE) --}}
+            <section class="lg:col-span-7 space-y-4">
+                <div class="flex items-center justify-between mb-2">
+                    <h2 class="text-lg font-semibold text-gray-800 flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                        Ditampilkan (Publik)
+                    </h2>
+                    <span class="text-xs font-medium text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
+                        {{ $faqs->where('status', true)->count() }} Item
+                    </span>
+                </div>
 
-                            <div id="accordion-body{{ $faq->id }}"
-                                class="max-h-0 overflow-hidden transition-all duration-500 ease-in-out" role="region"
-                                aria-labelledby="accordion-button-{{ $faq->id }}">
-                                <div class="p-5 border border-b-0 border-gray-200 bg-white text-xs md:text-sm">
-                                    <p class="mb-2 text-black">
-                                        {{ $faq->answer }}
-                                    </p>
-                                    <form action="{{ route('faq.deleteFromListFaq', ['id' => $faq->id]) }}" method="POST">
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                    <div id="accordion-flush" data-accordion="collapse" data-active-classes="bg-indigo-50 text-indigo-600"
+                        data-inactive-classes="text-gray-500">
+
+                        @forelse ($faqs->where('status', true) as $index => $faq)
+                            <div>
+                                <h2 id="accordion-flush-heading-{{ $faq->id }}">
+                                    <button type="button"
+                                        class="flex items-center justify-between w-full p-5 font-medium text-left border-b border-gray-200 gap-3 hover:bg-gray-50 transition-colors focus:ring-4 focus:ring-gray-200"
+                                        data-accordion-target="#accordion-flush-body-{{ $faq->id }}"
+                                        aria-expanded="false" aria-controls="accordion-flush-body-{{ $faq->id }}">
+                                        <span class="text-sm md:text-base">{{ $faq->question }}</span>
+                                        <svg data-accordion-icon class="w-3 h-3 shrink-0 rotate-180" aria-hidden="true"
+                                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                                stroke-width="2" d="M9 5 5 1 1 5" />
+                                        </svg>
+                                    </button>
+                                </h2>
+                                <div id="accordion-flush-body-{{ $faq->id }}" class="hidden"
+                                    aria-labelledby="accordion-flush-heading-{{ $faq->id }}">
+                                    <div class="p-5 border-b border-gray-200 bg-gray-50/50">
+                                        <p class="mb-4 text-gray-600 text-sm leading-relaxed">{{ $faq->answer }}</p>
+
+                                        {{-- Action Buttons inside Accordion --}}
+                                        <div class="flex justify-end items-center gap-2 pt-2 border-t border-gray-200/60">
+                                            <span class="text-xs text-gray-400 mr-auto">Tindakan:</span>
+
+                                            {{-- Edit Button --}}
+                                            <button type="button" data-modal-target="default-modal-update"
+                                                data-modal-toggle="default-modal-update" data-id="{{ $faq->id }}"
+                                                data-question="{{ $faq->question }}" data-answer="{{ $faq->answer }}"
+                                                class="text-xs flex items-center gap-1 px-3 py-1.5 rounded text-yellow-700 bg-yellow-50 hover:bg-yellow-100 transition">
+                                                <svg class="w-3 h-3" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
+                                                    </path>
+                                                </svg>
+                                                Edit
+                                            </button>
+
+                                            {{-- Sembunyikan (Delete from List) --}}
+                                            <form action="{{ route('faq.deleteFromListFaq', ['id' => $faq->id]) }}"
+                                                method="POST">
+                                                @csrf
+                                                @method('PUT')
+                                                <button type="submit"
+                                                    class="text-xs flex items-center gap-1 px-3 py-1.5 rounded text-red-700 bg-red-50 hover:bg-red-100 transition"
+                                                    title="Sembunyikan ke draf">
+                                                    <svg class="w-3 h-3" fill="none" stroke="currentColor"
+                                                        viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2"
+                                                            d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21">
+                                                        </path>
+                                                    </svg>
+                                                    Sembunyikan
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @empty
+                            <div class="p-8 text-center">
+                                <div
+                                    class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-emerald-100 mb-4">
+                                    <svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                </div>
+                                <h3 class="text-lg font-medium text-gray-900">Belum ada FAQ Publik</h3>
+                                <p class="text-gray-500 mt-1 text-sm">Pindahkan item dari daftar draf untuk menampilkannya
+                                    disini.</p>
+                            </div>
+                        @endforelse
+                    </div>
+                </div>
+            </section>
+
+            {{-- KOLOM KANAN: DRAF / DISEMBUNYIKAN --}}
+            <section class="lg:col-span-5 space-y-4">
+                <div class="flex items-center justify-between mb-2">
+                    <h2 class="text-lg font-semibold text-gray-800 flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-gray-400"></span>
+                        Draf / Arsip
+                    </h2>
+                    <span class="text-xs font-medium text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
+                        {{ $faqs->where('status', false)->count() }} Item
+                    </span>
+                </div>
+
+                <div class="bg-gray-50 border border-gray-200 rounded-xl p-4 h-[500px] overflow-y-auto custom-scrollbar">
+                    @forelse ($faqs->where('status', false) as $index => $faq)
+                        <div
+                            class="bg-white p-4 rounded-lg border border-gray-200 shadow-sm mb-3 hover:shadow-md transition-shadow duration-200">
+                            <div class="flex justify-between items-start gap-2">
+                                <h3 class="font-bold text-gray-800 text-sm leading-snug">{{ $faq->question }}</h3>
+                                <div class="flex gap-1 shrink-0">
+                                    {{-- Edit Button --}}
+                                    <button type="button" data-modal-target="default-modal-update"
+                                        data-modal-toggle="default-modal-update" data-id="{{ $faq->id }}"
+                                        data-question="{{ $faq->question }}" data-answer="{{ $faq->answer }}"
+                                        class="text-gray-500 hover:text-yellow-600 transition-colors p-1 rounded hover:bg-yellow-50"
+                                        title="Edit">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
+                                            </path>
+                                        </svg>
+                                    </button>
+
+                                    {{-- Permanently Delete Button (Optional - based on your flow) --}}
+                                    <button type="button" data-modal-target="default-modal-delete"
+                                        data-modal-toggle="default-modal-delete" data-id="{{ $faq->id }}"
+                                        class="text-gray-500 hover:text-red-600 transition-colors p-1 rounded hover:bg-red-50"
+                                        title="Hapus">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                                            </path>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="mt-2 text-xs text-gray-500 line-clamp-2">
+                                {{ $faq->answer ?? 'Belum ada jawaban' }}
+                            </div>
+
+                            <div class="mt-3 pt-2 border-t border-gray-100 flex justify-end">
+                                @if ($faq->answer)
+                                    <form action="{{ route('faq.addToListFaq', ['id' => $faq->id]) }}" method="POST">
                                         @csrf
                                         @method('PUT')
-                                        <button type="submit" class="font-medium hover:underline"
-                                            data-tooltip-target="tooltip-delete-from-list-{{ $index }}">
-                                            <svg class="w-7 h-7 text-secondary bg-red-500 hover:bg-red-600 hover:text-white rounded-md p-1"
-                                                aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-                                                height="24" fill="none" viewBox="0 0 24 24">
-                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                                    stroke-width="2"
-                                                    d="M9 5v14m-6-8h6m-6 4h6m4.506-1.494L15.012 12m0 0 1.506-1.506M15.012 12l1.506 1.506M15.012 12l-1.506-1.506M20 19H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1Z" />
+                                        <button type="submit"
+                                            class="text-xs font-medium text-white bg-indigo-600 hover:bg-indigo-700 px-3 py-1.5 rounded-md shadow-sm transition-colors flex items-center gap-1">
+                                            <svg class="w-3 h-3" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M5 13l4 4L19 7"></path>
                                             </svg>
-
-
+                                            Tampilkan
                                         </button>
-
-                                        <div id="tooltip-delete-from-list-{{ $index }}" role="tooltip"
-                                            data-id="{{ $faq->id }}" data-modal-target="default-modal-delete"
-                                            data-modal-toggle="default-modal-delete"
-                                            class="absolute z-10 invisible inline-block px-3 py-2 font-medium text-white transition-opacity duration-300 bg-dark rounded-base shadow-xs opacity-0 tooltip bg-primary rounded-md text-xs">
-                                            Hapus dari Daftar
-                                            <div class="tooltip-arrow" data-popper-arrow></div>
-                                        </div>
                                     </form>
-                                </div>
+                                @else
+                                    <span class="text-xs text-orange-500 italic bg-orange-50 px-2 py-1 rounded">Isi jawaban
+                                        sebelum menampilkan</span>
+                                @endif
                             </div>
                         </div>
                     @empty
-                        <p class="font-normal text-center text-gray-400 italic my-2 text-xs md:text-sm mt-8">Belum ada FAQ
-                            yang ditampilkan</p>
+                        <div class="h-full flex flex-col items-center justify-center text-center p-4">
+                            <svg class="w-10 h-10 text-gray-300 mb-2" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4">
+                                </path>
+                            </svg>
+                            <p class="text-gray-500 text-sm font-medium">Tidak ada draf</p>
+                        </div>
                     @endforelse
                 </div>
             </section>
-        </section>
 
-        <section
-            class="overflow-y-auto h-60 md:min-h-screen border border-dashed rounded-md border-blue-200 mt-5 p-2 text-xs md:text-sm md:flex-1">
-            @forelse ($faqs->where('status', false) as $index => $faq)
-                <div class="bg-white p-4 rounded-md mb-2">
-                    <h1 class="font-bold">{{ $faq->question }}</p>
-                        @if ($faq->answer)
-                            <p class="font-normal my-2">{{ $faq->answer }}</p>
-                        @else
-                            <p class="font-normal text-center text-gray-400 italic my-2">Belum ada jawaban</p>
-                        @endif
-                        <div class="flex justify-between mt-2">
-                            <div class="">
-                                <button type="button" data-tooltip-target="tooltip-edit-{{ $index }}"
-                                    data-id="{{ $faq->id }}" data-question="{{ $faq->question }}"
-                                    data-answer="{{ $faq->answer }}" data-modal-target="default-modal-update"
-                                    data-modal-toggle="default-modal-update" class="font-medium hover:underline">
-                                    <svg class="w-7 h-7 text-secondary bg-yellow-500 hover:bg-yellow-600 hover:text-white rounded-md p-1"
-                                        aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path fill-rule="evenodd"
-                                            d="M14 4.182A4.136 4.136 0 0 1 16.9 3c1.087 0 2.13.425 2.899 1.182A4.01 4.01 0 0 1 21 7.037c0 1.068-.43 2.092-1.194 2.849L18.5 11.214l-5.8-5.71 1.287-1.31.012-.012Zm-2.717 2.763L6.186 12.13l2.175 2.141 5.063-5.218-2.141-2.108Zm-6.25 6.886-1.98 5.849a.992.992 0 0 0 .245 1.026 1.03 1.03 0 0 0 1.043.242L10.282 19l-5.25-5.168Zm6.954 4.01 5.096-5.186-2.218-2.183-5.063 5.218 2.185 2.15Z"
-                                            clip-rule="evenodd" />
-                                    </svg>
-                                </button>
-                                <div id="tooltip-edit-{{ $index }}" role="tooltip"
-                                    class="absolute z-10 invisible inline-block px-3 py-2 font-medium text-white transition-opacity duration-300 bg-dark rounded-base shadow-xs opacity-0 tooltip bg-primary rounded-md text-xs">
-                                    Edit
-                                    <div class="tooltip-arrow" data-popper-arrow></div>
-                                </div>
+        </div>
+    </div>
 
-                                <button type="button" class="font-medium hover:underline"
-                                    data-tooltip-target="tooltip-delete-{{ $index }}"
-                                    data-modal-target="default-modal-delete" data-modal-toggle="default-modal-delete"
-                                    data-id="{{ $faq->id }}">
-                                    <svg class="w-7 h-7 text-secondary bg-red-500 hover:bg-red-600 hover:text-white rounded-md p-1"
-                                        aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path fill-rule="evenodd"
-                                            d="M8.586 2.586A2 2 0 0 1 10 2h4a2 2 0 0 1 2 2v2h3a1 1 0 1 1 0 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8a1 1 0 0 1 0-2h3V4a2 2 0 0 1 .586-1.414ZM10 6h4V4h-4v2Zm1 4a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Zm4 0a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Z"
-                                            clip-rule="evenodd" />
-                                    </svg>
-                                </button>
-                                <div id="tooltip-delete-{{ $index }}" role="tooltip" data-id="{{ $faq->id }}"
-                                    data-modal-target="default-modal-delete" data-modal-toggle="default-modal-delete"
-                                    class="absolute z-10 invisible inline-block px-3 py-2 font-medium text-white transition-opacity duration-300 bg-dark rounded-base shadow-xs opacity-0 tooltip bg-primary rounded-md text-xs">
-                                    Hapus
-                                    <div class="tooltip-arrow" data-popper-arrow></div>
-                                </div>
-                            </div>
-                            @if ($faq->answer)
-                                <form action="{{ route('faq.addToListFaq', ['id' => $faq->id]) }}" method="POST">
-                                    @csrf
-                                    @method('PUT')
-                                    <button type="submit" class="font-medium hover:underline"
-                                        data-tooltip-target="tooltip-add-to-list-{{ $index }}">
-                                        <svg class="w-7 h-7 text-gray-500 bg-secondary hover:text-gray-600 rounded-md p-1"
-                                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-                                            height="24" fill="currentColor" viewBox="0 0 24 24">
-                                            <path fill-rule="evenodd"
-                                                d="M2 6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6Zm4.996 2a1 1 0 0 0 0 2h.01a1 1 0 1 0 0-2h-.01ZM11 8a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2h-6Zm-4.004 3a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2h-.01ZM11 11a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2h-6Zm-4.004 3a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2h-.01ZM11 14a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2h-6Z"
-                                                clip-rule="evenodd" />
-                                        </svg>
+    {{-- CSS Tambahan untuk Scrollbar Halus (Opsional) --}}
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
 
-                                    </button>
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
 
-                                    <div id="tooltip-add-to-list-{{ $index }}" role="tooltip"
-                                        data-id="{{ $faq->id }}" data-modal-target="default-modal-delete"
-                                        data-modal-toggle="default-modal-delete"
-                                        class="absolute z-10 invisible inline-block px-3 py-2 font-medium text-white transition-opacity duration-300 bg-dark rounded-base shadow-xs opacity-0 tooltip bg-primary rounded-md text-xs">
-                                        Tambahkan ke Daftar
-                                        <div class="tooltip-arrow" data-popper-arrow></div>
-                                    </div>
-                                </form>
-                            @endif
-                        </div>
-                </div>
-            @empty
-            @endforelse
-        </section>
-    </section>
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #d1d5db;
+            border-radius: 4px;
+        }
 
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #9ca3af;
+        }
+    </style>
 
     <section>
         <style>
@@ -349,8 +416,8 @@
             <svg class="shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                 viewBox="0 0 20 20">
                 <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3
-                                                           1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1
-                                                           1 1v4h1a1 1 0 0 1 0 2Z" />
+                                                                       1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1
+                                                                       1 1v4h1a1 1 0 0 1 0 2Z" />
             </svg>
             <div class="ms-3 text-sm font-medium">{{ session('success') }}</div>
         </div>
@@ -373,8 +440,8 @@
             <svg class="shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                 viewBox="0 0 20 20">
                 <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3
-                                                           1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1
-                                                           1 1v4h1a1 1 0 0 1 0 2Z" />
+                                                                       1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1
+                                                                       1 1v4h1a1 1 0 0 1 0 2Z" />
             </svg>
             <div class="ms-3 text-sm font-medium">{{ session('error') }}</div>
         </div>

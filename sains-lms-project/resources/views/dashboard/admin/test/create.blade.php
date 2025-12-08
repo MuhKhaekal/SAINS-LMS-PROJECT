@@ -3,308 +3,412 @@
 @section('page-title', 'SAINS - Pengumuman')
 
 @section('content')
-    <section class="mt-20 md:mt-6 md:mx-12 bg-white p-4 border rounded-md shadow-inner">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
-        <div class="flex flex-col md:flex-row justify-between items-center border-b">
-            <div class="">
-                <h1 class="font-extrabold text-2xl ">{{ isset($test) ? 'Edit Soal Test' : 'Buat Test Baru' }}</h1>
-                <h1 class="text-sm mt-1">Buat atau edit soal ujian dengan pilihan ganda dan uraian</h1>
+        {{-- HEADER: Judul & Aksi Utama --}}
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-800">{{ isset($test) ? 'Edit Soal Ujian' : 'Buat Ujian Baru' }}</h1>
+                <p class="text-sm text-gray-500 mt-1">Konfigurasi detail ujian dan kelola daftar pertanyaan.</p>
             </div>
-            <div class="my-4 md:my-0">
+            <div class="flex gap-3">
                 <a href="{{ route('questions.review-pretest') }}"
-                    class="inline-flex uppercase items-center px-4 py-2 bg-green-500 border border-transparent rounded-md font-normal text-xs text-white tracking-widest hover:bg-green-600 transition ease-in-out duration-150">Preview</a>
+                    class="inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-lg font-medium text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-25 transition ease-in-out duration-150">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
+                        </path>
+                    </svg>
+                    Preview
+                </a>
+
+                {{-- Tombol Simpan Trigger (Akan memanggil fungsi JS) --}}
+                <x-primary-button onclick="document.getElementById('triggerSave').click()">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4">
+                        </path>
+                    </svg>
+                    {{ isset($test) ? 'Simpan Perubahan' : 'Simpan Ujian' }}
+                </x-primary-button>
             </div>
         </div>
 
+        {{-- INIT DATA --}}
         <script>
             window.existingQuestions = @json($jsQuestions ?? []);
             window.existingType = @json($test->test_type ?? 'pretest');
         </script>
 
-        <div x-data="testBuilder(window.existingQuestions, window.existingType)">
+        {{-- MAIN BUILDER AREA --}}
+        <div x-data="testBuilder(window.existingQuestions, window.existingType)" class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
 
-            <div class="p-4 border-b">
-                <h1 class="font-bold">Pengaturan Tes</h1>
+            {{-- KOLOM KIRI: PENGATURAN (Sticky) --}}
+            <div class="lg:col-span-1 lg:sticky lg:top-6 space-y-6">
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                    <h2 class="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                        <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z">
+                            </path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                        Pengaturan Umum
+                    </h2>
 
-                <div class="mt-2">
-                    <p class="text-xs mt-2">Judul Tes</p>
-                    <input type="text" id="visitors"
-                        class="bg-neutral-secondary-medium border rounded-md text-heading text-xs rounded-base focus:ring-brand focus:border-brand block w-full px-2.5 py-2 shadow-xs placeholder:text-body mt-1"
-                        placeholder="Ujian AKhir" value="{{ old('title', $test->title ?? '') }}" required />
-                </div>
-
-
-                <div class="mt-2">
-                    <p class="text-xs mt-2">Deskripsi</p>
-                    <textarea name="description" cols="30" rows="4"
-                        class="bg-neutral-secondary-medium border rounded-md text-heading rounded-base focus:ring-brand focus:border-brand block w-full px-2.5 py-2 shadow-xs placeholder:text-body mt-1 text-xs"
-                        placeholder="Isi deskripsi disini ..." required>{{ old('description', $test->description ?? '') }}</textarea>
-                </div>
-
-                <div class="mt-2">
-                    <p class="text-xs mt-2">Durasi Tes</p>
-                    <div class="flex items-center gap-x-2 mt-1">
-                        <div class="score-wrapper relative flex items-center max-w-[9rem] shadow rounded-base">
-                            <button type="button"
-                                class="btn-minus text-body bg-gray-200 border border-gray-300 hover:bg-gray-300 rounded-l-base h-6 px-2 text-sm">
-                                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-width="1" d="M5 12h14" />
-                                </svg>
-                            </button>
-
-                            <input type="text" name="duration"
-                                class="score-input h-6 w-full text-center text-xs border-y border-gray-300 bg-gray-100"
-                                value="{{ old('duration', $test->duration ?? 0) }}" required />
-
-                            <button type="button"
-                                class="btn-plus text-body bg-gray-200 border border-gray-300 hover:bg-gray-300 rounded-r-base h-6 px-2 text-sm">
-                                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-width="1"
-                                        d="M5 12h14m-7 7V5" />
-                                </svg>
-                            </button>
+                    <div class="space-y-4">
+                        {{-- Judul --}}
+                        <div>
+                            <label for="visitors" class="block text-sm font-medium text-gray-700 mb-1">Judul Tes</label>
+                            <input type="text" id="visitors"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5"
+                                placeholder="Contoh: Ujian Akhir Semester" value="{{ old('title', $test->title ?? '') }}"
+                                required />
                         </div>
-                        <p class="text-xs">menit</p>
-                    </div>
-                </div>
-            </div>
 
-            <div class="p-4">
-                <h1 class="font-bold text-lg">Kelola Pertanyaan</h1>
-                <p class="text-xs font-light p-4 bg-blue-50 rounded-md mt-2">
-                    <span class="font-bold">Tips:</span> Isi semua pertanyaan dan tentukan jawaban sebelum menyimpan test.
-                </p>
+                        {{-- Deskripsi --}}
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Deskripsi & Instruksi</label>
+                            <textarea name="description" rows="4"
+                                class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-indigo-500 focus:border-indigo-500"
+                                placeholder="Jelaskan instruksi pengerjaan..." required>{{ old('description', $test->description ?? '') }}</textarea>
+                        </div>
 
-                <div class="flex mt-2 gap-x-2">
-                    <div @click="addMultipleChoice()"
-                        class="border border-dashed border-gray-300 rounded-md p-2 flex-1 cursor-pointer hover:bg-gray-100">
-                        <p class="text-xs text-center font-semibold">+ Pilihan Ganda</p>
-                    </div>
-                    <div @click="addEssay()"
-                        class="border border-dashed border-gray-300 rounded-md p-2 flex-1 cursor-pointer hover:bg-gray-100">
-                        <p class="text-xs text-center font-semibold">+ Uraian</p>
-                    </div>
-                </div>
-
-                <div class="mt-4 space-y-4">
-                    <template x-for="(q, index) in questions" :key="q.id">
-                        <div class="border rounded-md p-4 bg-white shadow">
-
-                            <div class="flex justify-between items-center">
-                                <div class="flex items-center gap-2">
-                                    <button @click="moveUp(index)" :disabled="index === 0"
-                                        class="text-gray-600 disabled:opacity-30 hover:text-black text-xs font-bold">▲</button>
-                                    <button @click="moveDown(index)" :disabled="index === questions.length - 1"
-                                        class="text-gray-600 disabled:opacity-30 hover:text-black text-xs font-bold">▼</button>
-                                    <h2 class="font-semibold text-sm"
-                                        x-text="q.type === 'mcq' ? 'Pilihan Ganda' : 'Uraian'"></h2>
-                                </div>
-                                <button type="button" @click="removeQuestion(index)">
-                                    <svg class="w-7 h-7 text-secondary bg-red-500 hover:bg-red-600 hover:text-white rounded-md p-1"
-                                        fill="currentColor" viewBox="0 0 24 24">
-                                        <path fill-rule="evenodd"
-                                            d="M8.586 2.586A2 2 0 0 1 10 2h4a2 2 0 0 1 2 2v2h3a1 1 0 1 1 0 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8a1 1 0 0 1 0-2h3V4a2 2 0 0 1 .586-1.414ZM10 6h4V4h-4v2Zm1 4a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Zm4 0a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Z"
-                                            clip-rule="evenodd" />
+                        {{-- Durasi --}}
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Durasi Pengerjaan</label>
+                            <div class="score-wrapper flex items-center">
+                                <button type="button"
+                                    class="btn-minus w-10 h-10 bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-l-lg flex items-center justify-center transition">
+                                    <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4">
+                                        </path>
+                                    </svg>
+                                </button>
+                                <input type="number" name="duration"
+                                    class="score-input h-10 w-full text-center border-y border-gray-300 text-gray-900 text-sm focus:ring-0 focus:border-gray-300"
+                                    value="{{ old('duration', $test->duration ?? 60) }}" required />
+                                <button type="button"
+                                    class="btn-plus w-10 h-10 bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-r-lg flex items-center justify-center transition">
+                                    <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                                     </svg>
                                 </button>
                             </div>
-
-
-                            <template x-if="q.type === 'mcq'">
-                                <div>
-                                    <input type="text" x-model="q.question" placeholder="Masukkan pertanyaan..."
-                                        class="w-full border rounded mt-3 p-2 text-sm" />
-                                    <div class="mt-3 space-y-2">
-                                        <template x-for="(opt, optIndex) in q.options" :key="optIndex">
-                                            <div class="flex items-center gap-2">
-                                                <input type="radio" :name="'correct-' + q.id" :value="optIndex"
-                                                    x-model="q.answer">
-                                                <input type="text" x-model="q.options[optIndex]"
-                                                    placeholder="Pilihan jawaban..."
-                                                    class="flex-1 border rounded p-2 text-sm w-full" />
-                                                <button @click="removeOption(q, optIndex)"
-                                                    class="text-red-400 text-xs">x</button>
-                                            </div>
-                                        </template>
-                                        <button @click="addOption(q)" class="text-blue-600 text-xs mt-2 hover:underline">+
-                                            Tambah Pilihan</button>
-                                    </div>
-                                </div>
-                            </template>
-
-                            <template x-if="q.type === 'essay'">
-                                <div>
-                                    <input type="text" x-model="q.question"
-                                        placeholder="Masukkan pertanyaan uraian..."
-                                        class="w-full border rounded mt-3 p-2 text-sm" />
-                                    <div class="flex items-center mt-3 gap-x-2">
-                                        <p class="text-xs">Batas jawaban: </p>
-                                        <input type="number" x-model="q.maxWords"
-                                            class="w-14 border rounded p-2 text-sm" />
-                                        <p class="text-xs">karakter</p>
-                                    </div>
-                                </div>
-                            </template>
+                            <p class="text-xs text-gray-500 mt-1 text-right">Satuan: Menit</p>
                         </div>
-                    </template>
-                </div>
-
-
-                <div class="flex justify-end">
-                    <form id="testForm" @submit.prevent="submitData">
-                        @csrf
-                        @if (isset($test))
-                            @method('PUT')
-                        @endif
-                        <x-primary-button
-                            class="mt-5">{{ isset($test) ? 'Update Soal' : 'Simpan Soal' }}</x-primary-button>
-                    </form>
+                    </div>
                 </div>
             </div>
+
+            {{-- KOLOM KANAN: EDITOR PERTANYAAN --}}
+            <div class="lg:col-span-2 space-y-6">
+
+                {{-- Tombol Tambah Soal --}}
+                <div class="grid grid-cols-2 gap-4">
+                    <button @click="addMultipleChoice()" type="button"
+                        class="flex flex-col items-center justify-center p-4 border-2 border-dashed border-gray-300 rounded-xl hover:border-indigo-500 hover:bg-indigo-50 transition group">
+                        <div class="p-2 bg-indigo-100 rounded-full mb-2 group-hover:bg-indigo-200">
+                            <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <span class="font-semibold text-gray-700 text-sm group-hover:text-indigo-700">Pilihan Ganda</span>
+                    </button>
+                    <button @click="addEssay()" type="button"
+                        class="flex flex-col items-center justify-center p-4 border-2 border-dashed border-gray-300 rounded-xl hover:border-pink-500 hover:bg-pink-50 transition group">
+                        <div class="p-2 bg-pink-100 rounded-full mb-2 group-hover:bg-pink-200">
+                            <svg class="w-6 h-6 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4 6h16M4 12h16m-7 6h7"></path>
+                            </svg>
+                        </div>
+                        <span class="font-semibold text-gray-700 text-sm group-hover:text-pink-700">Uraian / Essay</span>
+                    </button>
+                </div>
+
+                {{-- List Soal --}}
+                <div class="space-y-4">
+                    <template x-for="(q, index) in questions" :key="q.id">
+                        <div
+                            class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden transition hover:shadow-md">
+
+                            {{-- Card Header --}}
+                            <div class="bg-gray-50 px-4 py-3 border-b border-gray-200 flex justify-between items-center">
+                                <div class="flex items-center gap-3">
+                                    <span
+                                        class="flex items-center justify-center w-6 h-6 rounded-full bg-gray-200 text-xs font-bold text-gray-600"
+                                        x-text="index + 1"></span>
+                                    <span class="px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider"
+                                        :class="q.type === 'mcq' ? 'bg-indigo-100 text-indigo-700' :
+                                            'bg-pink-100 text-pink-700'"
+                                        x-text="q.type === 'mcq' ? 'Pilihan Ganda' : 'Uraian'">
+                                    </span>
+                                </div>
+                                <div class="flex items-center gap-1">
+                                    <button @click="moveUp(index)" :disabled="index === 0"
+                                        class="p-1 text-gray-400 hover:text-gray-700 disabled:opacity-30 transition"
+                                        title="Naik">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 15l7-7 7 7"></path>
+                                        </svg>
+                                    </button>
+                                    <button @click="moveDown(index)" :disabled="index === questions.length - 1"
+                                        class="p-1 text-gray-400 hover:text-gray-700 disabled:opacity-30 transition"
+                                        title="Turun">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M19 9l-7 7-7-7"></path>
+                                        </svg>
+                                    </button>
+                                    <div class="w-px h-4 bg-gray-300 mx-1"></div>
+                                    <button @click="removeQuestion(index)"
+                                        class="p-1 text-gray-400 hover:text-red-600 transition" title="Hapus Soal">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                                            </path>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+
+                            {{-- Card Body --}}
+                            <div class="p-5">
+                                {{-- Input Pertanyaan --}}
+                                <div class="mb-4">
+                                    <textarea x-model="q.question" rows="2"
+                                        class="block w-full text-sm text-gray-900 border-0 border-b-2 border-gray-200 focus:ring-0 focus:border-indigo-500 placeholder-gray-400 resize-none transition"
+                                        placeholder="Tuliskan pertanyaan disini..."></textarea>
+                                </div>
+
+                                {{-- Logic Pilihan Ganda --}}
+                                <template x-if="q.type === 'mcq'">
+                                    <div class="space-y-3 bg-gray-50 p-4 rounded-lg">
+                                        <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Opsi
+                                            Jawaban (Pilih Kunci Jawaban)</p>
+                                        <template x-for="(opt, optIndex) in q.options" :key="optIndex">
+                                            <div class="flex items-center gap-3 group">
+                                                <input type="radio" :name="'correct-' + q.id" :value="optIndex"
+                                                    x-model="q.answer"
+                                                    class="w-4 h-4 text-indigo-600 bg-white border-gray-300 focus:ring-indigo-500 cursor-pointer">
+                                                <input type="text" x-model="q.options[optIndex]"
+                                                    placeholder="Tulis pilihan jawaban..."
+                                                    class="flex-1 text-sm border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 w-full">
+                                                <button @click="removeOption(q, optIndex)"
+                                                    class="text-gray-300 hover:text-red-500 transition opacity-0 group-hover:opacity-100">
+                                                    <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                        viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        </template>
+                                        <button @click="addOption(q)"
+                                            class="mt-2 text-xs font-medium text-indigo-600 hover:text-indigo-800 flex items-center gap-1 transition">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M12 4v16m8-8H4"></path>
+                                            </svg>
+                                            Tambah Opsi Lain
+                                        </button>
+                                    </div>
+                                </template>
+
+                                {{-- Logic Essay --}}
+                                <template x-if="q.type === 'essay'">
+                                    <div class="flex items-center gap-3 bg-pink-50 p-3 rounded-lg border border-pink-100">
+                                        <svg class="w-5 h-5 text-pink-500" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
+                                            </path>
+                                        </svg>
+                                        <span class="text-sm text-pink-700 font-medium">Batas Maksimal Karakter:</span>
+                                        <input type="number" x-model="q.maxWords"
+                                            class="w-20 text-sm border-gray-300 rounded-md focus:ring-pink-500 focus:border-pink-500 text-center"
+                                            placeholder="100">
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+                    </template>
+
+                    {{-- Empty State --}}
+                    <div x-show="questions.length === 0"
+                        class="text-center py-12 border-2 border-dashed border-gray-300 rounded-xl">
+                        <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                        </svg>
+                        <h3 class="mt-2 text-sm font-medium text-gray-900">Belum ada pertanyaan</h3>
+                        <p class="mt-1 text-sm text-gray-500">Mulai dengan menambahkan tipe soal di atas.</p>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
+        {{-- Hidden Form for Submission --}}
+        <form id="testForm" @submit.prevent="submitData" class="hidden">
+            {{-- Form akan di-generate oleh JS --}}
+            <button id="triggerSave" type="submit">Simpan</button>
+        </form>
 
-        <script>
+    </div>
 
-            const MIN = 0,
-                MAX = 180;
-            document.querySelectorAll('.score-wrapper').forEach(wrapper => {
-                const input = wrapper.querySelector('.score-input');
-                const btnPlus = wrapper.querySelector('.btn-plus');
-                const btnMinus = wrapper.querySelector('.btn-minus');
+    {{-- SCRIPT --}}
+    <script>
+        // Logic untuk Counter Durasi (Vanilla JS)
+        const MIN = 0,
+            MAX = 180;
+        document.querySelectorAll('.score-wrapper').forEach(wrapper => {
+            const input = wrapper.querySelector('.score-input');
+            const btnPlus = wrapper.querySelector('.btn-plus');
+            const btnMinus = wrapper.querySelector('.btn-minus');
 
-                function updateButtons(v) {
-                    btnMinus.disabled = v <= MIN;
-                    btnPlus.disabled = v >= MAX;
-                    btnMinus.classList.toggle("opacity-50", btnMinus.disabled);
-                    btnPlus.classList.toggle("opacity-50", btnPlus.disabled);
-                }
-                btnPlus.addEventListener('click', () => {
-                    let v = parseInt(input.value) || 0;
-                    if (v < MAX) {
-                        v++;
-                        input.value = v;
-                        updateButtons(v);
-                    }
-                });
-                btnMinus.addEventListener('click', () => {
-                    let v = parseInt(input.value) || 0;
-                    if (v > MIN) {
-                        v--;
-                        input.value = v;
-                        updateButtons(v);
-                    }
-                });
-                input.addEventListener('input', () => {
-                    let v = parseInt(input.value);
-                    if (isNaN(v)) v = MIN;
-                    if (v < MIN) v = MIN;
-                    if (v > MAX) v = MAX;
-                    input.value = v;
-                    updateButtons(v);
-                });
-                updateButtons(parseInt(input.value) || 0);
-            });
-
-
-            function testBuilder(dbQuestions, dbType) {
-                return {
-                    test_type: dbType, 
-                    questions: dbQuestions, 
-
-                    addMultipleChoice() {
-                        this.questions.push({
-                            id: Date.now() + Math.random(),
-                            type: 'mcq',
-                            question: '',
-                            options: ['', ''],
-                            answer: null
-                        });
-                    },
-                    addEssay() {
-                        this.questions.push({
-                            id: Date.now() + Math.random(),
-                            type: 'essay',
-                            question: '',
-                            maxWords: 100
-                        });
-                    },
-                    removeQuestion(index) {
-                        this.questions.splice(index, 1);
-                    },
-                    addOption(q) {
-                        q.options.push('');
-                    },
-                    removeOption(q, index) {
-                        q.options.splice(index, 1);
-                    },
-                    moveUp(index) {
-                        if (index === 0) return;
-                        [this.questions[index - 1], this.questions[index]] = [this.questions[index], this.questions[index - 1]];
-                    },
-                    moveDown(index) {
-                        if (index === this.questions.length - 1) return;
-                        [this.questions[index], this.questions[index + 1]] = [this.questions[index + 1], this.questions[index]];
-                    },
-
-                    submitData() {
-                        const form = document.createElement('form');
-                        form.method = 'POST';
-
-                        @if (isset($test))
-                            form.action = '{{ route('buat-test.update', $test->id) }}';
-                            const m = document.createElement('input');
-                            m.type = 'hidden';
-                            m.name = '_method';
-                            m.value = 'PUT';
-                            form.appendChild(m);
-                        @else
-                            form.action = '{{ route('buat-test.store') }}';
-                        @endif
-
-                        const t = document.createElement('input');
-                        t.type = 'hidden';
-                        t.name = '_token';
-                        t.value = '{{ csrf_token() }}';
-                        form.appendChild(t);
-
-                        const title = document.createElement('input');
-                        title.type = 'hidden';
-                        title.name = 'title';
-                        title.value = document.getElementById('visitors').value;
-                        form.appendChild(title);
-
-                        const typeInput = document.createElement('input');
-                        typeInput.type = 'hidden';
-                        typeInput.name = 'test_type';
-                        typeInput.value = this.test_type;
-                        form.appendChild(typeInput);
-
-                        const desc = document.createElement('input');
-                        desc.type = 'hidden';
-                        desc.name = 'description';
-                        desc.value = document.querySelector('textarea[name=description]').value;
-                        form.appendChild(desc);
-
-                        const dur = document.createElement('input');
-                        dur.type = 'hidden';
-                        dur.name = 'duration';
-                        dur.value = document.querySelector('input[name=duration]').value;
-                        form.appendChild(dur);
-
-                        this.questions.forEach(q => {
-                            const i = document.createElement('input');
-                            i.type = 'hidden';
-                            i.name = 'questions[]';
-                            i.value = JSON.stringify(q);
-                            form.appendChild(i);
-                        });
-
-                        document.body.appendChild(form);
-                        form.submit();
-                    }
-                };
+            function updateButtons(v) {
+                btnMinus.disabled = v <= MIN;
+                btnPlus.disabled = v >= MAX;
+                btnMinus.classList.toggle("opacity-50", btnMinus.disabled);
+                btnPlus.classList.toggle("opacity-50", btnPlus.disabled);
             }
-        </script>
-    </section>
+            btnPlus.addEventListener('click', () => {
+                let v = parseInt(input.value) || 0;
+                if (v < MAX) {
+                    input.value = ++v;
+                    updateButtons(v);
+                }
+            });
+            btnMinus.addEventListener('click', () => {
+                let v = parseInt(input.value) || 0;
+                if (v > MIN) {
+                    input.value = --v;
+                    updateButtons(v);
+                }
+            });
+            input.addEventListener('input', () => {
+                let v = parseInt(input.value);
+                if (isNaN(v)) v = MIN;
+                if (v < MIN) v = MIN;
+                if (v > MAX) v = MAX;
+                input.value = v;
+                updateButtons(v);
+            });
+            updateButtons(parseInt(input.value) || 0);
+        });
+
+        // Alpine JS Component
+        function testBuilder(dbQuestions, dbType) {
+            return {
+                test_type: dbType,
+                questions: dbQuestions,
+
+                addMultipleChoice() {
+                    this.questions.push({
+                        id: Date.now() + Math.random(),
+                        type: 'mcq',
+                        question: '',
+                        options: ['', ''],
+                        answer: null
+                    });
+                },
+                addEssay() {
+                    this.questions.push({
+                        id: Date.now() + Math.random(),
+                        type: 'essay',
+                        question: '',
+                        maxWords: 100
+                    });
+                },
+                removeQuestion(index) {
+                    this.questions.splice(index, 1);
+                },
+                addOption(q) {
+                    q.options.push('');
+                },
+                removeOption(q, index) {
+                    q.options.splice(index, 1);
+                },
+                moveUp(index) {
+                    if (index === 0) return;
+                    [this.questions[index - 1], this.questions[index]] = [this.questions[index], this.questions[index - 1]];
+                },
+                moveDown(index) {
+                    if (index === this.questions.length - 1) return;
+                    [this.questions[index], this.questions[index + 1]] = [this.questions[index + 1], this.questions[index]];
+                },
+
+                submitData() {
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+
+                    @if (isset($test))
+                        form.action = '{{ route('buat-test.update', $test->id) }}';
+                        const m = document.createElement('input');
+                        m.type = 'hidden';
+                        m.name = '_method';
+                        m.value = 'PUT';
+                        form.appendChild(m);
+                    @else
+                        form.action = '{{ route('buat-test.store') }}';
+                    @endif
+
+                    const t = document.createElement('input');
+                    t.type = 'hidden';
+                    t.name = '_token';
+                    t.value = '{{ csrf_token() }}';
+                    form.appendChild(t);
+
+                    // Ambil data dari input manual
+                    const title = document.createElement('input');
+                    title.type = 'hidden';
+                    title.name = 'title';
+                    title.value = document.getElementById('visitors').value;
+                    form.appendChild(title);
+
+                    const typeInput = document.createElement('input');
+                    typeInput.type = 'hidden';
+                    typeInput.name = 'test_type';
+                    typeInput.value = this.test_type;
+                    form.appendChild(typeInput);
+
+                    const desc = document.createElement('input');
+                    desc.type = 'hidden';
+                    desc.name = 'description';
+                    desc.value = document.querySelector('textarea[name=description]').value;
+                    form.appendChild(desc);
+
+                    const dur = document.createElement('input');
+                    dur.type = 'hidden';
+                    dur.name = 'duration';
+                    dur.value = document.querySelector('input[name=duration]').value;
+                    form.appendChild(dur);
+
+                    // Append questions JSON
+                    this.questions.forEach(q => {
+                        const i = document.createElement('input');
+                        i.type = 'hidden';
+                        i.name = 'questions[]';
+                        i.value = JSON.stringify(q);
+                        form.appendChild(i);
+                    });
+
+                    document.body.appendChild(form);
+                    form.submit();
+                }
+            };
+        }
+    </script>
 @endsection

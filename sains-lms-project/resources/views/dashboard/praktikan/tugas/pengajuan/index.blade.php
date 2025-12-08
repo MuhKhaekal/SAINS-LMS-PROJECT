@@ -3,71 +3,122 @@
 @section('page-title', 'SAINS | Pengajuan Tugas')
 
 @section('content')
-    <section class="m-4 md:mx-24 md:mt-24">
-        <div class="bg-white p-4 md:p-12 shadow-md border rounded-md">
-            <h1 class="font-bold text-xl border-b border-gray-400">Tugas: {{ $selectedAssignment->assignment_name }}</h1>
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
-            <div class="my-6">
-                <p class="bg-secondary w-fit px-2 py-1 rounded-md font-bold">{{ $selectedMeeting->meeting_name }}</p>
-                <p class="text-sm mt-1">{{ $selectedMeeting->description }}</p>
+        {{-- HEADER & NAVIGATION --}}
+        <div class="flex items-center justify-between mb-8">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-800">Pengumpulan Tugas</h1>
+                <p class="text-sm text-gray-500 mt-1">Silakan unggah jawaban tugas Anda di sini.</p>
             </div>
-
-            <div class="my-6">
-                <p class="font-bold">Deskripsi Tugas: </p>
-                <p class="text-sm mt-1">{{ $selectedAssignment->description }}</p>
-            </div>
-
-            <form action="{{ route('pengajuan-tugas.store') }}" method="POST" enctype="multipart/form-data">
-                @csrf
-                <input type="hidden" name="assignment_id" value="{{ $selectedAssignment->id }}">
-                <input type="hidden" name="meeting_id" value="{{ $selectedMeeting->id }}">
-                <input type="hidden" name="halaqah_id" value="{{ $selectedHalaqah->id }}">
-                <div class="my-6">
-                    <p class="font-bold">File Tugas: </p>
-                    <div class="">
-                        <label for="file_input"
-                            class="p-4 mt-1 flex flex-col items-center justify-center w-full border border-gray-500 border-dashed rounded-lg cursor-pointer bg-gray-100 hover:bg-gray-200 transition duration-150">
-
-                            <div class="flex flex-col items-center justify-center">
-                                <svg class="w-10 h-10 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                    width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M19 10V4a1 1 0 0 0-1-1H9.914a1 1 0 0 0-.707.293L5.293 7.207A1 1 0 0 0 5 7.914V20a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2M10 3v4a1 1 0 0 1-1 1H5m5 6h9m0 0-2-2m2 2-2 2" />
-                                </svg>
-
-                                <p class="text-xs text-gray-400 mt-2">
-                                    <span class="font-semibold">Klik untuk unggah</span> atau seret & letakkan
-                                </p>
-                                <p class="text-xs text-gray-400 mt-1">PDF, PPT, DOCX, JPG, PNG (max 10MB)</p>
-                            </div>
-
-                            <input class="hidden" id="file_input" type="file" name="file_location"
-                                accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.mp3,.wav,.m4a,.jpg,.jpeg,.png">
-                        </label>
-
-                        <p id="file_name" class="text-xs text-gray-400 mt-2"></p>
-                        <x-input-error :messages="$errors->get('file')" />
-                    </div>
-                    <script>
-                        document.getElementById('file_input').addEventListener('change', function() {
-                            const fileNameText = document.getElementById('file_name');
-                            fileNameText.textContent = this.files.length ? "File dipilih: " + this.files[0].name : "";
-                        });
-                    </script>
-                </div>
-                <div class="my-6">
-                    <p class="font-bold">Catatan: </p>
-                    <textarea name="description" class="w-full rounded-md mt-1 text-xs" id="" rows="3"
-                        placeholder="Isi catatan jika ada ... " required></textarea>
-                </div>
-                <div class="flex justify-end">
-                    <x-primary-button>
-                        Submit
-                    </x-primary-button>
-                </div>
-            </form>
-
+            <a href="{{ url()->previous() }}"
+                class="text-sm font-medium text-gray-500 hover:text-indigo-600 flex items-center gap-1 transition">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18">
+                    </path>
+                </svg>
+                Kembali
+            </a>
         </div>
-    </section>
+
+        {{-- MAIN CARD --}}
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+
+            {{-- Task Details Header --}}
+            <div class="bg-gray-50 p-6 border-b border-gray-200">
+                <div class="flex items-center gap-2 mb-2">
+                    <span
+                        class="bg-indigo-100 text-indigo-700 text-xs font-bold px-2.5 py-0.5 rounded border border-indigo-200 uppercase tracking-wide">
+                        {{ $selectedMeeting->meeting_name }}
+                    </span>
+                </div>
+                <h2 class="text-xl font-bold text-gray-900 mb-2">{{ $selectedAssignment->assignment_name }}</h2>
+                <p class="text-sm text-gray-600 leading-relaxed">
+                    {{ $selectedAssignment->description ?: 'Tidak ada deskripsi tambahan untuk tugas ini.' }}
+                </p>
+            </div>
+
+            {{-- Submission Form --}}
+            <div class="p-6 md:p-8">
+                <form action="{{ route('pengajuan-tugas.store') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <input type="hidden" name="assignment_id" value="{{ $selectedAssignment->id }}">
+                    <input type="hidden" name="meeting_id" value="{{ $selectedMeeting->id }}">
+                    <input type="hidden" name="halaqah_id" value="{{ $selectedHalaqah->id }}">
+
+                    {{-- File Upload Area --}}
+                    <div class="mb-6">
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">File Jawaban</label>
+
+                        <div class="relative group">
+                            <label for="file_input"
+                                class="flex flex-col items-center justify-center w-full h-48 border-2 border-gray-300 border-dashed rounded-xl cursor-pointer bg-gray-50 hover:bg-indigo-50 hover:border-indigo-400 transition-all duration-300 group-hover:shadow-sm">
+                                <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                                    <svg class="w-10 h-10 text-gray-400 group-hover:text-indigo-500 mb-3 transition-colors"
+                                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12">
+                                        </path>
+                                    </svg>
+                                    <p class="mb-2 text-sm text-gray-500 group-hover:text-indigo-600"><span
+                                            class="font-semibold">Klik untuk unggah</span> atau seret file ke sini</p>
+                                    <p class="text-xs text-gray-400">PDF, Word, Excel, PPT, Gambar (Max 10MB)</p>
+                                </div>
+                                <input id="file_input" name="file_location" type="file" class="hidden"
+                                    accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.mp3,.wav,.m4a,.jpg,.jpeg,.png" />
+                            </label>
+                        </div>
+
+                        {{-- File Selection Feedback --}}
+                        <div id="file_info"
+                            class="mt-3 hidden items-center gap-2 text-sm text-gray-700 bg-indigo-50 p-2 rounded-lg border border-indigo-100">
+                            <svg class="w-5 h-5 text-indigo-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                            <span id="file_name" class="font-medium truncate"></span>
+                        </div>
+                        <x-input-error :messages="$errors->get('file_location')" class="mt-2" />
+                    </div>
+
+                    {{-- Catatan / Notes --}}
+                    <div class="mb-8">
+                        <label for="description" class="block text-sm font-semibold text-gray-700 mb-2">Catatan Tambahan
+                            (Opsional)</label>
+                        <textarea name="description" id="description" rows="3"
+                            class="block w-full p-3 text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 placeholder-gray-400 shadow-sm transition"
+                            placeholder="Tambahkan pesan untuk asisten jika perlu..."></textarea>
+                    </div>
+
+                    {{-- Submit Button --}}
+                    <div class="flex justify-end pt-4 border-t border-gray-100">
+                        <x-primary-button class="w-full sm:w-auto justify-center px-6 py-3 text-base">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7">
+                                </path>
+                            </svg>
+                            Kirim Jawaban
+                        </x-primary-button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('file_input').addEventListener('change', function() {
+            const fileInfo = document.getElementById('file_info');
+            const fileName = document.getElementById('file_name');
+
+            if (this.files.length > 0) {
+                fileName.textContent = this.files[0].name;
+                fileInfo.classList.remove('hidden');
+                fileInfo.classList.add('flex');
+            } else {
+                fileInfo.classList.add('hidden');
+                fileInfo.classList.remove('flex');
+            }
+        });
+    </script>
 @endsection

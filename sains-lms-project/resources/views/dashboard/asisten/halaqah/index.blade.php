@@ -3,155 +3,159 @@
 @section('page-title', 'SAINS | Halaqah')
 
 @section('content')
-    <div class="mx-3 md:mt-20 md:mx-32">
-        <div style="background-image: url('/assets/images/background-halaqah.png');"
-            class="bg-no-repeat md:bg-center bg-contain w-full aspect-[30/9] flex items-center justify-center overflow-hidden">
-            <div class="relative text-secondary flex justify-center items-center md:w-1/2 md:mx-24">
-                <h1 class="font-semibold text-xl md:text-5xl text-center py-10 md:py-0" data-aos="fade-right">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:mt-24">
+        <div class="relative w-full h-48 md:h-64 rounded-2xl overflow-hidden mb-8 shadow-lg group">
+            <div style="background-image: url('/assets/images/background-halaqah.png');"
+                class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105">
+            </div>
+            <div class="absolute inset-0 bg-gradient-to-r from-black/70 to-transparent"></div>
+            <div class="relative h-full flex flex-col justify-center px-6 md:px-12">
+                <span class="text-white/80 text-sm md:text-lg font-medium tracking-wider mb-1 uppercase">Dashboard
+                    Asisten</span>
+                <h1 class="text-3xl md:text-5xl font-bold text-white leading-tight" data-aos="fade-right">
                     {{ $selectedHalaqah->halaqah_name }}
                 </h1>
             </div>
         </div>
-    </div>
 
-    <section class="akumulasi-nilai grid grid-cols-1 md:grid-cols-4 md:gap-0 gap-2 m-3 md:mx-32">
-        <div
-            class="border shadow-md p-4 text-xs font-bold rounded-lg md:rounded-e-none bg-white transition duration-300 ease-in hover:scale-105">
-            <a href="" class="flex md:flex-col md:py-4 items-center">
-                <div class="bg-red-500 rounded p-2 me-3">
-                    <svg class="w-6 h-6 md:w-12 md:h-12 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                        width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                        <path fill-rule="evenodd"
-                            d="M9 7V2.221a2 2 0 0 0-.5.365L4.586 6.5a2 2 0 0 0-.365.5H9Zm2 0V2h7a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9h5a2 2 0 0 0 2-2Zm2-2a1 1 0 1 0 0 2h3a1 1 0 1 0 0-2h-3Zm0 3a1 1 0 1 0 0 2h3a1 1 0 1 0 0-2h-3Zm-6 4a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1v-6Zm8 1v1h-2v-1h2Zm0 3h-2v1h2v-1Zm-4-3v1H9v-1h2Zm0 3H9v1h2v-1Z"
-                            clip-rule="evenodd" />
-                    </svg>
-
-                </div>
-                <p class="md:mt-4 md:text-base">
-                    Akumulasi Nilai
-                </p>
-            </a>
-        </div>
-        <div
-            class="border shadow-md p-4 text-xs font-bold rounded-lg md:rounded-none bg-white transition duration-300 ease-in hover:scale-105">
-            <a href="" class="flex md:flex-col md:py-4 items-center">
-                <div class="bg-yellow-500 rounded p-2 me-3">
-                    <svg class="w-6 h-6 md:w-12 md:h-12 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                        width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                        <path fill-rule="evenodd"
-                            d="M8 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1h2a2 2 0 0 1 2 2v15a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h2Zm6 1h-4v2H9a1 1 0 0 0 0 2h6a1 1 0 1 0 0-2h-1V4Zm-3 8a1 1 0 0 1 1-1h3a1 1 0 1 1 0 2h-3a1 1 0 0 1-1-1Zm-2-1a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H9Zm2 5a1 1 0 0 1 1-1h3a1 1 0 1 1 0 2h-3a1 1 0 0 1-1-1Zm-2-1a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H9Z"
-                            clip-rule="evenodd" />
-                    </svg>
-                </div>
-                <p class="md:mt-4 md:text-base">
-                    Daftar Nilai Pre-Test
-                </p>
-            </a>
-        </div>
-        <div
-            class="border shadow-md p-4 text-xs font-bold rounded-lg md:rounded-none bg-white transition duration-300 ease-in hover:scale-105">
-            <a href="{{ route('nilai-perpekan.index', ['halaqah_name' => $selectedHalaqah->halaqah_name]) }}"
-                class="flex md:flex-col md:py-4 items-center">
-                <div class="bg-emerald-600 rounded p-2 me-3">
-                    <svg class="w-6 h-6 md:w-12 md:h-12 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                        width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                        <path fill-rule="evenodd"
-                            d="M9 7V2.221a2 2 0 0 0-.5.365L4.586 6.5a2 2 0 0 0-.365.5H9Zm2 0V2h7a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9h5a2 2 0 0 0 2-2Zm-1 9a1 1 0 1 0-2 0v2a1 1 0 1 0 2 0v-2Zm2-5a1 1 0 0 1 1 1v6a1 1 0 1 1-2 0v-6a1 1 0 0 1 1-1Zm4 4a1 1 0 1 0-2 0v3a1 1 0 1 0 2 0v-3Z"
-                            clip-rule="evenodd" />
-                    </svg>
-
-                </div>
-                <p class="md:mt-4 md:text-base">
-                    Daftar Nilai Per-pekan
-                </p>
-            </a>
-        </div>
-        <div
-            class="border shadow-md p-4 text-xs font-bold rounded-lg md:rounded-s-none bg-white transition duration-300 ease-in hover:scale-105">
-            <a href="" class="flex md:flex-col md:py-4 items-center ">
-                <div class="bg-cyan-800 rounded p-2 me-3">
-                    <svg class="w-6 h-6 md:w-12 md:h-12 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                        width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                        <path fill-rule="evenodd"
-                            d="M8 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1h2a2 2 0 0 1 2 2v15a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h2Zm6 1h-4v2H9a1 1 0 0 0 0 2h6a1 1 0 1 0 0-2h-1V4Zm-3 8a1 1 0 0 1 1-1h3a1 1 0 1 1 0 2h-3a1 1 0 0 1-1-1Zm-2-1a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H9Zm2 5a1 1 0 0 1 1-1h3a1 1 0 1 1 0 2h-3a1 1 0 0 1-1-1Zm-2-1a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H9Z"
-                            clip-rule="evenodd" />
-                    </svg>
-                </div>
-                <p class="md:mt-4 md:text-base">
-                    Daftar Nilai Post-Test
-                </p>
-            </a>
-        </div>
-    </section>
-
-    <section class="mx-4 md:mx-32">
-        @forelse ($meetings as $index => $meeting)
-            <div id="accordion-{{ $index }}" class="my-2">
-
-                <button type="button"
-                    class="shadow-md flex items-center justify-between w-full p-5 text-xs font-medium rounded-t-xl bg-white transition-colors duration-300 focus:outline-none"
-                    data-target="#accordion-body-{{ $index }}">
-
-                    <div class="flex items-center md:justify-start md:gap-3 w-full md:text-base">
-                        <span
-                            class="w-40 md:w-52 bg-secondary text-primary font-bold p-1 me-2 rounded-md ">{{ $meeting->meeting_name }}</span>
-                        <span class="font-bold text-left w-full">{{ $meeting->topic }}</span>
+        <section class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+            <a href="#"
+                class="bg-white p-4 rounded-xl shadow-sm border border-gray-200 hover:shadow-md hover:-translate-y-1 transition-all duration-300 group">
+                <div class="flex flex-col items-center text-center gap-3">
+                    <div
+                        class="p-3 bg-red-50 text-red-600 rounded-full group-hover:bg-red-600 group-hover:text-white transition-colors">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path fill-rule="evenodd"
+                                d="M9 7V2.221a2 2 0 0 0-.5.365L4.586 6.5a2 2 0 0 0-.365.5H9Zm2 0V2h7a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9h5a2 2 0 0 0 2-2Zm2-2a1 1 0 1 0 0 2h3a1 1 0 1 0 0-2h-3Zm0 3a1 1 0 1 0 0 2h3a1 1 0 1 0 0-2h-3Zm-6 4a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1v-6Zm8 1v1h-2v-1h2Zm0 3h-2v1h2v-1Zm-4-3v1H9v-1h2Zm0 3H9v1h2v-1Z"
+                                clip-rule="evenodd" />
+                        </svg>
                     </div>
+                    <span class="text-xs md:text-sm font-bold text-gray-700">Akumulasi Nilai</span>
+                </div>
+            </a>
 
-                    <svg data-accordion-icon class="w-3 h-3 shrink-0 ms-2 flex-none" xmlns="http://www.w3.org/2000/svg"
-                        fill="none" viewBox="0 0 10 6">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M9 5 5 1 1 5" />
-                    </svg>
-                </button>
+            <a href="#"
+                class="bg-white p-4 rounded-xl shadow-sm border border-gray-200 hover:shadow-md hover:-translate-y-1 transition-all duration-300 group">
+                <div class="flex flex-col items-center text-center gap-3">
+                    <div
+                        class="p-3 bg-yellow-50 text-yellow-600 rounded-full group-hover:bg-yellow-500 group-hover:text-white transition-colors">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path fill-rule="evenodd"
+                                d="M8 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1h2a2 2 0 0 1 2 2v15a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h2Zm6 1h-4v2H9a1 1 0 0 0 0 2h6a1 1 0 1 0 0-2h-1V4Zm-3 8a1 1 0 0 1 1-1h3a1 1 0 1 1 0 2h-3a1 1 0 0 1-1-1Zm-2-1a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H9Zm2 5a1 1 0 0 1 1-1h3a1 1 0 1 1 0 2h-3a1 1 0 0 1-1-1Zm-2-1a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H9Z"
+                                clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                    <span class="text-xs md:text-sm font-bold text-gray-700">Nilai Pre-Test</span>
+                </div>
+            </a>
 
-                <div id="accordion-body-{{ $index }}"
-                    class="max-h-0 shadow-md overflow-hidden transition-all duration-500 ease-in-out">
-                    <div class="p-5 border border-b-0 border-gray-200 bg-white text-xs md:text-base">
-                        <p class="mb-2 text-black">
-                            {{ $meeting->description }}
-                        </p>
-                        <div class="grid grid-cols-1 md:grid-cols-3 md:gap-0 mt-3">
-                            <div class="border p-3 ">
+            <a href="{{ route('nilai-perpekan.index', ['halaqah_name' => $selectedHalaqah->halaqah_name]) }}"
+                class="bg-white p-4 rounded-xl shadow-sm border border-gray-200 hover:shadow-md hover:-translate-y-1 transition-all duration-300 group">
+                <div class="flex flex-col items-center text-center gap-3">
+                    <div
+                        class="p-3 bg-emerald-50 text-emerald-600 rounded-full group-hover:bg-emerald-600 group-hover:text-white transition-colors">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path fill-rule="evenodd"
+                                d="M9 7V2.221a2 2 0 0 0-.5.365L4.586 6.5a2 2 0 0 0-.365.5H9Zm2 0V2h7a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9h5a2 2 0 0 0 2-2Zm-1 9a1 1 0 1 0-2 0v2a1 1 0 1 0 2 0v-2Zm2-5a1 1 0 0 1 1 1v6a1 1 0 1 1-2 0v-6a1 1 0 0 1 1-1Zm4 4a1 1 0 1 0-2 0v3a1 1 0 1 0 2 0v-3Z"
+                                clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                    <span class="text-xs md:text-sm font-bold text-gray-700">Nilai Per-pekan</span>
+                </div>
+            </a>
+
+            <a href="#"
+                class="bg-white p-4 rounded-xl shadow-sm border border-gray-200 hover:shadow-md hover:-translate-y-1 transition-all duration-300 group">
+                <div class="flex flex-col items-center text-center gap-3">
+                    <div
+                        class="p-3 bg-cyan-50 text-cyan-600 rounded-full group-hover:bg-cyan-700 group-hover:text-white transition-colors">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path fill-rule="evenodd"
+                                d="M8 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1h2a2 2 0 0 1 2 2v15a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h2Zm6 1h-4v2H9a1 1 0 0 0 0 2h6a1 1 0 1 0 0-2h-1V4Zm-3 8a1 1 0 0 1 1-1h3a1 1 0 1 1 0 2h-3a1 1 0 0 1-1-1Zm-2-1a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H9Zm2 5a1 1 0 0 1 1-1h3a1 1 0 1 1 0 2h-3a1 1 0 0 1-1-1Zm-2-1a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H9Z"
+                                clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                    <span class="text-xs md:text-sm font-bold text-gray-700">Nilai Post-Test</span>
+                </div>
+            </a>
+        </section>
+
+        <section class="space-y-4">
+            <h2 class="text-lg font-bold text-gray-800 mb-4">Daftar Pertemuan</h2>
+
+            @forelse ($meetings as $index => $meeting)
+                <div class="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm">
+
+                    <button type="button"
+                        class="w-full flex items-center justify-between p-5 bg-white hover:bg-gray-50 transition-colors focus:outline-none group"
+                        data-target="#accordion-body-{{ $index }}">
+
+                        <div class="flex flex-col md:flex-row md:items-center gap-2 md:gap-4 text-left">
+                            <span
+                                class="bg-indigo-100 text-indigo-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide w-fit">
+                                {{ $meeting->meeting_name }}
+                            </span>
+
+                            <span
+                                class="text-sm md:text-base font-bold text-gray-800 group-hover:text-indigo-600 transition-colors">
+                                {{ $meeting->topic }}
+                            </span>
+                        </div>
+
+                        <div class="bg-gray-100 p-1.5 rounded-full group-hover:bg-indigo-100 transition-colors">
+                            <svg class="w-4 h-4 text-gray-500 group-hover:text-indigo-600 transition-transform duration-300"
+                                data-accordion-icon xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 5 5 1 1 5" />
+                            </svg>
+                        </div>
+                    </button>
+
+                    <div id="accordion-body-{{ $index }}"
+                        class="max-h-0 overflow-hidden transition-all duration-500 ease-in-out bg-gray-50/50">
+                        <div class="p-5 border-t border-gray-100">
+
+                            <p class="text-sm text-gray-600 mb-6 leading-relaxed">
+                                {{ $meeting->description }}
+                            </p>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                                 <a href="{{ route('presensi-asisten.index', ['meeting_name' => $meeting->meeting_name, 'halaqah_name' => $selectedHalaqah->halaqah_name]) }}"
-                                    class="flex items-center md:flex-col md:justify-center md:py-4 transition duration-300 ease-in hover:scale-105">
-                                    <div class="bg-primary rounded-md p-2 text-white text-center me-3 md:me-0">
-                                        <svg class="w-6 h-6 md:w-12 md:h-12 text-white" aria-hidden="true"
-                                            xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            fill="currentColor" viewBox="0 0 24 24">
+                                    class="flex items-center gap-3 p-3 bg-white border border-indigo-100 rounded-lg hover:border-indigo-300 hover:shadow-sm transition group">
+                                    <div
+                                        class="p-2 bg-indigo-50 text-indigo-600 rounded-lg group-hover:bg-indigo-600 group-hover:text-white transition">
+                                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                                             <path fill-rule="evenodd"
                                                 d="M12 6a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Zm-1.5 8a4 4 0 0 0-4 4 2 2 0 0 0 2 2h7a2 2 0 0 0 2-2 4 4 0 0 0-4-4h-3Zm6.82-3.096a5.51 5.51 0 0 0-2.797-6.293 3.5 3.5 0 1 1 2.796 6.292ZM19.5 18h.5a2 2 0 0 0 2-2 4 4 0 0 0-4-4h-1.1a5.503 5.503 0 0 1-.471.762A5.998 5.998 0 0 1 19.5 18ZM4 7.5a3.5 3.5 0 0 1 5.477-2.889 5.5 5.5 0 0 0-2.796 6.293A3.501 3.501 0 0 1 4 7.5ZM7.1 12H6a4 4 0 0 0-4 4 2 2 0 0 0 2 2h.5a5.998 5.998 0 0 1 3.071-5.238A5.505 5.505 0 0 1 7.1 12Z"
                                                 clip-rule="evenodd" />
                                         </svg>
-
                                     </div>
-                                    <p class="font-bold md:mt-4">Presensi</p>
+                                    <span
+                                        class="text-sm font-semibold text-gray-700 group-hover:text-indigo-600">Presensi</span>
                                 </a>
-                            </div>
-                            @if ($meeting->type == 'ujian')
-                                <div class="border p-3 ">
+
+                                @if ($meeting->type == 'ujian')
                                     <a href="{{ route('ujian-asisten.index', ['meeting_name' => $meeting->meeting_name, 'halaqah_name' => $selectedHalaqah->halaqah_name]) }}"
-                                        class="flex items-center md:flex-col md:justify-center md:py-4 transition duration-300 ease-in hover:scale-105">
-                                        <div class="bg-rose-800 rounded p-2 me-3 md:me-0">
-                                            <svg class="w-6 h-6 md:w-12 md:h-12 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                                                <path fill-rule="evenodd" d="M5.617 2.076a1 1 0 0 1 1.09.217L8 3.586l1.293-1.293a1 1 0 0 1 1.414 0L12 3.586l1.293-1.293a1 1 0 0 1 1.414 0L16 3.586l1.293-1.293A1 1 0 0 1 19 3v18a1 1 0 0 1-1.707.707L16 20.414l-1.293 1.293a1 1 0 0 1-1.414 0L12 20.414l-1.293 1.293a1 1 0 0 1-1.414 0L8 20.414l-1.293 1.293A1 1 0 0 1 5 21V3a1 1 0 0 1 .617-.924ZM9 7a1 1 0 0 0 0 2h6a1 1 0 1 0 0-2H9Zm0 4a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2H9Zm0 4a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2H9Z" clip-rule="evenodd"/>
-                                              </svg>
-                                              
+                                        class="flex items-center gap-3 p-3 bg-white border border-rose-100 rounded-lg hover:border-rose-300 hover:shadow-sm transition group">
+                                        <div
+                                            class="p-2 bg-rose-50 text-rose-600 rounded-lg group-hover:bg-rose-600 group-hover:text-white transition">
+                                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                                <path fill-rule="evenodd"
+                                                    d="M5.617 2.076a1 1 0 0 1 1.09.217L8 3.586l1.293-1.293a1 1 0 0 1 1.414 0L12 3.586l1.293-1.293a1 1 0 0 1 1.414 0L16 3.586l1.293-1.293A1 1 0 0 1 19 3v18a1 1 0 0 1-1.707.707L16 20.414l-1.293 1.293a1 1 0 0 1-1.414 0L12 20.414l-1.293 1.293a1 1 0 0 1-1.414 0L8 20.414l-1.293 1.293A1 1 0 0 1 5 21V3a1 1 0 0 1 .617-.924ZM9 7a1 1 0 0 0 0 2h6a1 1 0 1 0 0-2H9Zm0 4a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2H9Zm0 4a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2H9Z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
                                         </div>
-                                        <p class="font-bold md:mt-4">
-                                            Mulai Ujian
-                                        </p>
+                                        <span class="text-sm font-semibold text-gray-700 group-hover:text-rose-600">Mulai
+                                            Ujian</span>
                                     </a>
-                                </div>
-                            @endif
-                            @if ($meeting->type == 'skk')
-                                <div class="border p-3">
+                                @endif
+
+                                @if ($meeting->type == 'skk')
                                     <a href="{{ route('materi-asisten.index', ['meeting_name' => $meeting->meeting_name, 'halaqah_name' => $selectedHalaqah->halaqah_name]) }}"
-                                        class="flex items-center md:flex-col md:justify-center md:py-4 transition duration-300 ease-in hover:scale-105">
-                                        <div class="bg-cyan-800 rounded-md p-2 text-white me-3">
-                                            <svg class="w-6 h-6 md:w-12 md:h-12 text-white" aria-hidden="true"
-                                                xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                fill="currentColor" viewBox="0 0 24 24">
+                                        class="flex items-center gap-3 p-3 bg-white border border-cyan-100 rounded-lg hover:border-cyan-300 hover:shadow-sm transition group">
+                                        <div
+                                            class="p-2 bg-cyan-50 text-cyan-600 rounded-lg group-hover:bg-cyan-600 group-hover:text-white transition">
+                                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                                                 <path fill-rule="evenodd"
                                                     d="M9 7V2.221a2 2 0 0 0-.5.365L4.586 6.5a2 2 0 0 0-.365.5H9Zm2 0V2h7a2 2 0 0 1 2 2v6.41A7.5 7.5 0 1 0 10.5 22H6a2 2 0 0 1-2-2V9h5a2 2 0 0 0 2-2Z"
                                                     clip-rule="evenodd" />
@@ -159,18 +163,16 @@
                                                     d="M9 16a6 6 0 1 1 12 0 6 6 0 0 1-12 0Zm6-3a1 1 0 0 1 1 1v1h1a1 1 0 1 1 0 2h-1v1a1 1 0 1 1-2 0v-1h-1a1 1 0 1 1 0-2h1v-1a1 1 0 0 1 1-1Z"
                                                     clip-rule="evenodd" />
                                             </svg>
-
                                         </div>
-                                        <p class="font-bold md:mt-4">Unggah Materi</p>
+                                        <span class="text-sm font-semibold text-gray-700 group-hover:text-cyan-600">Unggah
+                                            Materi</span>
                                     </a>
-                                </div>
-                                <div class="border p-3">
+
                                     <a href="{{ route('tugas-asisten.index', ['meeting_name' => $meeting->meeting_name, 'halaqah_name' => $selectedHalaqah->halaqah_name]) }}"
-                                        class="flex items-center md:flex-col md:justify-center md:py-4 transition duration-300 ease-in hover:scale-105">
-                                        <div class="bg-red-400 rounded-md p-2 text-white me-3">
-                                            <svg class="w-6 h-6 md:w-12 md:h-12 text-white" aria-hidden="true"
-                                                xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                fill="currentColor" viewBox="0 0 24 24">
+                                        class="flex items-center gap-3 p-3 bg-white border border-orange-100 rounded-lg hover:border-orange-300 hover:shadow-sm transition group">
+                                        <div
+                                            class="p-2 bg-orange-50 text-orange-600 rounded-lg group-hover:bg-orange-500 group-hover:text-white transition">
+                                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                                                 <path fill-rule="evenodd"
                                                     d="M8 7V2.221a2 2 0 0 0-.5.365L3.586 6.5a2 2 0 0 0-.365.5H8Zm2 0V2h7a2 2 0 0 1 2 2v.126a5.087 5.087 0 0 0-4.74 1.368v.001l-6.642 6.642a3 3 0 0 0-.82 1.532l-.74 3.692a3 3 0 0 0 3.53 3.53l3.694-.738a3 3 0 0 0 1.532-.82L19 15.149V20a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9h5a2 2 0 0 0 2-2Z"
                                                     clip-rule="evenodd" />
@@ -179,47 +181,49 @@
                                                     clip-rule="evenodd" />
                                             </svg>
                                         </div>
-                                        <p class="font-bold md:mt-4">Unggah Tugas</p>
+                                        <span
+                                            class="text-sm font-semibold text-gray-700 group-hover:text-orange-600">Unggah
+                                            Tugas</span>
                                     </a>
-                                </div>
-                            @endif
+                                @endif
 
-
+                            </div>
                         </div>
-
                     </div>
                 </div>
-            </div>
-        @empty
-            <p>Belum ada data pertemuan</p>
-        @endforelse
-
-    </section>
-
-
+            @empty
+                <div class="bg-gray-50 border-2 border-dashed border-gray-300 rounded-xl p-8 text-center">
+                    <p class="text-gray-500 italic">Belum ada data pertemuan yang tersedia.</p>
+                </div>
+            @endforelse
+        </section>
+    </div>
 
     <script>
-        document.querySelectorAll("[data-target]").forEach(btn => {
-            btn.addEventListener("click", () => {
-                const content = document.querySelector(btn.dataset.target);
-                const icon = btn.querySelector("svg");
+        document.addEventListener("DOMContentLoaded", () => {
+            const accordionBtns = document.querySelectorAll("[data-target]");
 
-                if (content.classList.contains("max-h-0")) {
-                    content.style.maxHeight = content.scrollHeight + "px";
-                    content.classList.remove("max-h-0");
-                    icon.classList.add("rotate-180");
-                } else {
-                    content.style.maxHeight = content.scrollHeight + "px";
-                    setTimeout(() => {
-                        content.style.maxHeight = "0px";
-                        content.classList.add("max-h-0");
-                    }, 10);
-                    icon.classList.remove("rotate-180");
-                }
+            accordionBtns.forEach(btn => {
+                btn.addEventListener("click", () => {
+                    const targetId = btn.getAttribute("data-target");
+                    const content = document.querySelector(targetId);
+                    const icon = btn.querySelector("[data-accordion-icon]");
+
+                    if (content.classList.contains("max-h-0")) {
+                        content.classList.remove("max-h-0");
+                        content.style.maxHeight = content.scrollHeight + "px"; 
+                        icon.classList.add("rotate-180");
+                    } else {
+                        content.style.maxHeight = content.scrollHeight +
+                        "px";
+                        setTimeout(() => {
+                            content.style.maxHeight = "0px";
+                            content.classList.add("max-h-0");
+                        }, 10);
+                        icon.classList.remove("rotate-180");
+                    }
+                });
             });
         });
     </script>
-
-
-
 @endsection

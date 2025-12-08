@@ -1,18 +1,39 @@
-<!-- resources/views/dashboard/asisten/materi/show.blade.php -->
 @extends('dashboard.asisten.asisten-base')
 
 @section('page-title', $assignment->assignment_name)
 
 @section('content')
-    <section class="mt-4 md:mx-24 md:mt-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:mt-24">
+        <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-8">
+            <div>
+                <div class="flex items-center gap-2 text-sm text-gray-500 mb-1">
+                    <span class="text-gray-700">Tugas</span>
+                    <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                    <span>Penilaian</span>
+                </div>
+                <h1 class="text-2xl font-bold text-gray-800">{{ $assignment->assignment_name }}</h1>
+            </div>
+            <div>
+                <a href="{{ url()->previous() }}"
+                    class="inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-lg font-medium text-sm text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                    <svg class="w-4 h-4 mr-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                    </svg>
+                    Kembali
+                </a>
+            </div>
+        </div>
 
-        <div class=" bg-white shadow-md rounded-lg p-6 border ">
-
-            <h2 class="hidden md:block font-bold text-2xl border-b w-fit border-gray-300">{{ $assignment->assignment_name }}
-            </h2>
-            <p class="text-sm font-thin text-gray-800 my-4">
-                {{ $assignment->description }}
-            </p>
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden mb-8">
+            <div class="p-6 border-b border-gray-100 bg-gray-50/50">
+                <h3 class="text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Instruksi Tugas</h3>
+                <p class="text-sm text-gray-700 leading-relaxed">
+                    {{ $assignment->description ?: 'Tidak ada deskripsi tambahan.' }}
+                </p>
+            </div>
 
             @php
                 $path = $assignment->file_location;
@@ -20,187 +41,199 @@
                 $fileUrl = asset('storage/' . $path);
             @endphp
 
-            <div class="mt-6 w-full h-fit rounded-lg overflow-hidden border border-gray-300 md:flex justify-center">
-
+            <div class="p-6 bg-gray-100 flex items-center justify-center min-h-[300px]">
                 @if ($extension === 'pdf')
-                    <iframe download="{{ $assignment->assignment_name . '.' . $extension }}" src="{{ $fileUrl }}"
-                        class="w-full h-[400px] md:h-[600px]" frameborder="0"></iframe>
-                @elseif (in_array($extension, ['jpg', 'jpeg', 'png']))
-                    <img src="{{ $fileUrl }}" class="w-full h-auto md:w-96 md:flex md:p-4 object-contain rounded-md"
-                        download="{{ $assignment->assignment_name . '.' . $extension }}" />
-                @elseif (in_array($extension, ['mp3', 'wav']))
-                    <div class="w-full flex justify-center items-center py-10 bg-gray-100">
-                        <audio controls class="w-full max-w-xl"
-                            download="{{ $assignment->assignment_name . '.' . $extension }}">
+                    <iframe src="{{ $fileUrl }}"
+                        class="w-full h-[500px] rounded-lg shadow-sm border border-gray-200 bg-white"
+                        frameborder="0"></iframe>
+                @elseif (in_array($extension, ['jpg', 'jpeg', 'png', 'webp']))
+                    <img src="{{ $fileUrl }}" class="max-w-full max-h-[500px] object-contain rounded-lg shadow-sm" />
+                @elseif (in_array($extension, ['mp3', 'wav', 'ogg']))
+                    <div class="w-full max-w-lg bg-white p-6 rounded-xl shadow-sm">
+                        <audio controls class="w-full">
                             <source src="{{ $fileUrl }}">
                         </audio>
                     </div>
-                @elseif (in_array($extension, ['doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx']))
-                    <div
-                        class="w-full flex flex-col items-center justify-center py-10 px-4 text-center bg-gradient-to-br from-gray-50 to-gray-200 rounded-lg">
-
-                        <div class="p-6 bg-white w-full max-w-md rounded-xl shadow-md border">
-                            <h3 class="text-lg font-semibold text-gray-800">{{ $assignment->assignment_name }}</h3>
-
-                            <p class="text-gray-500 text-sm mt-2">
-                                Pratinjau tidak tersedia untuk tipe file ini.
-                            </p>
-
-                            <div class="mt-5">
-                                <a href="{{ $fileUrl }}"
-                                    download="{{ $assignment->assignment_name . '.' . $extension }}"
-                                    class="inline-flex items-center gap-2 bg-indigo-600 text-white px-5 py-2.5 rounded-lg shadow hover:bg-indigo-700 transition-all duration-200">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
-                                        viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V4" />
-                                    </svg>
-                                    Download File
-                                </a>
-                            </div>
-                        </div>
-                    </div>
                 @else
-                    <div class="h-full flex flex-col items-center justify-center text-center p-6">
-                        <p class="text-gray-600 dark:text-gray-300 mb-4">
-                            File tidak dapat ditampilkan, silakan unduh untuk melihat.
-                        </p>
+                    <div class="text-center bg-white p-8 rounded-xl shadow-sm border border-gray-200 max-w-sm">
+                        <div
+                            class="w-16 h-16 bg-indigo-50 text-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z">
+                                </path>
+                            </svg>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-4">File <strong>.{{ strtoupper($extension) }}</strong> tidak
+                            dapat dipratinjau.</p>
                         <a href="{{ $fileUrl }}" download="{{ $assignment->assignment_name . '.' . $extension }}"
-                            class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md shadow">
-                            Download File
+                            class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-lg font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 transition">
+                            Download File Soal
                         </a>
                     </div>
                 @endif
             </div>
         </div>
 
-        <div class="bg-white shadow-md rounded-lg p-6 border mt-4">
-            <h2 class="hidden md:block font-bold text-2xl border-b w-fit border-gray-300">Daftar Tugas Praktikan</h2>
-            <form action="{{ route('periksa-tugas.update') }}" method="POST">
-                @csrf
-                @forelse ($assignment->submissions as $submission)
-                    <div class="border rounded-md mt-4 p-4 flex justify-between">
-                        <div class="flex items-center gap-x-4">
-                            <svg class="w-8 h-8 text-white bg-red-500 p-1 rounded-md" aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
-                                viewBox="0 0 24 24">
-                                <path fill-rule="evenodd"
-                                    d="M8 7V2.221a2 2 0 0 0-.5.365L3.586 6.5a2 2 0 0 0-.365.5H8Zm2 0V2h7a2 2 0 0 1 2 2v.126a5.087 5.087 0 0 0-4.74 1.368v.001l-6.642 6.642a3 3 0 0 0-.82 1.532l-.74 3.692a3 3 0 0 0 3.53 3.53l3.694-.738a3 3 0 0 0 1.532-.82L19 15.149V20a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9h5a2 2 0 0 0 2-2Z"
-                                    clip-rule="evenodd" />
-                                <path fill-rule="evenodd"
-                                    d="M17.447 8.08a1.087 1.087 0 0 1 1.187.238l.002.001a1.088 1.088 0 0 1 0 1.539l-.377.377-1.54-1.542.373-.374.002-.001c.1-.102.22-.182.353-.237Zm-2.143 2.027-4.644 4.644-.385 1.924 1.925-.385 4.644-4.642-1.54-1.54Zm2.56-4.11a3.087 3.087 0 0 0-2.187.909l-6.645 6.645a1 1 0 0 0-.274.51l-.739 3.693a1 1 0 0 0 1.177 1.176l3.693-.738a1 1 0 0 0 .51-.274l6.65-6.646a3.088 3.088 0 0 0-2.185-5.275Z"
-                                    clip-rule="evenodd" />
+        <form action="{{ route('periksa-tugas.update') }}" method="POST" id="gradingForm">
+            @csrf
+
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                <div
+                    class="px-6 py-4 border-b border-gray-200 flex flex-col md:flex-row justify-between items-center gap-4 bg-gray-50 sticky top-0 z-10">
+                    <div>
+                        <h2 class="text-lg font-bold text-gray-800">Penilaian Praktikan</h2>
+                        <p class="text-xs text-gray-500">Total Pengumpulan: {{ $assignment->submissions->count() }}</p>
+                    </div>
+
+                    @if ($assignment->submissions->count())
+                        <x-primary-button type="submit">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7">
+                                </path>
                             </svg>
-                            <p class="text-xs md:text-sm">
-                                {{ $submission->user->nim }} - {{ $submission->user->nama }}
-                            </p>
-                        </div>
-
-                        <div>
-                            <label class="block mb-2.5 text-sm font-semibold">Beri Nilai:</label>
-
-                            <div class="score-wrapper relative flex items-center max-w-[9rem] shadow rounded-base">
-
-                                <button type="button"
-                                    class="btn-minus text-body bg-gray-200 border border-gray-300 hover:bg-gray-300
-                                   rounded-l-base h-8 px-3 text-sm">
-                                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-width="1" d="M5 12h14" />
-                                    </svg>
-                                </button>
-
-                                <input type="text" name="score[{{ $submission->id }}]"
-                                    class="score-input h-8 w-full text-center border-y border-gray-300 bg-gray-100"
-                                    value="{{ $submission->score ?? 0 }}" />
-
-                                <button type="button"
-                                    class="btn-plus text-body bg-gray-200 border border-gray-300 hover:bg-gray-300
-                                   rounded-r-base h-8 px-3 text-sm">
-                                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-width="1"
-                                            d="M5 12h14m-7 7V5" />
-                                    </svg>
-                                </button>
-
-                            </div>
-                        </div>
-                    </div>
-
-
-
-                @empty
-                    <p class="text-gray-400 mt-3 text-center italic">Belum ada yang mengumpulkan tugas.</p>
-                @endforelse
-
-                @if ($assignment->submissions->count())
-                    <div class="flex justify-end mt-5 gap-x-2">
-
-                        <a href="{{ url()->previous() }}"
-                            class="bg-gray-300 text-gray-700 px-4 text-sm py-2 rounded-md  hover:bg-gray-400 focus:bg-gray-400 active:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150 text-center flex items-center justify-center ">
-                            Kembali
-                        </a>
-
-                        <x-primary-button>
-                            Simpan Nilai
+                            Simpan Semua Nilai
                         </x-primary-button>
-                    </div>
-                @endif
-            </form>
+                    @endif
+                </div>
 
-            <script>
-                const MIN = 0;
-                const MAX = 100;
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-left">
+                        <thead class="text-xs text-gray-500 uppercase bg-gray-50 border-b border-gray-100">
+                            <tr>
+                                <th scope="col" class="px-6 py-3 w-10 text-center">No</th>
+                                <th scope="col" class="px-6 py-3 min-w-[200px]">Identitas Praktikan</th>
+                                <th scope="col" class="px-6 py-3">File Jawaban</th>
+                                <th scope="col" class="px-6 py-3 w-48 text-center">Nilai (0-100)</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100">
+                            @forelse ($assignment->submissions as $index => $submission)
+                                <tr class="bg-white hover:bg-gray-50 transition-colors">
+                                    <td class="px-6 py-4 text-center text-gray-500">
+                                        {{ $index + 1 }}
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center gap-3">
+                                            <div
+                                                class="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center text-xs font-bold text-indigo-700">
+                                                {{ substr($submission->user->nama, 0, 1) }}
+                                            </div>
+                                            <div>
+                                                <p class="font-medium text-gray-900">{{ $submission->user->nama }}</p>
+                                                <p class="text-xs text-gray-500 font-mono">{{ $submission->user->nim }}</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        @if ($submission->file_path)
+                                            <a href="{{ asset('storage/' . $submission->file_path) }}" target="_blank"
+                                                class="inline-flex items-center gap-2 text-indigo-600 hover:text-indigo-800 hover:underline transition text-sm">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                                                    </path>
+                                                </svg>
+                                                Unduh Jawaban
+                                            </a>
+                                        @else
+                                            <span class="text-gray-400 italic text-xs">Tidak ada file</span>
+                                        @endif
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="score-wrapper flex items-center justify-center gap-1">
+                                            <button type="button"
+                                                class="btn-minus w-8 h-8 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded-lg flex items-center justify-center transition border border-gray-300">
+                                                <svg class="w-3 h-3" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M20 12H4"></path>
+                                                </svg>
+                                            </button>
 
-                document.querySelectorAll('.score-wrapper').forEach(wrapper => {
+                                            <input type="number" name="score[{{ $submission->id }}]"
+                                                class="score-input w-16 h-8 text-center text-sm font-semibold text-gray-800 border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500"
+                                                value="{{ $submission->score ?? 0 }}" min="0" max="100">
 
-                    const input = wrapper.querySelector('.score-input');
-                    const btnPlus = wrapper.querySelector('.btn-plus');
-                    const btnMinus = wrapper.querySelector('.btn-minus');
+                                            <button type="button"
+                                                class="btn-plus w-8 h-8 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded-lg flex items-center justify-center transition border border-gray-300">
+                                                <svg class="w-3 h-3" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="4" class="px-6 py-12 text-center">
+                                        <div class="flex flex-col items-center justify-center">
+                                            <svg class="w-12 h-12 text-gray-300 mb-3" fill="none"
+                                                stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4">
+                                                </path>
+                                            </svg>
+                                            <p class="text-gray-500 font-medium">Belum ada tugas yang dikumpulkan</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </form>
+    </div>
 
-                    function updateButtons(value) {
-                        btnMinus.disabled = value <= MIN;
-                        btnPlus.disabled = value >= MAX;
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const MIN = 0;
+            const MAX = 100;
 
-                        btnMinus.classList.toggle("opacity-50", btnMinus.disabled);
-                        btnPlus.classList.toggle("opacity-50", btnPlus.disabled);
+            document.querySelectorAll('.score-wrapper').forEach(wrapper => {
+                const input = wrapper.querySelector('.score-input');
+                const btnPlus = wrapper.querySelector('.btn-plus');
+                const btnMinus = wrapper.querySelector('.btn-minus');
+
+                function updateButtons(val) {
+                    btnMinus.disabled = val <= MIN;
+                    btnPlus.disabled = val >= MAX;
+
+                    btnMinus.classList.toggle('opacity-50', val <= MIN);
+                    btnPlus.classList.toggle('opacity-50', val >= MAX);
+                }
+
+                btnPlus.addEventListener('click', () => {
+                    let v = parseInt(input.value) || 0;
+                    if (v < MAX) {
+                        input.value = ++v;
+                        updateButtons(v);
                     }
-
-                    btnPlus.addEventListener('click', () => {
-                        let value = parseInt(input.value) || 0;
-                        if (value < MAX) {
-                            value++;
-                            input.value = value;
-                            updateButtons(value);
-                        }
-                    });
-
-                    btnMinus.addEventListener('click', () => {
-                        let value = parseInt(input.value) || 0;
-                        if (value > MIN) {
-                            value--;
-                            input.value = value;
-                            updateButtons(value);
-                        }
-                    });
-
-                    input.addEventListener('input', () => {
-                        let value = parseInt(input.value);
-
-                        if (isNaN(value)) value = MIN;
-                        if (value < MIN) value = MIN;
-                        if (value > MAX) value = MAX;
-
-                        input.value = value;
-                        updateButtons(value);
-                    });
-
-                    updateButtons(parseInt(input.value) || 0);
                 });
-            </script>
 
+                btnMinus.addEventListener('click', () => {
+                    let v = parseInt(input.value) || 0;
+                    if (v > MIN) {
+                        input.value = --v;
+                        updateButtons(v);
+                    }
+                });
 
-        </div>
-    </section>
+                input.addEventListener('input', () => {
+                    let v = parseInt(input.value);
+                    if (isNaN(v) || v < MIN) v = MIN;
+                    if (v > MAX) v = MAX;
+                    updateButtons(v);
+                });
+
+                updateButtons(parseInt(input.value) || 0);
+            });
+        });
+    </script>
 
 
     @if (session('success'))
@@ -210,9 +243,7 @@
             role="alert">
             <svg class="shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                 viewBox="0 0 20 20">
-                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3
-                                                                                       1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1
-                                                                                       1 1v4h1a1 1 0 0 1 0 2Z" />
+                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
             </svg>
             <div class="ms-3 text-sm font-medium">{{ session('success') }}</div>
         </div>
@@ -234,9 +265,7 @@
             role="alert">
             <svg class="shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                 viewBox="0 0 20 20">
-                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3
-                                                                                       1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1
-                                                                                       1 1v4h1a1 1 0 0 1 0 2Z" />
+                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
             </svg>
             <div class="ms-3 text-sm font-medium">{{ session('error') }}</div>
         </div>

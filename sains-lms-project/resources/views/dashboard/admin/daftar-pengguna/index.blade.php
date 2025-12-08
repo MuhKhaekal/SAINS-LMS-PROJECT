@@ -3,260 +3,357 @@
 @section('page-title', 'SAINS - Daftar Pengguna')
 
 @section('content')
-    <h1 class="text-primary font-extrabold text-2xl mt-20 md:mt-6 md:mx-12">Daftar Pengguna</h1>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
-    <section class="md:mx-12">
-        <form method="GET" action="{{ route('daftar-pengguna.index') }}"
-            class="flex flex-wrap md:flex-nowrap gap-2 items-center mt-6 w-full bg-white shadow-sm border-2 rounded-md p-4">
+        {{-- HEADER: Judul & Aksi Utama --}}
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-800">Daftar Pengguna</h1>
+                <p class="text-sm text-gray-500 mt-1">Kelola data pengguna, asisten, dan praktikan.</p>
+            </div>
+            <div class="flex gap-3">
+                <x-primary-button data-modal-target="default-modal-excel" data-modal-toggle="default-modal-excel"
+                    class="bg-emerald-600 hover:bg-emerald-700 focus:ring-emerald-500">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                    </svg>
+                    Impor Excel
+                </x-primary-button>
+                <x-primary-button data-modal-target="default-modal-add" data-modal-toggle="default-modal-add">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                    </svg>
+                    Tambah Akun
+                </x-primary-button>
+            </div>
+        </div>
 
-            <input type="text" name="search" placeholder="Cari ..." value="{{ request('search') }}"
-                class="border border-gray-300 focus:border-gray-500 text-sm focus:ring-blue-500 rounded-md px-3 py-2 flex-grow md:basis-5/12 focus:outline-none">
+        {{-- FILTER SECTION --}}
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5 mb-6">
+            <form method="GET" action="{{ route('daftar-pengguna.index') }}"
+                class="grid grid-cols-1 md:grid-cols-12 gap-4 items-end">
 
+                {{-- Search Input --}}
+                <div class="md:col-span-4">
+                    <label for="search" class="block text-xs font-medium text-gray-700 mb-1">Pencarian</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <svg class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            </svg>
+                        </div>
+                        <input type="text" name="search" id="search" placeholder="Nama, NIM, atau Email..."
+                            value="{{ request('search') }}"
+                            class="pl-10 block w-full text-sm border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
+                    </div>
+                </div>
 
-            <select name="role" class="border text-sm border-gray-300 rounded-md px-3 py-2 md:basis-1/6 w-full">
-                <option value="">Semua Role</option>
-                <option value="admin" {{ request('role') == 'admin' ? 'selected' : '' }}>Admin</option>
-                <option value="asisten" {{ request('role') == 'asisten' ? 'selected' : '' }}>Asisten</option>
-                <option value="praktikan" {{ request('role') == 'praktikan' ? 'selected' : '' }}>Praktikan</option>
-            </select>
+                {{-- Role Filter --}}
+                <div class="md:col-span-3">
+                    <label for="role" class="block text-xs font-medium text-gray-700 mb-1">Role</label>
+                    <select name="role" id="role"
+                        class="block w-full text-sm border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
+                        <option value="">Semua Role</option>
+                        <option value="admin" {{ request('role') == 'admin' ? 'selected' : '' }}>Admin</option>
+                        <option value="asisten" {{ request('role') == 'asisten' ? 'selected' : '' }}>Asisten</option>
+                        <option value="praktikan" {{ request('role') == 'praktikan' ? 'selected' : '' }}>Praktikan</option>
+                    </select>
+                </div>
 
-            <select name="gender" class="border text-sm border-gray-300 rounded-md px-3 py-2 md:basis-1/6 w-full">
-                <option value="">Semua Gender</option>
-                <option value="L" {{ request('gender') == 'L' ? 'selected' : '' }}>Ikhwan</option>
-                <option value="P" {{ request('gender') == 'P' ? 'selected' : '' }}>Akhwat</option>
-            </select>
+                {{-- Gender Filter --}}
+                <div class="md:col-span-3">
+                    <label for="gender" class="block text-xs font-medium text-gray-700 mb-1">Jenis Kelamin</label>
+                    <select name="gender" id="gender"
+                        class="block w-full text-sm border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
+                        <option value="">Semua Gender</option>
+                        <option value="L" {{ request('gender') == 'L' ? 'selected' : '' }}>Laki-laki (Ikhwan)</option>
+                        <option value="P" {{ request('gender') == 'P' ? 'selected' : '' }}>Perempuan (Akhwat)</option>
+                    </select>
+                </div>
 
-            <button type="submit"
-                class="bg-primary text-white px-4 py-2 rounded-md hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-1500 md:basis-2/12 w-full flex items-center justify-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="m21 21-4.35-4.35m2.1-5.4A7.75 7.75 0 1 1 4 8.75a7.75 7.75 0 0 1 14.75 2.5Z" />
-                </svg>
-                Cari
-            </button>
+                {{-- Buttons --}}
+                <div class="md:col-span-2 flex gap-2">
+                    <button type="submit"
+                        class="w-full bg-gray-800 text-white px-4 py-2 rounded-lg text-sm hover:bg-gray-700 transition">
+                        Cari
+                    </button>
+                    <a href="{{ route('daftar-pengguna.index') }}"
+                        class="w-full bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg text-sm hover:bg-gray-50 text-center transition flex items-center justify-center"
+                        title="Reset Filter">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15">
+                            </path>
+                        </svg>
+                    </a>
+                </div>
+            </form>
+        </div>
 
-            <a href="{{ route('daftar-pengguna.index') }}"
-                class="bg-gray-300 text-gray-700 px-4 py-2 rounded-md  hover:bg-gray-400 focus:bg-gray-400 active:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150 md:basis-2/12 w-full text-center flex items-center justify-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-                Hapus Filter
-            </a>
-        </form>
-    </section>
-
-    <section class="md:mx-12">
+        {{-- BULK DELETE INFO BAR --}}
+        {{-- Area ini muncul jika ada checkbox yang dipilih --}}
         <form id="bulkDeleteForm" action="{{ route('daftar-pengguna.destroy-multiple') }}" method="POST">
             @csrf
             @method('DELETE')
-            <div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-5">
-                <div class="flex gap-x-4 m-4">
-                    <button type="button" id="bulkDeleteBtn"
-                        class="px-4 py-2 bg-red-500 border border-transparent rounded-md font-normal text-xs text-white  tracking-widest hover:bg-red-600 focus:bg-red-600 active:bg-red-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150"
-                        data-modal-target="default-modal-delete" data-modal-toggle="default-modal-delete">
-                        Hapus yang Dipilih
-                    </button>
 
+            <div id="selectionBar"
+                class="hidden mb-4 bg-blue-50 border border-blue-200 rounded-lg p-4 flex items-center justify-between transition-all duration-300">
+                <div class="flex items-center gap-2 text-blue-700">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <span class="font-medium text-sm"><span id="selectedCount">0</span> pengguna dipilih</span>
+                    <span class="text-xs text-blue-500">(Termasuk halaman lain)</span>
+                </div>
+                <div class="flex gap-3">
                     <button type="button" id="clearSelectionBtn"
-                        class="text-xs px-4 py-2 bg-gray-300 text-gray-700 rounded-md  hover:bg-gray-400 focus:bg-gray-400 active:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150 hidden">
-                        Batalkan Pilihan
+                        class="text-sm text-gray-600 hover:text-gray-800 font-medium underline">
+                        Batalkan
+                    </button>
+                    <button type="button" id="bulkDeleteBtn" data-modal-target="default-modal-delete"
+                        data-modal-toggle="default-modal-delete"
+                        class="bg-red-600 text-white text-xs px-4 py-2 rounded-md hover:bg-red-700 transition shadow-sm flex items-center gap-2">
+                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                            </path>
+                        </svg>
+                        Hapus Terpilih
                     </button>
                 </div>
-
-
-                <table class="w-full text-sm text-left rtl:text-right text-gray-400">
-                    <thead class="text-xs uppercase bg-primary text-gray-400">
-                        <tr>
-                            <th scope="col" class="px-6 py-3 w-1/12">
-                                <input type="checkbox" id="checkAll">
-                            </th>
-                            <th scope="col" class="px-6 py-3 w-4/12">
-                                Nama
-                            </th>
-                            <th scope="col" class="px-6 py-3 w-2/12">
-                                NIM
-                            </th>
-                            <th scope="col" class="px-6 py-3 w-2/12">
-                                Role
-                            </th>
-                            <th scope="col" class="px-6 py-3 w-2/12">
-                                Jenis Kelamin
-                            </th>
-                            <th scope="col" class="px-6 py-3 w-1/12">
-                                Action
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($users as $index => $user)
-                            <tr class="bg-white hover:bg-gray-100 text-primary border-b">
-                                <td class="px-6 py-4">
-                                    @if ($user->role !== 'admin')
-                                        <input type="checkbox" name="ids[]" value="{{ $user->id }}" class="checkItem"
-                                            data-id="{{ $user->id }}">
-                                    @endif
-                                </td>
-                                <td class="px-6 py-4 font-medium whitespace-nowrap">
-                                    {{ $user->nama }}
-                                </td>
-                                <td class="px-6 py-4">
-                                    {{ $user->nim }}
-                                </td>
-                                <td class="px-6 py-4 capitalize">
-                                    {{ $user->role }}
-                                </td>
-                                <td class="px-6 py-4">
-                                    {{ $user->gender }}
-                                </td>
-                                <td class="px-6 py-4 flex gap-2">
-                                    <button type="button" data-tooltip-target="tooltip-edit-{{ $index }}"
-                                        data-modal-target="default-modal-update" data-modal-toggle="default-modal-update"
-                                        data-id="{{ $user->id }}" data-nama="{{ $user->nama }}"
-                                        data-nim="{{ $user->nim }}" data-gender="{{ $user->gender }}"
-                                        data-role="{{ $user->role }}"
-                                        data-halaqah="{{ optional($user->halaqahs->first())->id }}"
-                                        class="font-medium hover:underline">
-                                        <svg class="w-7 h-7 text-secondary bg-yellow-500 hover:bg-yellow-600 hover:text-white rounded-md p-1"
-                                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                                            viewBox="0 0 24 24">
-                                            <path fill-rule="evenodd"
-                                                d="M14 4.182A4.136 4.136 0 0 1 16.9 3c1.087 0 2.13.425 2.899 1.182A4.01 4.01 0 0 1 21 7.037c0 1.068-.43 2.092-1.194 2.849L18.5 11.214l-5.8-5.71 1.287-1.31.012-.012Zm-2.717 2.763L6.186 12.13l2.175 2.141 5.063-5.218-2.141-2.108Zm-6.25 6.886-1.98 5.849a.992.992 0 0 0 .245 1.026 1.03 1.03 0 0 0 1.043.242L10.282 19l-5.25-5.168Zm6.954 4.01 5.096-5.186-2.218-2.183-5.063 5.218 2.185 2.15Z"
-                                                clip-rule="evenodd" />
-                                        </svg>
-                                    </button>
-
-                                    <div id="tooltip-edit-{{ $index }}" role="tooltip"
-                                        class="absolute z-10 invisible inline-block px-3 py-2 font-medium text-white transition-opacity duration-300 bg-dark rounded-base shadow-xs opacity-0 tooltip bg-primary rounded-md text-xs">
-                                        Edit
-                                        <div class="tooltip-arrow" data-popper-arrow></div>
-                                    </div>
-
-                                    <button type="button" class="font-medium hover:underline"
-                                        data-tooltip-target="tooltip-delete-{{ $index }}"
-                                        data-modal-target="default-modal-delete" data-modal-toggle="default-modal-delete"
-                                        data-id="{{ $user->id }}" data-nama="{{ $user->nama }}">
-                                        <svg class="w-7 h-7 text-secondary bg-red-500 hover:bg-red-600 hover:text-white rounded-md p-1"
-                                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                                            viewBox="0 0 24 24">
-                                            <path fill-rule="evenodd"
-                                                d="M8.586 2.586A2 2 0 0 1 10 2h4a2 2 0 0 1 2 2v2h3a1 1 0 1 1 0 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8a1 1 0 0 1 0-2h3V4a2 2 0 0 1 .586-1.414ZM10 6h4V4h-4v2Zm1 4a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Zm4 0a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Z"
-                                                clip-rule="evenodd" />
-                                        </svg>
-                                    </button>
-
-                                    <div id="tooltip-delete-{{ $index }}" role="tooltip"
-                                        class="absolute z-10 invisible inline-block px-3 py-2 font-medium text-white transition-opacity duration-300 bg-dark rounded-base shadow-xs opacity-0 tooltip bg-primary rounded-md text-xs">
-                                        Hapus
-                                        <div class="tooltip-arrow" data-popper-arrow></div>
-                                    </div>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-
             </div>
 
+            {{-- TABLE SECTION --}}
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-left">
+                        <thead class="text-xs text-gray-500 uppercase bg-gray-50 border-b border-gray-100">
+                            <tr>
+                                <th scope="col" class="px-6 py-4 w-10">
+                                    <div class="flex items-center">
+                                        <input type="checkbox" id="checkAll"
+                                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
+                                    </div>
+                                </th>
+                                <th scope="col" class="px-6 py-3 font-semibold">Nama Pengguna</th>
+                                <th scope="col" class="px-6 py-3 font-semibold">NIM</th>
+                                <th scope="col" class="px-6 py-3 font-semibold">Role</th>
+                                <th scope="col" class="px-6 py-3 font-semibold">Gender</th>
+                                <th scope="col" class="px-6 py-3 font-semibold text-center w-24">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100">
+                            @forelse ($users as $index => $user)
+                                <tr class="bg-white hover:bg-gray-50 transition-colors duration-200">
+                                    <td class="px-6 py-4">
+                                        @if ($user->role !== 'admin')
+                                            <input type="checkbox" name="ids[]" value="{{ $user->id }}"
+                                                class="checkItem w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 cursor-pointer"
+                                                data-id="{{ $user->id }}">
+                                        @endif
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="font-medium text-gray-900">{{ $user->nama }}</div>
+                                        <div class="text-xs text-gray-500">{{ $user->email }}</div>
+                                    </td>
+                                    <td class="px-6 py-4 font-mono text-gray-600">
+                                        {{ $user->nim ?? '-' }}
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        @php
+                                            $roleClasses = match ($user->role) {
+                                                'admin' => 'bg-purple-100 text-purple-800 border-purple-200',
+                                                'asisten' => 'bg-blue-100 text-blue-800 border-blue-200',
+                                                'praktikan' => 'bg-green-100 text-green-800 border-green-200',
+                                                default => 'bg-gray-100 text-gray-800 border-gray-200',
+                                            };
+                                        @endphp
+                                        <span
+                                            class="px-2.5 py-0.5 rounded-full text-xs font-medium border {{ $roleClasses }} capitalize">
+                                            {{ $user->role }}
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        @if ($user->gender == 'L')
+                                            <span
+                                                class="inline-flex items-center gap-1 text-xs font-medium text-blue-700 bg-blue-50 px-2 py-1 rounded border border-blue-100">
+                                                Laki-laki
+                                            </span>
+                                        @elseif($user->gender == 'P')
+                                            <span
+                                                class="inline-flex items-center gap-1 text-xs font-medium text-pink-700 bg-pink-50 px-2 py-1 rounded border border-pink-100">
+                                                Perempuan
+                                            </span>
+                                        @else
+                                            -
+                                        @endif
+                                    </td>
+                                    <td class="px-6 py-4 text-center">
+                                        <div class="flex items-center justify-center gap-2">
+                                            {{-- Edit Button --}}
+                                            <button type="button" data-modal-target="default-modal-update"
+                                                data-modal-toggle="default-modal-update" data-id="{{ $user->id }}"
+                                                data-nama="{{ $user->nama }}" data-nim="{{ $user->nim }}"
+                                                data-gender="{{ $user->gender }}" data-role="{{ $user->role }}"
+                                                data-halaqah="{{ optional($user->halaqahs->first())->id }}"
+                                                class="text-gray-500 hover:text-yellow-600 transition-colors p-1 rounded hover:bg-yellow-50"
+                                                title="Edit">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
+                                                    </path>
+                                                </svg>
+                                            </button>
+
+                                            {{-- Delete Button --}}
+                                            <button type="button" data-modal-target="default-modal-delete"
+                                                data-modal-toggle="default-modal-delete" data-id="{{ $user->id }}"
+                                                data-nama="{{ $user->nama }}"
+                                                class="text-gray-500 hover:text-red-600 transition-colors p-1 rounded hover:bg-red-50"
+                                                title="Hapus">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                                                    </path>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="6" class="px-6 py-10 text-center text-gray-500">
+                                        <div class="flex flex-col items-center justify-center">
+                                            <svg class="w-12 h-12 text-gray-300 mb-3" fill="none"
+                                                stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4">
+                                                </path>
+                                            </svg>
+                                            <p class="text-base font-medium">Tidak ada pengguna ditemukan</p>
+                                            <p class="text-sm">Coba ubah filter atau kata kunci pencarian Anda.</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+
+                {{-- Pagination --}}
+                @if ($users->hasPages())
+                    <div class="px-6 py-4 border-t border-gray-100 bg-gray-50">
+                        {{ $users->appends(request()->query())->links() }}
+                    </div>
+                @endif
+            </div>
         </form>
+    </div>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const checkAll = document.getElementById('checkAll');
+            const checkItems = document.querySelectorAll('.checkItem');
+            const bulkDeleteForm = document.getElementById('bulkDeleteForm');
 
-        <div class="mt-4">
-            {{ $users->appends(request()->query())->links() }}
-        </div>
+            // UI Elements for selection
+            const selectionBar = document.getElementById('selectionBar');
+            const selectedCountSpan = document.getElementById('selectedCount');
+            const clearBtn = document.getElementById('clearSelectionBtn');
 
+            let selectedIds = JSON.parse(localStorage.getItem('selectedIds') || '[]');
 
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                const checkAll = document.getElementById('checkAll');
-                const checkItems = document.querySelectorAll('.checkItem');
-                const deleteBtn = document.getElementById('bulkDeleteBtn');
-                const clearBtn = document.getElementById('clearSelectionBtn');
-
-                let selectedIds = JSON.parse(localStorage.getItem('selectedIds') || '[]');
-
+            // Sync Checkboxes on Load
+            function syncCheckboxes() {
                 checkItems.forEach(item => {
                     if (selectedIds.includes(item.value)) {
                         item.checked = true;
                     }
                 });
+                updateSelectionUI();
+            }
 
-                function toggleDeleteButton() {
-                    const anyChecked = selectedIds.length > 0;
+            // Update UI (Show/Hide Bar & Update Count)
+            function updateSelectionUI() {
+                const count = selectedIds.length;
+                selectedCountSpan.innerText = count;
 
-                    deleteBtn.classList.toggle('hidden', !anyChecked);
-                    clearBtn.classList.toggle('hidden', !anyChecked);
+                if (count > 0) {
+                    selectionBar.classList.remove('hidden');
+                    // Optional: Check 'CheckAll' if all on page are checked
+                    const allOnPageChecked = Array.from(checkItems).every(item => item.checked);
+                    if (checkItems.length > 0) checkAll.checked = allOnPageChecked;
+                } else {
+                    selectionBar.classList.add('hidden');
+                    checkAll.checked = false;
                 }
-                toggleDeleteButton();
+            }
 
-                checkItems.forEach(item => {
-                    item.addEventListener('change', () => {
-                        if (item.checked) {
+            syncCheckboxes();
+
+            // Individual Checkbox Event
+            checkItems.forEach(item => {
+                item.addEventListener('change', () => {
+                    if (item.checked) {
+                        if (!selectedIds.includes(item.value)) selectedIds.push(item.value);
+                    } else {
+                        selectedIds = selectedIds.filter(id => id !== item.value);
+                    }
+                    localStorage.setItem('selectedIds', JSON.stringify(selectedIds));
+                    updateSelectionUI();
+                });
+            });
+
+            // Check All Event
+            if (checkAll) {
+                checkAll.addEventListener('change', function() {
+                    const isChecked = checkAll.checked;
+                    checkItems.forEach(item => {
+                        item.checked = isChecked;
+                        if (isChecked) {
                             if (!selectedIds.includes(item.value)) selectedIds.push(item.value);
                         } else {
                             selectedIds = selectedIds.filter(id => id !== item.value);
                         }
-
-                        localStorage.setItem('selectedIds', JSON.stringify(selectedIds));
-                        toggleDeleteButton();
                     });
-                });
-
-                checkAll.addEventListener('change', function() {
-                    checkItems.forEach(item => {
-                        item.checked = checkAll.checked;
-
-                        if (checkAll.checked && !selectedIds.includes(item.value)) {
-                            selectedIds.push(item.value);
-                        } else if (!checkAll.checked) {
-                            selectedIds = selectedIds.filter(id => id !== item.value);
-                        }
-                    });
-
                     localStorage.setItem('selectedIds', JSON.stringify(selectedIds));
-                    toggleDeleteButton();
+                    updateSelectionUI();
+                });
+            }
+
+            // Handle Form Submit (Inject Hidden Inputs)
+            bulkDeleteForm.addEventListener('submit', function() {
+                // Remove existing hidden inputs to avoid duplicates
+                const existingInputs = bulkDeleteForm.querySelectorAll(
+                'input[name="ids[]"][type="hidden"]');
+                existingInputs.forEach(el => el.remove());
+
+                selectedIds.forEach(id => {
+                    const hidden = document.createElement('input');
+                    hidden.type = 'hidden';
+                    hidden.name = 'ids[]';
+                    hidden.value = id;
+                    bulkDeleteForm.appendChild(hidden);
                 });
 
-                const bulkForm = document.getElementById('bulkDeleteForm');
-                bulkForm.addEventListener('submit', function() {
-                    selectedIds.forEach(id => {
-                        const hidden = document.createElement('input');
-                        hidden.type = 'hidden';
-                        hidden.name = 'ids[]';
-                        hidden.value = id;
-                        bulkForm.appendChild(hidden);
-                    });
-
-                    localStorage.removeItem('selectedIds');
-                });
-
-                clearBtn.addEventListener('click', function() {
-                    selectedIds = [];
-                    checkItems.forEach(item => item.checked = false);
-                    checkAll.checked = false;
-
-                    localStorage.removeItem('selectedIds');
-                    toggleDeleteButton();
-                });
+                localStorage.removeItem('selectedIds');
             });
-        </script>
 
-
-    </section>
-
-    <section class="md:mx-12 mt-10 flex justify-center md:justify-start md:mt-5 gap-4">
-        <x-primary-button class="text-center" data-modal-target="default-modal-add"
-            data-modal-toggle="default-modal-add">
-            {{ __('+ Tambah Akun') }}
-        </x-primary-button>
-
-        <x-primary-button class="text-center" data-modal-target="default-modal-excel"
-            data-modal-toggle="default-modal-excel">
-            {{ __('+ Impor Excel') }}
-        </x-primary-button>
-    </section>
-
+            // Clear Selection Button
+            clearBtn.addEventListener('click', function() {
+                selectedIds = [];
+                checkItems.forEach(item => item.checked = false);
+                checkAll.checked = false;
+                localStorage.removeItem('selectedIds');
+                updateSelectionUI();
+            });
+        });
+    </script>
 
     <section>
         <style>
@@ -879,8 +976,8 @@
             <svg class="shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                 viewBox="0 0 20 20">
                 <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3
-                                                                                           1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1
-                                                                                           1 1v4h1a1 1 0 0 1 0 2Z" />
+                                                                                               1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1
+                                                                                               1 1v4h1a1 1 0 0 1 0 2Z" />
             </svg>
             <div class="ms-3 text-sm font-medium">{{ session('success') }}</div>
         </div>
@@ -903,8 +1000,8 @@
             <svg class="shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                 viewBox="0 0 20 20">
                 <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3
-                                                                                           1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1
-                                                                                           1 1v4h1a1 1 0 0 1 0 2Z" />
+                                                                                               1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1
+                                                                                               1 1v4h1a1 1 0 0 1 0 2Z" />
             </svg>
             <div class="ms-3 text-sm font-medium">{{ session('error') }}</div>
         </div>
