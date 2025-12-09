@@ -134,14 +134,44 @@
                                         class="text-sm font-semibold text-gray-700 group-hover:text-indigo-600">Presensi</span>
                                 </a>
 
+                                @if ($meeting->type == 'pretest')
+                                    <a href="{{ route('pretest.create', ['halaqah_name' => $selectedHalaqah->halaqah_name]) }}"
+                                        class="flex items-center gap-3 p-3 bg-white border border-rose-100 rounded-lg hover:border-rose-300 hover:shadow-sm transition group">
+                                        <div
+                                            class="p-2 bg-yellow-50 text-yellow-600 rounded-lg group-hover:bg-yellow-600 group-hover:text-white transition">
+                                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                                <path fill-rule="evenodd"
+                                                    d="M8 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1h2a2 2 0 0 1 2 2v15a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h2Zm6 1h-4v2H9a1 1 0 0 0 0 2h6a1 1 0 1 0 0-2h-1V4Zm-3 8a1 1 0 0 1 1-1h3a1 1 0 1 1 0 2h-3a1 1 0 0 1-1-1Zm-2-1a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H9Zm2 5a1 1 0 0 1 1-1h3a1 1 0 1 1 0 2h-3a1 1 0 0 1-1-1Zm-2-1a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H9Z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+                                        </div>
+                                        <span class="text-sm font-semibold text-gray-700 group-hover:text-yellow-600">Mulai
+                                            Pre-test</span>
+                                    </a>
+                                @endif
+                                @if ($meeting->type == 'posttest')
+                                    <a href="{{ route('posttest.create', ['halaqah_name' => $selectedHalaqah->halaqah_name]) }}"
+                                        class="flex items-center gap-3 p-3 bg-white border border-cyan-100 rounded-lg hover:border-cyan-300 hover:shadow-sm transition group">
+                                        <div
+                                            class="p-2 bg-cyan-50 text-cyan-700 rounded-full group-hover:bg-cyan-700 group-hover:text-white transition">
+                                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                                <path fill-rule="evenodd"
+                                                    d="M8 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1h2a2 2 0 0 1 2 2v15a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h2Zm6 1h-4v2H9a1 1 0 0 0 0 2h6a1 1 0 1 0 0-2h-1V4Zm-3 8a1 1 0 0 1 1-1h3a1 1 0 1 1 0 2h-3a1 1 0 0 1-1-1Zm-2-1a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H9Zm2 5a1 1 0 0 1 1-1h3a1 1 0 1 1 0 2h-3a1 1 0 0 1-1-1Zm-2-1a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H9Z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+                                        </div>
+                                        <span class="text-sm font-semibold text-gray-700 group-hover:text-cyan-700">Mulai
+                                            Post-test</span>
+                                    </a>
+                                @endif
                                 @if ($meeting->type == 'ujian')
                                     <a href="{{ route('ujian-asisten.index', ['meeting_name' => $meeting->meeting_name, 'halaqah_name' => $selectedHalaqah->halaqah_name]) }}"
                                         class="flex items-center gap-3 p-3 bg-white border border-rose-100 rounded-lg hover:border-rose-300 hover:shadow-sm transition group">
                                         <div
                                             class="p-2 bg-rose-50 text-rose-600 rounded-lg group-hover:bg-rose-600 group-hover:text-white transition">
-                                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
                                                 <path fill-rule="evenodd"
-                                                    d="M5.617 2.076a1 1 0 0 1 1.09.217L8 3.586l1.293-1.293a1 1 0 0 1 1.414 0L12 3.586l1.293-1.293a1 1 0 0 1 1.414 0L16 3.586l1.293-1.293A1 1 0 0 1 19 3v18a1 1 0 0 1-1.707.707L16 20.414l-1.293 1.293a1 1 0 0 1-1.414 0L12 20.414l-1.293 1.293a1 1 0 0 1-1.414 0L8 20.414l-1.293 1.293A1 1 0 0 1 5 21V3a1 1 0 0 1 .617-.924ZM9 7a1 1 0 0 0 0 2h6a1 1 0 1 0 0-2H9Zm0 4a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2H9Zm0 4a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2H9Z"
+                                                    d="M8 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1h2a2 2 0 0 1 2 2v15a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h2Zm6 1h-4v2H9a1 1 0 0 0 0 2h6a1 1 0 1 0 0-2h-1V4Zm-3 8a1 1 0 0 1 1-1h3a1 1 0 1 1 0 2h-3a1 1 0 0 1-1-1Zm-2-1a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H9Zm2 5a1 1 0 0 1 1-1h3a1 1 0 1 1 0 2h-3a1 1 0 0 1-1-1Zm-2-1a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H9Z"
                                                     clip-rule="evenodd" />
                                             </svg>
                                         </div>
@@ -211,11 +241,11 @@
 
                     if (content.classList.contains("max-h-0")) {
                         content.classList.remove("max-h-0");
-                        content.style.maxHeight = content.scrollHeight + "px"; 
+                        content.style.maxHeight = content.scrollHeight + "px";
                         icon.classList.add("rotate-180");
                     } else {
                         content.style.maxHeight = content.scrollHeight +
-                        "px";
+                            "px";
                         setTimeout(() => {
                             content.style.maxHeight = "0px";
                             content.classList.add("max-h-0");

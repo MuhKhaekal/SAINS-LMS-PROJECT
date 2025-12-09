@@ -28,7 +28,9 @@ use App\Http\Controllers\Admin\TestController;
 use App\Http\Controllers\Asisten\AsistenTestController;
 use App\Http\Controllers\Asisten\AssignmentController;
 use App\Http\Controllers\Asisten\MaterialController;
+use App\Http\Controllers\Asisten\PosttestController;
 use App\Http\Controllers\Asisten\PresenceController;
+use App\Http\Controllers\Asisten\PretestController;
 use App\Http\Controllers\Asisten\SubmissionAsistenController;
 use App\Http\Controllers\Asisten\WeeklyScoreController;
 use App\Http\Controllers\Praktikan\AnnouncementPraktikanController;
@@ -312,6 +314,28 @@ Route::middleware('auth')->group(function () {
                 'edit' => 'nilai-perpekan.edit',
                 'update' => 'nilai-perpekan.update',
                 'destroy' => 'nilai-perpekan.destroy',
+        ]);
+
+        Route::resource('pretest', PretestController::class)
+        ->names([
+            'index' => 'pretest.index',
+            'create' => 'pretest.create',
+            'store' => 'pretest.store',
+            'show' => 'pretest.show',         
+            'edit' => 'pretest.edit',
+            'update' => 'pretest.update',
+            'destroy' => 'pretest.destroy',
+        ]);
+
+        Route::resource('posttest', PosttestController::class)
+        ->names([
+            'index' => 'posttest.index',
+            'create' => 'posttest.create',
+            'store' => 'posttest.store',
+            'show' => 'posttest.show',         
+            'edit' => 'posttest.edit',
+            'update' => 'posttest.update',
+            'destroy' => 'posttest.destroy',
         ]);
     });
 

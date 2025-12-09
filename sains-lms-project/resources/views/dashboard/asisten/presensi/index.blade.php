@@ -33,7 +33,7 @@
             <input type="hidden" name="meeting_id" value="{{ $selectedMeeting->id }}">
 
             <div
-                class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 mb-6 flex flex-col md:flex-row items-center justify-between gap-4 sticky top-4 z-10">
+                class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 mb-6 flex flex-col md:flex-row items-center justify-between gap-4 top-4">
                 <div
                     class="flex items-center gap-3 text-gray-700 bg-gray-50 px-4 py-2 rounded-lg border border-gray-200 w-full md:w-auto justify-center md:justify-start">
                     <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -136,37 +136,7 @@
             </div>
         </form>
 
-        @if (session('success'))
-            <div id="alert-success"
-                class="fixed bottom-4 right-4 z-50 flex items-center p-4 mb-4 text-green-800 border-l-4 border-green-500 bg-green-50 rounded shadow-lg transform transition-all duration-500 translate-y-0 opacity-100"
-                role="alert">
-                <svg class="flex-shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                    fill="currentColor" viewBox="0 0 20 20">
-                    <path
-                        d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
-                </svg>
-                <div class="ms-3 text-sm font-medium">{{ session('success') }}</div>
-                <button type="button"
-                    class="ms-auto -mx-1.5 -my-1.5 bg-green-50 text-green-500 rounded-lg focus:ring-2 focus:ring-green-400 p-1.5 hover:bg-green-200 inline-flex items-center justify-center h-8 w-8"
-                    data-dismiss-target="#alert-success" aria-label="Close" onclick="this.parentElement.remove()">
-                    <span class="sr-only">Close</span>
-                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                        viewBox="0 0 14 14">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
-                    </svg>
-                </button>
-            </div>
-            <script>
-                setTimeout(() => {
-                    const alert = document.getElementById('alert-success');
-                    if (alert) {
-                        alert.classList.add('opacity-0', 'translate-y-10');
-                        setTimeout(() => alert.remove(), 500);
-                    }
-                }, 3000);
-            </script>
-        @endif
+
 
     </div>
 

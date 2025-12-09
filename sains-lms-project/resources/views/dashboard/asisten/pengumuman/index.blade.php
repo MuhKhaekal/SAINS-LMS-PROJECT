@@ -55,7 +55,7 @@
                 </div>
             </section>
 
-            <section class="lg:col-span-8 space-y-6">
+            <section class="lg:col-span-8 space-y-6 md:ms-12">
                 @forelse ($announcements as $index => $announcement)
                     <div class="flex gap-4 group">
                         <div class="flex-shrink-0">

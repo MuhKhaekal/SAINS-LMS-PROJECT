@@ -50,7 +50,6 @@ class PresenceController extends Controller
      */
     public function store(Request $request)
     {
-        // Validasi dasar
         $validated = $request->validate([
             'halaqah_id' => 'required|exists:halaqahs,id',
             'meeting_id' => 'required|exists:meetings,id',
