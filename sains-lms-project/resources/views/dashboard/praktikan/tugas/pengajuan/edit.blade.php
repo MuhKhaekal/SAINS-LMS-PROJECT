@@ -3,9 +3,7 @@
 @section('page-title', 'SAINS | Edit Pengajuan Tugas')
 
 @section('content')
-    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-
-        {{-- HEADER & NAVIGATION --}}
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:mt-24">
         <div class="flex items-center justify-between mb-8">
             <div>
                 <h1 class="text-2xl font-bold text-gray-800">Edit Jawaban</h1>
@@ -21,10 +19,7 @@
             </a>
         </div>
 
-        {{-- MAIN CARD --}}
         <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
-
-            {{-- Task Info Summary --}}
             <div class="bg-gray-50 p-6 border-b border-gray-200">
                 <div class="flex items-center gap-2 mb-2">
                     <span
@@ -40,7 +35,6 @@
                 @csrf
                 @method('PUT')
 
-                {{-- 1. FILE SAAT INI --}}
                 @if ($submission->file_location)
                     <div class="mb-8">
                         <label class="block text-sm font-semibold text-gray-700 mb-2">File Dikumpulkan Saat Ini</label>
@@ -74,7 +68,6 @@
                     </div>
                 @endif
 
-                {{-- 2. UPLOAD FILE BARU --}}
                 <div class="mb-6">
                     <label class="block text-sm font-semibold text-gray-700 mb-2">
                         Ganti File <span class="font-normal text-gray-500 text-xs ml-1">(Biarkan kosong jika tidak ingin
@@ -100,7 +93,6 @@
                         </label>
                     </div>
 
-                    {{-- Feedback Nama File Baru --}}
                     <div id="file_info"
                         class="mt-3 hidden items-center gap-2 text-sm text-gray-700 bg-green-50 p-2 rounded-lg border border-green-100">
                         <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -113,7 +105,6 @@
                     <x-input-error :messages="$errors->get('file_location')" class="mt-2" />
                 </div>
 
-                {{-- 3. CATATAN --}}
                 <div class="mb-8">
                     <label for="description" class="block text-sm font-semibold text-gray-700 mb-2">Catatan Tambahan</label>
                     <textarea name="description" id="description" rows="3"
@@ -121,7 +112,6 @@
                         placeholder="Tambahkan pesan untuk asisten jika perlu..." required>{{ old('description', $submission->description) }}</textarea>
                 </div>
 
-                {{-- ACTIONS --}}
                 <div class="flex justify-end pt-4 border-t border-gray-100">
                     <x-primary-button class="w-full sm:w-auto justify-center px-6 py-3 text-base">
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">

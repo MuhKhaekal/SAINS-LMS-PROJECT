@@ -5,9 +5,8 @@
 @section('content')
 
 
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:mt-24">
 
-        {{-- HEADER & NAVIGATION --}}
         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
             <div>
                 <h1 class="text-2xl font-bold text-gray-800">Materi Pembelajaran</h1>
@@ -31,7 +30,6 @@
             </div>
         </div>
 
-        {{-- CONTENT LOOP --}}
         <div class="space-y-8">
             @forelse ($materials as $index => $material)
                 @php
@@ -42,7 +40,6 @@
 
                 <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
 
-                    {{-- Card Header: Title & Description --}}
                     <div class="p-6 md:p-8 border-b border-gray-100">
                         <div class="flex items-start justify-between gap-4">
                             <div class="flex-1">
@@ -54,7 +51,6 @@
                                 </p>
                             </div>
 
-                            {{-- Quick Download Button --}}
                             <a href="{{ $fileUrl }}" download="{{ $material->material_name . '.' . $extension }}"
                                 class="hidden md:inline-flex items-center px-4 py-2 bg-indigo-50 text-indigo-700 rounded-lg text-sm font-medium hover:bg-indigo-100 transition"
                                 title="Download File">
@@ -67,10 +63,8 @@
                         </div>
                     </div>
 
-                    {{-- Preview Area --}}
                     <div class="bg-gray-50 p-4 md:p-8 flex justify-center min-h-[300px]">
 
-                        {{-- PDF PREVIEW --}}
                         @if ($extension === 'pdf')
                             <div
                                 class="w-full h-[500px] md:h-[700px] bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
@@ -82,7 +76,6 @@
                                 </iframe>
                             </div>
 
-                            {{-- IMAGE PREVIEW --}}
                         @elseif (in_array($extension, ['jpg', 'jpeg', 'png', 'webp']))
                             <div class="relative group max-w-full">
                                 <img src="{{ $fileUrl }}"
@@ -94,7 +87,6 @@
                                 </a>
                             </div>
 
-                            {{-- AUDIO PREVIEW --}}
                         @elseif (in_array($extension, ['mp3', 'wav', 'ogg']))
                             <div
                                 class="w-full max-w-2xl bg-white p-8 rounded-2xl shadow-sm border border-gray-200 text-center">
@@ -114,11 +106,9 @@
                                 </audio>
                             </div>
 
-                            {{-- FALLBACK (OFFICE FILES, ZIP, ETC) --}}
                         @else
                             <div
                                 class="text-center max-w-md w-full bg-white p-8 rounded-2xl shadow-sm border border-gray-200">
-                                {{-- Icon Logic --}}
                                 @php
                                     $bgColor = match (true) {
                                         in_array($extension, ['doc', 'docx']) => 'bg-blue-100 text-blue-600',

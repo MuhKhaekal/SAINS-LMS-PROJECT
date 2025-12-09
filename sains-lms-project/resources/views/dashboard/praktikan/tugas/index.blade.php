@@ -3,9 +3,7 @@
 @section('page-title', 'SAINS | Tugas')
 
 @section('content')
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-
-        {{-- HEADER --}}
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:mt-24">
         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
             <div>
                 <h1 class="text-2xl font-bold text-gray-800">Daftar Tugas</h1>
@@ -29,14 +27,10 @@
             </div>
         </div>
 
-        {{-- LIST TUGAS --}}
         <div class="space-y-6">
             @forelse ($assignments as $index => $assignment)
                 @php
-                    // Cek apakah user sudah mengumpulkan tugas ini
                     $submitted = $userSubmissions[$assignment->id] ?? null;
-
-                    // Setup file soal
                     $path = $assignment->file_location;
                     $extension = strtolower(pathinfo($path, PATHINFO_EXTENSION));
                     $fileUrl = asset('storage/' . $path);
@@ -46,12 +40,11 @@
                     class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow duration-300">
                     <div class="flex flex-col md:flex-row">
 
-                        {{-- BAGIAN KIRI: INFO TUGAS --}}
                         <div class="p-6 md:w-2/3 border-b md:border-b-0 md:border-r border-gray-100">
                             <div class="flex items-center gap-3 mb-3">
                                 <span
                                     class="bg-indigo-100 text-indigo-700 text-xs font-bold px-2.5 py-0.5 rounded border border-indigo-200">
-                                    Tugas #{{ $index + 1 }}
+                                    Tugas {{ $index + 1 }}
                                 </span>
                                 <h2 class="text-lg font-bold text-gray-800">{{ $assignment->assignment_name }}</h2>
                             </div>
@@ -60,7 +53,6 @@
                                 {{ $assignment->description ?: 'Tidak ada instruksi khusus.' }}
                             </p>
 
-                            {{-- Tombol Download Soal --}}
                             <div class="flex items-center gap-2">
                                 <a href="{{ $fileUrl }}"
                                     download="{{ $assignment->assignment_name . '.' . $extension }}"
@@ -75,11 +67,9 @@
                             </div>
                         </div>
 
-                        {{-- BAGIAN KANAN: STATUS PENGUMPULAN --}}
                         <div class="p-6 md:w-1/3 bg-gray-50 flex flex-col justify-center">
 
                             @if ($submitted)
-                                {{-- KONDISI: SUDAH MENGUMPULKAN --}}
                                 <div class="text-center">
                                     <div
                                         class="inline-flex items-center justify-center w-10 h-10 bg-green-100 text-green-600 rounded-full mb-2">
@@ -91,14 +81,12 @@
                                     <h3 class="text-sm font-bold text-gray-800">Sudah Dikumpulkan</h3>
                                     <p class="text-xs text-gray-500 mb-4">{{ $submitted->created_at->diffForHumans() }}</p>
 
-                                    {{-- Cek Nilai --}}
                                     @if (!is_null($submitted->score))
                                         <div class="bg-white border border-gray-200 rounded-lg p-3 mb-2">
                                             <span class="block text-xs text-gray-500 uppercase">Nilai</span>
                                             <span class="text-2xl font-bold text-indigo-600">{{ $submitted->score }}</span>
                                         </div>
                                     @else
-                                        {{-- File Jawaban & Aksi --}}
                                         <div class="space-y-2">
                                             <a href="{{ asset('storage/' . $submitted->file_location) }}" target="_blank"
                                                 class="block w-full py-2 text-xs font-medium text-indigo-600 bg-indigo-50 hover:bg-indigo-100 rounded border border-indigo-200 text-center transition">
@@ -119,7 +107,6 @@
                                     @endif
                                 </div>
                             @else
-                                {{-- KONDISI: BELUM MENGUMPULKAN --}}
                                 <div class="text-center">
                                     <div
                                         class="inline-flex items-center justify-center w-10 h-10 bg-gray-200 text-gray-500 rounded-full mb-2">
@@ -146,7 +133,6 @@
                     </div>
                 </div>
             @empty
-                {{-- EMPTY STATE --}}
                 <div
                     class="flex flex-col items-center justify-center py-16 bg-white rounded-xl border-2 border-dashed border-gray-300 text-center">
                     <div class="p-4 bg-gray-50 rounded-full mb-3">
@@ -242,7 +228,6 @@
 
         </section>
 
-        {{-- SCRIPT MODAL HAPUS --}}
         <script>
             document.addEventListener('DOMContentLoaded', function() {
                 const deleteButtons = document.querySelectorAll('[data-modal-target="default-modal-delete"]');

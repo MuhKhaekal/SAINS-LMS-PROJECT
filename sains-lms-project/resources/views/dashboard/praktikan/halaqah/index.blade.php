@@ -3,18 +3,13 @@
 @section('page-title', 'SAINS | Halaqah')
 
 @section('content')
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-
-        {{-- HERO SECTION --}}
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:mt-24">
         <div class="relative w-full h-48 md:h-64 rounded-2xl overflow-hidden mb-8 shadow-lg group">
-            {{-- Background Image --}}
             <div style="background-image: url('/assets/images/background-halaqah.png');"
                 class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105">
             </div>
-            {{-- Gradient Overlay --}}
             <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent"></div>
 
-            {{-- Content --}}
             <div class=" h-full flex flex-col justify-center px-6 md:px-12 text-white">
                 <span class="text-white/80 text-sm md:text-lg font-medium tracking-wider mb-1 uppercase">Ruang Belajar</span>
                 <h1 class="text-3xl md:text-5xl font-bold leading-tight mb-2" data-aos="fade-right">
@@ -26,7 +21,7 @@
             </div>
         </div>
 
-        {{-- LIST PERTEMUAN (ACCORDION) --}}
+    
         <section class="space-y-4">
             <h2 class="text-lg font-bold text-gray-800 mb-4">Daftar Pertemuan & Aktivitas</h2>
 
@@ -34,19 +29,15 @@
                 <div
                     class="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
 
-                    {{-- Accordion Header --}}
                     <button type="button"
                         class="w-full flex items-center justify-between p-5 bg-white hover:bg-gray-50 transition-colors focus:outline-none group"
                         data-target="#accordion-body-{{ $index }}">
 
                         <div class="flex flex-col md:flex-row md:items-center gap-2 md:gap-4 text-left">
-                            {{-- Badge Pertemuan --}}
                             <span
                                 class="bg-indigo-100 text-indigo-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide w-fit border border-indigo-200">
                                 {{ $meeting->meeting_name }}
                             </span>
-
-                            {{-- Topik --}}
                             <span
                                 class="text-sm md:text-base font-bold text-gray-800 group-hover:text-indigo-600 transition-colors">
                                 {{ $meeting->topic }}
@@ -62,7 +53,6 @@
                         </div>
                     </button>
 
-                    {{-- Accordion Body --}}
                     <div id="accordion-body-{{ $index }}"
                         class="max-h-0 overflow-hidden transition-all duration-500 ease-in-out bg-gray-50/50">
                         <div class="p-5 border-t border-gray-100">
@@ -70,11 +60,7 @@
                             <p class="text-sm text-gray-600 mb-6 leading-relaxed">
                                 {{ $meeting->description }}
                             </p>
-
-                            {{-- Action Grid --}}
                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-
-                                {{-- UJIAN --}}
                                 @if ($meeting->type == 'ujian')
                                     <a href="{{ route('ujian-praktikan.index', ['meeting_name' => $meeting->meeting_name, 'halaqah_name' => $selectedHalaqah->halaqah_name]) }}"
                                         class="flex items-center gap-3 p-4 bg-white border border-rose-100 rounded-xl hover:border-rose-300 hover:shadow-sm transition group">
@@ -94,9 +80,7 @@
                                     </a>
                                 @endif
 
-                                {{-- MATERI & TUGAS (SKK) --}}
                                 @if ($meeting->type == 'skk')
-                                    {{-- Materi --}}
                                     <a href="{{ route('materi-praktikan.index', ['meeting_name' => $meeting->meeting_name, 'halaqah_name' => $selectedHalaqah->halaqah_name]) }}"
                                         class="flex items-center gap-3 p-4 bg-white border border-cyan-100 rounded-xl hover:border-cyan-300 hover:shadow-sm transition group">
                                         <div
@@ -117,7 +101,6 @@
                                         </div>
                                     </a>
 
-                                    {{-- Tugas --}}
                                     <a href="{{ route('tugas-praktikan.index', ['meeting_name' => $meeting->meeting_name, 'halaqah_name' => $selectedHalaqah->halaqah_name]) }}"
                                         class="flex items-center gap-3 p-4 bg-white border border-orange-100 rounded-xl hover:border-orange-300 hover:shadow-sm transition group">
                                         <div
@@ -160,7 +143,6 @@
         </section>
     </div>
 
-    {{-- SCRIPT ACCORDION --}}
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             const accordionBtns = document.querySelectorAll("[data-target]");
@@ -171,14 +153,13 @@
                     const content = document.querySelector(targetId);
                     const icon = btn.querySelector("[data-accordion-icon]");
 
-                    // Toggle logic
                     if (content.classList.contains("max-h-0")) {
                         content.classList.remove("max-h-0");
                         content.style.maxHeight = content.scrollHeight + "px";
                         icon.classList.add("rotate-180");
                     } else {
                         content.style.maxHeight = content.scrollHeight +
-                        "px"; // Set height first needed for transition
+                        "px"; 
                         setTimeout(() => {
                             content.style.maxHeight = "0px";
                             content.classList.add("max-h-0");

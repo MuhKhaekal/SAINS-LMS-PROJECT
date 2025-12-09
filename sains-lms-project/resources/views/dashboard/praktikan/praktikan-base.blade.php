@@ -30,19 +30,16 @@
         </div>
     </div>
 
-    <main class="flex-grow mt-16 mb-20 md:mt-0 no-scrollbar">
+    <main class="flex-grow mt-14 mb-20 md:mt-0 no-scrollbar">
         @yield('content')
     </main>
 
     <div class="md:hidden relative z-50">
-        {{-- Spacer agar konten tidak tertutup navbar --}}
         <div class="h-20"></div>
     
-        {{-- Bottom Navbar --}}
         <div class="fixed bottom-0 w-full bg-white border-t border-gray-200 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] pb-safe">
             <ul class="flex justify-around items-center w-full h-16 px-2">
                 
-                {{-- 1. BERANDA --}}
                 <li class="flex-1 group">
                     <a href="{{ route('dashboard') }}" 
                        class="flex flex-col items-center justify-center w-full h-full transition-colors duration-200
@@ -55,7 +52,6 @@
                     </a>
                 </li>
     
-                {{-- 2. HALAQAH --}}
                 @php
                     $halaqahName = $halaqahsNavbar->first()->halaqah_name ?? 'Halaqah';
                 @endphp
@@ -71,7 +67,6 @@
                     </a>
                 </li>
     
-                {{-- 3. PENGUMUMAN --}}
                 <li class="flex-1 group">
                     <a href="{{ route('pengumuman-praktikan.index') }}" 
                        class="flex flex-col items-center justify-center w-full h-full transition-colors duration-200
@@ -84,7 +79,6 @@
                     </a>
                 </li>
     
-                {{-- 4. FAQ --}}
                 <li class="flex-1 group">
                     <a href="{{ route('faq-praktikan.index') }}" 
                        class="flex flex-col items-center justify-center w-full h-full transition-colors duration-200
@@ -97,7 +91,6 @@
                     </a>
                 </li>
     
-                {{-- 5. PROFIL --}}
                 <li class="flex-1 group">
                     <a href="{{ route('profile-praktikan.edit') }}" 
                        class="flex flex-col items-center justify-center w-full h-full transition-colors duration-200

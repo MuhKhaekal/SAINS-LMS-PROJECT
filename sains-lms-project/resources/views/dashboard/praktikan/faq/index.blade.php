@@ -3,18 +3,12 @@
 @section('page-title', 'SAINS | FAQ')
 
 @section('content')
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-
-        {{-- HERO SECTION --}}
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:mt-24">
         <div class="relative w-full h-48 md:h-64 rounded-2xl overflow-hidden mb-8 shadow-lg group">
-            {{-- Background Image --}}
             <div style="background-image: url('/assets/images/background-halaqah.png');"
                 class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105">
             </div>
-            {{-- Gradient Overlay --}}
             <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent"></div>
-
-            {{-- Content --}}
             <div class=" h-full flex flex-col justify-center px-6 md:px-12 text-white">
                 <span class="text-white/80 text-sm md:text-lg font-medium tracking-wider mb-1 uppercase">Pusat Bantuan</span>
                 <h1 class="text-3xl md:text-5xl font-bold leading-tight mb-2" data-aos="fade-right">
@@ -28,7 +22,6 @@
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
 
-            {{-- KOLOM KIRI: DAFTAR FAQ --}}
             <section class="lg:col-span-8 space-y-4">
                 <h2 class="text-lg font-bold text-gray-800 flex items-center gap-2 mb-4">
                     <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -42,7 +35,6 @@
                 <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                     @forelse ($faqs->where('status', true) as $index => $faq)
                         <div class="border-b border-gray-100 last:border-0">
-                            {{-- Accordion Button --}}
                             <button type="button"
                                 class="w-full flex items-center justify-between p-5 text-left bg-white hover:bg-gray-50 transition-colors focus:outline-none group"
                                 data-target="#accordion-body-{{ $faq->id }}">
@@ -61,7 +53,6 @@
                                 </div>
                             </button>
 
-                            {{-- Accordion Body --}}
                             <div id="accordion-body-{{ $faq->id }}"
                                 class="max-h-0 overflow-hidden transition-all duration-500 ease-in-out bg-gray-50/50">
                                 <div class="p-5 text-sm text-gray-600 leading-relaxed border-t border-gray-100">
@@ -85,7 +76,6 @@
                 </div>
             </section>
 
-            {{-- KOLOM KANAN: FORM PENGAJUAN (Sticky) --}}
             <section class="lg:col-span-4 lg:sticky lg:top-6">
                 <div class="bg-indigo-50 rounded-xl p-6 border border-indigo-100">
                     <div class="flex items-center gap-3 mb-4">
@@ -123,7 +113,6 @@
         </div>
     </div>
 
-    {{-- SCRIPT ACCORDION (Vanilla JS) --}}
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             const accordionBtns = document.querySelectorAll("[data-target]");
@@ -134,14 +123,13 @@
                     const content = document.querySelector(targetId);
                     const icon = btn.querySelector("[data-accordion-icon]");
 
-                    // Toggle logic
                     if (content.classList.contains("max-h-0")) {
                         content.classList.remove("max-h-0");
                         content.style.maxHeight = content.scrollHeight + "px";
                         icon.classList.add("rotate-180");
                     } else {
                         content.style.maxHeight = content.scrollHeight +
-                        "px"; // Needed for transition
+                        "px"; 
                         setTimeout(() => {
                             content.style.maxHeight = "0px";
                             content.classList.add("max-h-0");
@@ -160,9 +148,7 @@
             role="alert">
             <svg class="shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                 viewBox="0 0 20 20">
-                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3
-                                                           1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1
-                                                           1 1v4h1a1 1 0 0 1 0 2Z" />
+                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
             </svg>
             <div class="ms-3 text-sm font-medium">{{ session('success') }}</div>
         </div>
@@ -184,9 +170,7 @@
             role="alert">
             <svg class="shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                 viewBox="0 0 20 20">
-                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3
-                                                           1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1
-                                                           1 1v4h1a1 1 0 0 1 0 2Z" />
+                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
             </svg>
             <div class="ms-3 text-sm font-medium">{{ session('error') }}</div>
         </div>

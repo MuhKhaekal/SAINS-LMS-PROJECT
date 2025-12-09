@@ -3,9 +3,8 @@
 @section('page-title', 'SAINS | Pengajuan Tugas')
 
 @section('content')
-    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:mt-24">
 
-        {{-- HEADER & NAVIGATION --}}
         <div class="flex items-center justify-between mb-8">
             <div>
                 <h1 class="text-2xl font-bold text-gray-800">Pengumpulan Tugas</h1>
@@ -21,10 +20,8 @@
             </a>
         </div>
 
-        {{-- MAIN CARD --}}
         <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
 
-            {{-- Task Details Header --}}
             <div class="bg-gray-50 p-6 border-b border-gray-200">
                 <div class="flex items-center gap-2 mb-2">
                     <span
@@ -38,7 +35,6 @@
                 </p>
             </div>
 
-            {{-- Submission Form --}}
             <div class="p-6 md:p-8">
                 <form action="{{ route('pengajuan-tugas.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
@@ -46,7 +42,6 @@
                     <input type="hidden" name="meeting_id" value="{{ $selectedMeeting->id }}">
                     <input type="hidden" name="halaqah_id" value="{{ $selectedHalaqah->id }}">
 
-                    {{-- File Upload Area --}}
                     <div class="mb-6">
                         <label class="block text-sm font-semibold text-gray-700 mb-2">File Jawaban</label>
 
@@ -69,7 +64,6 @@
                             </label>
                         </div>
 
-                        {{-- File Selection Feedback --}}
                         <div id="file_info"
                             class="mt-3 hidden items-center gap-2 text-sm text-gray-700 bg-indigo-50 p-2 rounded-lg border border-indigo-100">
                             <svg class="w-5 h-5 text-indigo-500" fill="currentColor" viewBox="0 0 20 20">
@@ -82,7 +76,6 @@
                         <x-input-error :messages="$errors->get('file_location')" class="mt-2" />
                     </div>
 
-                    {{-- Catatan / Notes --}}
                     <div class="mb-8">
                         <label for="description" class="block text-sm font-semibold text-gray-700 mb-2">Catatan Tambahan
                             (Opsional)</label>
@@ -91,7 +84,6 @@
                             placeholder="Tambahkan pesan untuk asisten jika perlu..."></textarea>
                     </div>
 
-                    {{-- Submit Button --}}
                     <div class="flex justify-end pt-4 border-t border-gray-100">
                         <x-primary-button class="w-full sm:w-auto justify-center px-6 py-3 text-base">
                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">

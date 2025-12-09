@@ -3,20 +3,17 @@
 @section('page-title', 'SAINS | Pengumuman')
 
 @section('content')
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:mt-24">
 
-        {{-- HEADER --}}
         <div class="mb-8 text-center md:text-left">
             <h1 class="text-2xl font-bold text-gray-800">Papan Pengumuman</h1>
             <p class="text-sm text-gray-500 mt-1">Informasi terbaru dari Asisten dan Dosen.</p>
         </div>
 
-        {{-- DAFTAR PENGUMUMAN --}}
         <div class="space-y-6">
             @forelse ($announcements as $index => $announcement)
                 <div class="flex gap-4 group">
 
-                    {{-- Avatar (Inisial Nama Pengirim) --}}
                     <div class="flex-shrink-0">
                         <div
                             class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-700 font-bold text-sm border-2 border-white shadow-sm">
@@ -24,9 +21,7 @@
                         </div>
                     </div>
 
-                    {{-- Konten Pengumuman --}}
                     <div class="flex-1">
-                        {{-- Meta Data (Nama & Waktu) --}}
                         <div class="flex items-baseline justify-between mb-1">
                             <h3 class="text-sm font-bold text-gray-900">{{ $announcement->user->nama }}</h3>
                             <span class="text-xs text-gray-500">
@@ -34,16 +29,12 @@
                             </span>
                         </div>
 
-                        {{-- Chat Bubble / Card --}}
                         <div
                             class="bg-white p-5 rounded-2xl rounded-tl-none shadow-sm border border-gray-200 relative hover:shadow-md transition-shadow duration-200">
-
-                            {{-- Isi Pesan --}}
                             <div class="text-sm text-gray-700 leading-relaxed whitespace-pre-line mb-3">
                                 {{ $announcement->content }}
                             </div>
 
-                            {{-- File Lampiran --}}
                             @if ($announcement->file_location)
                                 @php
                                     $extension = pathinfo($announcement->file_location, PATHINFO_EXTENSION);
@@ -54,7 +45,6 @@
                                     <a href="{{ asset('storage/' . $announcement->file_location) }}" target="_blank"
                                         class="inline-flex items-center gap-3 p-2 pr-4 bg-gray-50 border border-gray-200 rounded-lg hover:bg-indigo-50 hover:border-indigo-200 transition group/file w-full sm:w-auto">
 
-                                        {{-- Icon File --}}
                                         <div
                                             class="p-2 bg-white rounded-md border border-gray-200 group-hover/file:border-indigo-200">
                                             @if ($isImage)
@@ -74,7 +64,6 @@
                                             @endif
                                         </div>
 
-                                        {{-- Text File --}}
                                         <div class="flex flex-col text-left">
                                             <span
                                                 class="text-xs font-semibold text-gray-700 group-hover/file:text-indigo-700">Unduh
@@ -83,7 +72,6 @@
                                                 File</span>
                                         </div>
 
-                                        {{-- Download Arrow Icon --}}
                                         <svg class="w-4 h-4 text-gray-400 ml-auto group-hover/file:text-indigo-500"
                                             fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
