@@ -6,48 +6,14 @@
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
-        {{-- HEADER --}}
         <div class="mb-8">
             <h1 class="text-2xl font-bold text-gray-800">Manajemen Sertifikat</h1>
             <p class="text-sm text-gray-500 mt-1">Unggah dan kelola sertifikat untuk praktikan dan asisten.</p>
         </div>
 
-        {{-- SECTION 1: GENERAL UPLOAD / INFO --}}
-        <section
-            class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-8 flex flex-col md:flex-row items-start md:items-center gap-6">
-            <div class="p-3 bg-blue-50 rounded-full text-blue-600 shrink-0">
-                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
-                </svg>
-            </div>
-            <div class="flex-1">
-                <h3 class="text-lg font-semibold text-gray-800">Upload Sertifikat Umum</h3>
-                <p class="text-sm text-gray-600 mt-1 leading-relaxed">
-                    Gunakan bagian ini untuk mengunggah template sertifikat master atau sertifikat kegiatan umum yang
-                    berlaku bagi seluruh peserta. Pastikan format file sesuai (PDF/JPG).
-                </p>
-            </div>
-            <div class="mt-4 md:mt-0">
-                <x-primary-button class="flex items-center gap-2">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
-                    </svg>
-                    Unggah Master
-                </x-primary-button>
-            </div>
-        </section>
-
-        {{-- SECTION 2: GRID SERTIFIKAT INDIVIDU --}}
         <section>
-            <div class="flex items-center justify-between mb-4">
-                <h2 class="text-lg font-semibold text-gray-800">Daftar Penerima Sertifikat</h2>
-            </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-
-                {{-- Kategori: REGULER (Praktikan) --}}
                 <div
                     class="bg-white rounded-xl border border-gray-200 p-5 hover:shadow-md transition-shadow duration-300 group">
                     <div class="flex items-start justify-between mb-4">
@@ -61,19 +27,18 @@
                         <span
                             class="bg-gray-100 text-gray-600 text-xs font-medium px-2.5 py-0.5 rounded-full">Praktikan</span>
                     </div>
-                    <h3 class="font-bold text-gray-900">Sertifikat Peserta</h3>
+                    <h3 class="font-bold text-gray-900">Sertifikat Praktikan</h3>
                     <p class="text-sm text-gray-500 mt-1 mb-4">Fulan bin Fulana</p>
-                    <button type="button"
-                        class="w-full py-2 px-4 border border-indigo-600 text-indigo-600 hover:bg-indigo-50 rounded-lg text-sm font-medium transition flex justify-center items-center gap-2">
+                    <a href="{{ route('sertifikat.create', ['type' => 'sertifikat-praktikan-umum']) }}"
+                        class="w-full py-2 px-4 border border-indigo-600 text-indigo-600 hover:bg-indigo-50 rounded-lg text-sm font-medium transition flex justify-center items-center gap-2 cursor-pointer">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
                         </svg>
                         Unggah File
-                    </button>
+                    </a>
                 </div>
 
-                {{-- Kategori: REGULER (Asisten) --}}
                 <div
                     class="bg-white rounded-xl border border-gray-200 p-5 hover:shadow-md transition-shadow duration-300 group">
                     <div class="flex items-start justify-between mb-4">
@@ -89,17 +54,16 @@
                     </div>
                     <h3 class="font-bold text-gray-900">Sertifikat Asisten</h3>
                     <p class="text-sm text-gray-500 mt-1 mb-4">Fulan bin Fulana</p>
-                    <button type="button"
-                        class="w-full py-2 px-4 border border-blue-600 text-blue-600 hover:bg-blue-50 rounded-lg text-sm font-medium transition flex justify-center items-center gap-2">
+                    <a href="{{ route('sertifikat.create', ['type' => 'sertifikat-asisten-umum']) }}"
+                        class="w-full py-2 px-4 border border-blue-600 text-blue-600 hover:bg-blue-50 rounded-lg text-sm font-medium transition flex justify-center items-center gap-2 cursor-pointer">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
                         </svg>
                         Unggah File
-                    </button>
+                    </a>
                 </div>
 
-                {{-- Kategori: TERBAIK (Card dengan aksen Emas/Kuning) --}}
                 <div
                     class="bg-gradient-to-br from-yellow-50 to-white rounded-xl border border-yellow-200 p-5 hover:shadow-md transition-shadow duration-300 relative overflow-hidden">
                     <div class="absolute top-0 right-0 -mt-2 -mr-2 w-16 h-16 bg-yellow-400 rounded-full opacity-20 blur-xl">
@@ -118,18 +82,16 @@
                     <h3 class="font-bold text-gray-900">Praktikan Akhwat Terbaik</h3>
                     <p class="text-sm text-gray-500 mt-1 mb-4">Fulan bin Fulana</p>
 
-                    {{-- Tombol Aksi untuk kategori terbaik dibuat filled agar menonjol --}}
-                    <button type="button"
-                        class="w-full py-2 px-4 border border-yellow-600 text-yellow-600 hover:bg-yellow-50 rounded-lg text-sm font-medium transition flex justify-center items-center gap-2">
+                    <a href="{{ route('sertifikat.create', ['type' => 'sertifikat-praktikan-akhwat-terbaik']) }}"
+                        class="w-full py-2 px-4 border border-yellow-600 text-yellow-600 hover:bg-yellow-50 rounded-lg text-sm font-medium transition flex justify-center items-center gap-2 cursor-pointer">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
                         </svg>
                         Unggah File
-                    </button>
+                    </a>
                 </div>
 
-                {{-- Kategori: TERBAIK (Praktikan Ikhwan) --}}
                 <div
                     class="bg-gradient-to-br from-yellow-50 to-white rounded-xl border border-yellow-200 p-5 hover:shadow-md transition-shadow duration-300 relative">
                     <div class="flex items-start justify-between mb-4">
@@ -144,17 +106,16 @@
                     </div>
                     <h3 class="font-bold text-gray-900">Praktikan Ikhwan Terbaik</h3>
                     <p class="text-sm text-gray-500 mt-1 mb-4">Fulan bin Fulana</p>
-                    <button type="button"
-                        class="w-full py-2 px-4 border border-yellow-600 text-yellow-600 hover:bg-yellow-50 rounded-lg text-sm font-medium transition flex justify-center items-center gap-2">
+                    <a href="{{ route('sertifikat.create', ['type' => 'sertifikat-praktikan-ikhwan-terbaik']) }}"
+                        class="w-full py-2 px-4 border border-yellow-600 text-yellow-600 hover:bg-yellow-50 rounded-lg text-sm font-medium transition flex justify-center items-center gap-2 cursor-pointer">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
                         </svg>
                         Unggah File
-                    </button>
+                    </a>
                 </div>
 
-                {{-- Kategori: TERBAIK (Asisten Akhwat) --}}
                 <div
                     class="bg-gradient-to-br from-indigo-50 to-white rounded-xl border border-indigo-200 p-5 hover:shadow-md transition-shadow duration-300 relative">
                     <div class="flex items-start justify-between mb-4">
@@ -170,17 +131,16 @@
                     </div>
                     <h3 class="font-bold text-gray-900">Asisten Akhwat Terbaik</h3>
                     <p class="text-sm text-gray-500 mt-1 mb-4">Fulan bin Fulana</p>
-                    <button type="button"
-                        class="w-full py-2 px-4 border border-blue-800 text-blue-800 hover:bg-blue-50 rounded-lg text-sm font-medium transition flex justify-center items-center gap-2">
+                    <a href="{{ route('sertifikat.create', ['type' => 'sertifikat-asisten-akhwat-terbaik']) }}"
+                        class="w-full py-2 px-4 border border-blue-800 text-blue-800 hover:bg-blue-50 rounded-lg text-sm font-medium transition flex justify-center items-center gap-2 cursor-pointer">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
                         </svg>
                         Unggah File
-                    </button>
+                    </a>
                 </div>
 
-                {{-- Kategori: TERBAIK (Asisten Ikhwan) --}}
                 <div
                     class="bg-gradient-to-br from-indigo-50 to-white rounded-xl border border-indigo-200 p-5 hover:shadow-md transition-shadow duration-300 relative">
                     <div class="flex items-start justify-between mb-4">
@@ -196,14 +156,14 @@
                     </div>
                     <h3 class="font-bold text-gray-900">Asisten Ikhwan Terbaik</h3>
                     <p class="text-sm text-gray-500 mt-1 mb-4">Fulan bin Fulana</p>
-                    <button type="button"
-                        class="w-full py-2 px-4 border border-blue-800 text-blue-800 hover:bg-blue-50 rounded-lg text-sm font-medium transition flex justify-center items-center gap-2">
+                    <a href="{{ route('sertifikat.create', ['type' => 'sertifikat-asisten-ikhwan-terbaik']) }}"
+                        class="w-full py-2 px-4 border border-blue-800 text-blue-800 hover:bg-blue-50 rounded-lg text-sm font-medium transition flex justify-center items-center gap-2 cursor-pointer">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
                         </svg>
                         Unggah File
-                    </button>
+                    </a>
                 </div>
 
             </div>

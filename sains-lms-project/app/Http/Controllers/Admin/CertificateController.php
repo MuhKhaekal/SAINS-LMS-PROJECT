@@ -12,15 +12,38 @@ class CertificateController extends Controller
      */
     public function index()
     {
-        return view('dashboard.admin.admin-index-sertifikat');
+        return view('dashboard.admin.sertifikat.index');
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $type = $request->input('type');
+
+        if ($type == 'sertifikat-praktikan-umum'):
+            return view('dashboard.admin.sertifikat.praktikan-umum.index');
+
+        elseif ($type == 'sertifikat-asisten-umum'):
+            return view('dashboard.admin.sertifikat.asisten-umum.index');
+
+        elseif ($type == 'sertifikat-praktikan-akhwat-terbaik'):
+            return view('dashboard.admin.sertifikat.praktikan-akhwat-terbaik.index');
+
+        elseif ($type == 'sertifikat-praktikan-ikhwan-terbaik'):
+            return view('dashboard.admin.sertifikat.praktikan-ikhwan-terbaik.index');
+
+        elseif ($type == 'sertifikat-asisten-akhwat-terbaik'):
+            return view('dashboard.admin.sertifikat.asisten-akhwat-terbaik.index');
+
+        elseif ($type == 'sertifikat-asisten-ikhwan-terbaik'):
+            return view('dashboard.admin.sertifikat.asisten-ikhwan-terbaik.index');
+
+        else:
+            return view('dashboard.admin.sertifikat.index');
+
+        endif;
     }
 
     /**
