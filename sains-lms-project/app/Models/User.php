@@ -59,5 +59,13 @@ class User extends Authenticatable
         return $this->hasMany(Submission::class);
     }
 
+    public function certificates()
+    {
+        return $this->belongsToMany(Certificate::class, 'pivot_certificate_users', 'user_id', 'certificate_id')
+                    ->withTimestamps();
+    }
+
+    
+
 
 }

@@ -25,6 +25,7 @@ use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\ProdiController;
 use App\Http\Controllers\Admin\TestController;
+use App\Http\Controllers\Asisten\AsistenCertificateController;
 use App\Http\Controllers\Asisten\AsistenTestController;
 use App\Http\Controllers\Asisten\AssignmentController;
 use App\Http\Controllers\Asisten\MaterialController;
@@ -92,6 +93,126 @@ Route::middleware('auth')->group(function () {
         ->name('logout');
 
     
+        Route::middleware('asisten')->group(function () {
+            Route::get('/sertifikat/validasi', [AsistenCertificateController::class, 'indexValidasi'])->name('asisten.sertifikat.validasi');
+            Route::post('/sertifikat/sahkan/{userId}', [AsistenCertificateController::class, 'storeSahkan'])->name('asisten.sertifikat.store');
+            Route::get('/sertifikat/download/{type}', [AsistenCertificateController::class, 'download'])->name('sertifikat.download');
+            Route::delete('/sertifikat/batalkan/{userId}', [AsistenCertificateController::class, 'revokeSahkan'])->name('asisten.sertifikat.revoke');
+    
+            Route::resource('halaqah-asisten', HalaqahAsistenController::class)
+            ->names([
+                'index' => 'halaqah-asisten.index',
+                'create' => 'halaqah-asisten.create',
+                'store' => 'halaqah-asisten.store',
+                'show' => 'halaqah-asisten.show',         
+                'edit' => 'halaqah-asisten.edit',
+                'update' => 'halaqah-asisten.update',
+                'destroy' => 'halaqah-asisten.destroy',
+            ]);
+    
+            Route::resource('pengumuman-asisten', AnnouncementAsistenController::class)
+            ->names([
+                'index' => 'pengumuman-asisten.index',
+                'create' => 'pengumuman-asisten.create',
+                'store' => 'pengumuman-asisten.store',
+                'show' => 'pengumuman-asisten.show',         
+                'edit' => 'pengumuman-asisten.edit',
+                'update' => 'pengumuman-asisten.update',
+                'destroy' => 'pengumuman-asisten.destroy',
+            ]);
+    
+            Route::put('faq/add-to-list-faq-asisten/{id}', [FaqAsistenController::class, 'addToListFaq'])->name('faq.addToListFaqAsisten');
+            Route::put('faq/delete-from-list-faq-asisten/{id}', [FaqAsistenController::class, 'deleteFromListFaq'])->name('faq.deleteFromListFaqAsisten');
+            Route::resource('faq-asisten', FaqAsistenController::class)
+            ->names([
+                'index' => 'faq-asisten.index',
+                'create' => 'faq-asisten.create',
+                'store' => 'faq-asisten.store',
+                'show' => 'faq-asisten.show',         
+                'edit' => 'faq-asisten.edit',
+                'update' => 'faq-asisten.update',
+                'destroy' => 'faq-asisten.destroy',
+            ]);
+    
+    
+            Route::resource('materi-asisten', MaterialController::class)
+                ->names([
+                    'index' => 'materi-asisten.index',
+                    'create' => 'materi-asisten.create',
+                    'store' => 'materi-asisten.store',
+                    'show' => 'materi-asisten.show',         
+                    'edit' => 'materi-asisten.edit',
+                    'update' => 'materi-asisten.update',
+                    'destroy' => 'materi-asisten.destroy',
+            ]);
+            
+            Route::resource('tugas-asisten', AssignmentController::class)
+                ->names([
+                    'index' => 'tugas-asisten.index',
+                    'create' => 'tugas-asisten.create',
+                    'store' => 'tugas-asisten.store',
+                    'show' => 'tugas-asisten.show',         
+                    'edit' => 'tugas-asisten.edit',
+                    'update' => 'tugas-asisten.update',
+                    'destroy' => 'tugas-asisten.destroy',
+            ]);
+    
+            Route::resource('presensi-asisten', PresenceController::class)
+                ->names([
+                    'index' => 'presensi-asisten.index',
+                    'create' => 'presensi-asisten.create',
+                    'store' => 'presensi-asisten.store',
+                    'show' => 'presensi-asisten.show',         
+                    'edit' => 'presensi-asisten.edit',
+                    'update' => 'presensi-asisten.update',
+                    'destroy' => 'presensi-asisten.destroy',
+            ]);
+    
+            Route::post('/periksa-tugas/update', [SubmissionAsistenController::class, 'updateAll'])
+            ->name('periksa-tugas.update');
+    
+            Route::get('/ujian', [AsistenTestController::class, 'indexPretest'])->name('ujian-asisten.index');
+    
+            Route::post('/ujian/buka/{id}', [AsistenTestController::class, 'open'])->name('ujian-asisten.open');
+    
+            Route::post('/ujian/tutup/{id}', [AsistenTestController::class, 'close'])->name('ujian-asisten.close');
+    
+            Route::resource('nilai-perpekan', WeeklyScoreController::class)
+                ->names([
+                    'index' => 'nilai-perpekan.index',
+                    'create' => 'nilai-perpekan.create',
+                    'store' => 'nilai-perpekan.store',
+                    'show' => 'nilai-perpekan.show',         
+                    'edit' => 'nilai-perpekan.edit',
+                    'update' => 'nilai-perpekan.update',
+                    'destroy' => 'nilai-perpekan.destroy',
+            ]);
+    
+            Route::resource('pretest', PretestController::class)
+            ->names([
+                'index' => 'pretest.index',
+                'create' => 'pretest.create',
+                'store' => 'pretest.store',
+                'show' => 'pretest.show',         
+                'edit' => 'pretest.edit',
+                'update' => 'pretest.update',
+                'destroy' => 'pretest.destroy',
+            ]);
+    
+            Route::resource('posttest', PosttestController::class)
+            ->names([
+                'index' => 'posttest.index',
+                'create' => 'posttest.create',
+                'store' => 'posttest.store',
+                'show' => 'posttest.show',         
+                'edit' => 'posttest.edit',
+                'update' => 'posttest.update',
+                'destroy' => 'posttest.destroy',
+            ]);
+    
+    
+        });
+        
     Route::middleware('admin')->group(function () {
         Route::post('/daftar-pengguna/importExcel', [UserController::class, 'importExcel'])->name('daftar-pengguna.importExcel');
         Route::delete('daftar-pengguna/destroy-multiple', [UserController::class, 'destroyMultiple'])->name('daftar-pengguna.destroy-multiple');
@@ -180,6 +301,8 @@ Route::middleware('auth')->group(function () {
             'destroy' => 'pengumuman.destroy',
         ]);
     
+        Route::post('/sertifikat/assign', [CertificateController::class, 'assign'])->name('sertifikat.assign');
+        Route::delete('/sertifikat/{certId}/revoke/{userId}', [CertificateController::class, 'revoke'])->name('sertifikat.revoke');
         Route::resource('sertifikat', CertificateController::class)
         ->names([
             'index' => 'sertifikat.index',
@@ -226,118 +349,7 @@ Route::middleware('auth')->group(function () {
         ]);
     });
 
-    Route::middleware('asisten')->group(function () {
-        Route::resource('halaqah-asisten', HalaqahAsistenController::class)
-        ->names([
-            'index' => 'halaqah-asisten.index',
-            'create' => 'halaqah-asisten.create',
-            'store' => 'halaqah-asisten.store',
-            'show' => 'halaqah-asisten.show',         
-            'edit' => 'halaqah-asisten.edit',
-            'update' => 'halaqah-asisten.update',
-            'destroy' => 'halaqah-asisten.destroy',
-        ]);
 
-        Route::resource('pengumuman-asisten', AnnouncementAsistenController::class)
-        ->names([
-            'index' => 'pengumuman-asisten.index',
-            'create' => 'pengumuman-asisten.create',
-            'store' => 'pengumuman-asisten.store',
-            'show' => 'pengumuman-asisten.show',         
-            'edit' => 'pengumuman-asisten.edit',
-            'update' => 'pengumuman-asisten.update',
-            'destroy' => 'pengumuman-asisten.destroy',
-        ]);
-
-        Route::put('faq/add-to-list-faq-asisten/{id}', [FaqAsistenController::class, 'addToListFaq'])->name('faq.addToListFaqAsisten');
-        Route::put('faq/delete-from-list-faq-asisten/{id}', [FaqAsistenController::class, 'deleteFromListFaq'])->name('faq.deleteFromListFaqAsisten');
-        Route::resource('faq-asisten', FaqAsistenController::class)
-        ->names([
-            'index' => 'faq-asisten.index',
-            'create' => 'faq-asisten.create',
-            'store' => 'faq-asisten.store',
-            'show' => 'faq-asisten.show',         
-            'edit' => 'faq-asisten.edit',
-            'update' => 'faq-asisten.update',
-            'destroy' => 'faq-asisten.destroy',
-        ]);
-
-
-        Route::resource('materi-asisten', MaterialController::class)
-            ->names([
-                'index' => 'materi-asisten.index',
-                'create' => 'materi-asisten.create',
-                'store' => 'materi-asisten.store',
-                'show' => 'materi-asisten.show',         
-                'edit' => 'materi-asisten.edit',
-                'update' => 'materi-asisten.update',
-                'destroy' => 'materi-asisten.destroy',
-        ]);
-        
-        Route::resource('tugas-asisten', AssignmentController::class)
-            ->names([
-                'index' => 'tugas-asisten.index',
-                'create' => 'tugas-asisten.create',
-                'store' => 'tugas-asisten.store',
-                'show' => 'tugas-asisten.show',         
-                'edit' => 'tugas-asisten.edit',
-                'update' => 'tugas-asisten.update',
-                'destroy' => 'tugas-asisten.destroy',
-        ]);
-
-        Route::resource('presensi-asisten', PresenceController::class)
-            ->names([
-                'index' => 'presensi-asisten.index',
-                'create' => 'presensi-asisten.create',
-                'store' => 'presensi-asisten.store',
-                'show' => 'presensi-asisten.show',         
-                'edit' => 'presensi-asisten.edit',
-                'update' => 'presensi-asisten.update',
-                'destroy' => 'presensi-asisten.destroy',
-        ]);
-
-        Route::post('/periksa-tugas/update', [SubmissionAsistenController::class, 'updateAll'])
-        ->name('periksa-tugas.update');
-
-        Route::get('/ujian', [AsistenTestController::class, 'indexPretest'])->name('ujian-asisten.index');
-
-        Route::post('/ujian/buka/{id}', [AsistenTestController::class, 'open'])->name('ujian-asisten.open');
-
-        Route::post('/ujian/tutup/{id}', [AsistenTestController::class, 'close'])->name('ujian-asisten.close');
-
-        Route::resource('nilai-perpekan', WeeklyScoreController::class)
-            ->names([
-                'index' => 'nilai-perpekan.index',
-                'create' => 'nilai-perpekan.create',
-                'store' => 'nilai-perpekan.store',
-                'show' => 'nilai-perpekan.show',         
-                'edit' => 'nilai-perpekan.edit',
-                'update' => 'nilai-perpekan.update',
-                'destroy' => 'nilai-perpekan.destroy',
-        ]);
-
-        Route::resource('pretest', PretestController::class)
-        ->names([
-            'index' => 'pretest.index',
-            'create' => 'pretest.create',
-            'store' => 'pretest.store',
-            'show' => 'pretest.show',         
-            'edit' => 'pretest.edit',
-            'update' => 'pretest.update',
-            'destroy' => 'pretest.destroy',
-        ]);
-
-        Route::resource('posttest', PosttestController::class)
-        ->names([
-            'index' => 'posttest.index',
-            'create' => 'posttest.create',
-            'store' => 'posttest.store',
-            'show' => 'posttest.show',         
-            'edit' => 'posttest.edit',
-            'update' => 'posttest.update',
-            'destroy' => 'posttest.destroy',
-        ]);
-    });
 
     Route::middleware('praktikan')->group(function () {
         Route::resource('halaqah-praktikan', HalaqahPraktikanController::class)

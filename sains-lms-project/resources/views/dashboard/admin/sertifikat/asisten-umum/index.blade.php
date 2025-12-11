@@ -285,6 +285,181 @@
             </div>
 
         </div>
+
+        {{-- ... Kode Upload dan Preview sebelumnya ... --}}
+
+        {{-- SECTION DISTRIBUSI: HANYA MUNCUL JIKA SUDAH ADA TEMPLATE --}}
+        @if ($certificate)
+            <div class="mt-8 bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+                <div class="p-6 border-b border-gray-100 bg-gray-50">
+                    <h3 class="text-lg font-bold text-gray-800">Distribusi Sertifikat</h3>
+                    <p class="text-sm text-gray-500">
+                        Atur penerima untuk sertifikat jenis: <span class="font-semibold">{{ $candidateLabel }}</span>
+                    </p>
+                </div>
+
+                <div class="p-6">
+                    {{-- LOGIKA TAMPILAN BERDASARKAN TIPE --}}
+
+                    {{-- CASE 1: ASISTEN UMUM (BULK ACTION) --}}
+                    @if ($type == 'sertifikat-asisten-umum')
+                        <div
+                            class="flex flex-col md:flex-row items-center justify-between {{ $isDistributed ? 'bg-green-50 border-green-100' : 'bg-blue-50 border-blue-100' }} p-4 rounded-lg border">
+
+                            <div class="mb-4 md:mb-0">
+                                @if ($isDistributed)
+                                    {{-- TAMPILAN JIKA SUDAH DISAHKAN --}}
+                                    <div class="flex items-center gap-2 mb-1">
+                                        <span class="flex h-6 w-6 items-center justify-center rounded-full bg-green-200">
+                                            <svg class="h-4 w-4 text-green-700" fill="none" viewBox="0 0 24 24"
+                                                stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M5 13l4 4L19 7" />
+                                            </svg>
+                                        </span>
+                                        <h4 class="font-bold text-green-800">Sudah Disahkan</h4>
+                                    </div>
+                                    <p class="text-sm text-green-700">
+                                        Sertifikat ini telah aktif untuk seluruh <b>{{ $candidates['count'] ?? 0 }}
+                                            Asisten</b>.
+                                    </p>
+                                @else
+                                    {{-- TAMPILAN JIKA BELUM DISAHKAN --}}
+                                    <h4 class="font-bold text-blue-800">Pengesahan Massal</h4>
+                                    <p class="text-sm text-blue-600 mt-1">
+                                        Tindakan ini akan memberikan sertifikat ini kepada
+                                        <span class="font-bold text-lg">{{ $candidates['count'] ?? 0 }}</span>
+                                        User dengan role <b>Asisten</b>.
+                                    </p>
+                                @endif
+                            </div>
+
+                            <form action="{{ route('sertifikat.assign') }}" method="POST"
+                                onsubmit="return confirm('{{ $isDistributed ? 'Yakin ingin MEMBATALKAN sertifikat untuk SEMUA asisten? Para asisten tidak akan bisa melihat sertifikat ini lagi.' : 'Apakah Anda yakin ingin membagikan sertifikat ke SEMUA asisten?' }}');">
+                                @csrf
+                                <input type="hidden" name="certificate_id" value="{{ $certificate->id }}">
+                                <input type="hidden" name="type" value="{{ $type }}">
+
+                                {{-- LOGIC BUTTON TOGGLE --}}
+                                @if ($isDistributed)
+                                    {{-- TOMBOL BATALKAN (MERAH) --}}
+                                    <input type="hidden" name="action" value="revoke">
+                                    <button type="submit"
+                                        class="whitespace-nowrap px-4 py-2 bg-white border border-red-200 text-red-600 rounded-lg hover:bg-red-50 hover:border-red-300 shadow-sm transition font-medium flex items-center gap-2 group">
+                                        <svg class="w-5 h-5 group-hover:scale-110 transition-transform" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z">
+                                            </path>
+                                        </svg>
+                                        Batalkan Pengesahan
+                                    </button>
+                                @else
+                                    {{-- TOMBOL SAH-KAN (BIRU) --}}
+                                    <input type="hidden" name="action" value="assign">
+                                    <button type="submit"
+                                        class="whitespace-nowrap px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 shadow transition font-medium flex items-center gap-2">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z">
+                                            </path>
+                                        </svg>
+                                        Sah-kan ke Semua
+                                    </button>
+                                @endif
+                            </form>
+                        </div>
+                    @else
+                        <div class="max-w-xl">
+                            <form action="{{ route('sertifikat.assign') }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="certificate_id" value="{{ $certificate->id }}">
+                                <input type="hidden" name="type" value="{{ $type }}">
+
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Pilih Penerima
+                                    ({{ $candidateLabel }})</label>
+
+                                <div class="flex gap-3">
+                                    <div class="relative flex-grow">
+                                        <select name="user_id" required
+                                            class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border">
+                                            <option value="" disabled selected>-- Pilih User --</option>
+                                            @forelse($candidates as $user)
+                                                <option value="{{ $user->id }}">
+                                                    {{ $user->name }} ({{ $user->nim ?? $user->email }})
+                                                </option>
+                                            @empty
+                                                <option disabled>Tidak ada user yang memenuhi kriteria
+                                                    ({{ $candidateLabel }})
+                                                </option>
+                                            @endforelse
+                                        </select>
+                                    </div>
+
+                                    <x-primary-button type="submit">
+                                        Pilih
+                                    </x-primary-button>
+                                </div>
+                                <p class="text-xs text-gray-500 mt-2">*Hanya user dengan role dan gender yang sesuai yang
+                                    muncul di daftar ini.</p>
+                            </form>
+                        </div>
+
+                        {{-- LIST PENERIMA SAAT INI (Opsional, agar admin tahu siapa yang sudah dipilih) --}}
+                        <div class="mt-8">
+                            <h4 class="text-sm font-bold text-gray-700 mb-3 uppercase tracking-wider">Penerima Terpilih
+                            </h4>
+                            <div class="bg-white border rounded-lg overflow-hidden">
+                                <table class="min-w-full divide-y divide-gray-200">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th
+                                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                Nama</th>
+                                            <th
+                                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                Tanggal Diberikan</th>
+                                            <th
+                                                class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="bg-white divide-y divide-gray-200">
+                                        @forelse($certificate->users as $recipient)
+                                            <tr>
+                                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                                    {{ $recipient->name }}
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                    {{ $recipient->pivot->created_at->format('d M Y') }}
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                    {{-- Tombol Hapus Hak Akses User Pivot (Optional) --}}
+                                                    <form
+                                                        action="{{ route('sertifikat.revoke', ['certId' => $certificate->id, 'userId' => $recipient->id]) }}"
+                                                        method="POST" class="inline">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="text-red-600 hover:text-red-900"
+                                                            onclick="return confirm('Batalkan sertifikat untuk user ini?')">Batalkan</button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                        @empty
+                                            <tr>
+                                                <td colspan="3"
+                                                    class="px-6 py-4 text-center text-sm text-gray-500 italic">Belum ada
+                                                    penerima yang dipilih.</td>
+                                            </tr>
+                                        @endforelse
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    @endif
+                </div>
+            </div>
+        @endif
     </div>
 
     <script>

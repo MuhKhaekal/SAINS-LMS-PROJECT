@@ -8,7 +8,7 @@ use App\Models\Meeting;
 use App\Models\Test;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-
+use Illuminate\Support\Facades\Auth;
 
 class HalaqahAsistenController extends Controller
 {
@@ -28,8 +28,35 @@ class HalaqahAsistenController extends Controller
             $this->authorize('view', $selectedHalaqah);
         }
 
-        
-        return view('dashboard.asisten.halaqah.index', compact('selectedHalaqah', 'meetings'));
+        // --- LOGIC SERTIFIKAT DIPINDAHKAN KE SINI ---
+        $user = Auth::user();
+
+        // 1. Cek Sertifikat Umum
+        $hasSertifUmum = $user->certificates()
+            ->where('type', 'sertifikat-asisten-umum')
+            ->exists();
+
+        // 2. Cek Sertifikat Terbaik
+        $hasSertifTerbaik = $user->certificates()
+            ->whereIn('type', [
+                'sertifikat-asisten-akhwat-terbaik',
+                'sertifikat-asisten-ikhwan-terbaik',
+            ])
+            ->exists();
+
+        // 3. Tentukan Label & Tipe URL berdasarkan Gender
+        $labelTerbaik = $user->gender == 'L' ? 'Asisten Ikhwan Terbaik' : 'Asisten Akhwat Terbaik';
+        $typeTerbaik  = $user->gender == 'L' ? 'sertifikat-asisten-ikhwan-terbaik' : 'sertifikat-asisten-akhwat-terbaik';
+
+        // Kirim semua variabel ke View menggunakan compact
+        return view('dashboard.asisten.halaqah.index', compact(
+            'selectedHalaqah', 
+            'meetings',
+            'hasSertifUmum',
+            'hasSertifTerbaik',
+            'labelTerbaik',
+            'typeTerbaik'
+        ));
     }
 
     /**
