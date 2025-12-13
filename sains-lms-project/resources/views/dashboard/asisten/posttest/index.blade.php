@@ -1,12 +1,12 @@
 @extends('dashboard.asisten.asisten-base')
 
-@section('page-title', 'SAINS | Nilai Pretest')
+@section('page-title', 'SAINS | Nilai Posttest')
 
 @section('content')
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:mt-24">
         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
             <div>
-                <h1 class="text-2xl font-bold text-gray-800">Daftar Nilai Pretest</h1>
+                <h1 class="text-2xl font-bold text-gray-800">Daftar Nilai Posttest</h1>
                 <p class="text-sm text-gray-500 mt-1">Halaqah: <span
                         class="font-bold text-indigo-600">{{ $selectedHalaqah->halaqah_name }}</span></p>
             </div>
@@ -38,7 +38,7 @@
                     <tbody class="divide-y divide-gray-100">
                         @forelse ($praktikans as $index => $praktikan)
                             @php
-                                $nilai = $praktikan->nilai_pretest;
+                                $nilai = $praktikan->nilai_posttest;
                                 $hasScore = $nilai ? true : false;
                             @endphp
                             <tr class="bg-white hover:bg-gray-50 transition-colors">

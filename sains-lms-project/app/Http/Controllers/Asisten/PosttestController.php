@@ -6,20 +6,41 @@ use App\Http\Controllers\Controller;
 use App\Models\Halaqah;
 use App\Models\Posttest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PosttestController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $halaqahName = $request->query('halaqah_name');
+        if (!$halaqahName) return back()->with('error', 'Nama halaqah tidak ditemukan.');
+
+        $asisten = Auth::user();
+
+        $selectedHalaqah = Halaqah::where('halaqah_name', $halaqahName)
+            ->whereHas('users', function($q) use ($asisten) {
+                $q->where('users.id', $asisten->id);
+            })->first();
+
+        if (!$selectedHalaqah) {
+            return back()->with('error', 'Halaqah tidak ditemukan atau Anda tidak memiliki akses.');
+        }
+        
+        $praktikans = $selectedHalaqah->users()
+            ->where('role', 'praktikan')
+            ->get();
+
+        foreach ($praktikans as $p) {
+            $nilai = Posttest::where('user_id', $p->id)
+                ->where('halaqah_id', $selectedHalaqah->id)
+                ->first();
+
+            $p->nilai_posttest = $nilai;
+        }
+
+        return view('dashboard.asisten.posttest.index', compact('praktikans', 'selectedHalaqah'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create(Request $request)
     {
         $halaqahName = $request->halaqah_name;
@@ -34,9 +55,6 @@ class PosttestController extends Controller
         return view('dashboard.asisten.posttest.create', compact('selectedHalaqah', 'praktikans', 'posttests'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $request->validate([
@@ -68,37 +86,5 @@ class PosttestController extends Controller
         return redirect()->back()->with('success', 'Nilai Posttest berhasil disimpan.');
 
 
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
     }
 }
