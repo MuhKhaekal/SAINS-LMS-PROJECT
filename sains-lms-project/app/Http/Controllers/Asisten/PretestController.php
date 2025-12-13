@@ -6,15 +6,52 @@ use App\Http\Controllers\Controller;
 use App\Models\Halaqah;
 use App\Models\Pretest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PretestController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        // 1. Validasi Input URL
+        $halaqahName = $request->query('halaqah_name');
+        if (!$halaqahName) return back()->with('error', 'Nama halaqah tidak ditemukan.');
+
+        $asisten = Auth::user();
+
+        // 2. Cari Halaqah & Validasi Akses Asisten
+        $selectedHalaqah = Halaqah::where('halaqah_name', $halaqahName)
+            ->whereHas('users', function($q) use ($asisten) {
+                $q->where('users.id', $asisten->id);
+            })->first();
+
+        if (!$selectedHalaqah) {
+            return back()->with('error', 'Halaqah tidak ditemukan atau Anda tidak memiliki akses.');
+        }
+
+        // 3. Ambil Praktikan di Halaqah ini
+        // Kita eager load relasi 'pretest' agar lebih efisien (N+1 Problem Solved)
+        // Asumsi relasi di model User: public function pretest() { return $this->hasOne(Pretest::class); }
+        // Tapi karena pretest terikat halaqah_id juga, kita filter manual di view atau query builder
+        
+        $praktikans = $selectedHalaqah->users()
+            ->where('role', 'praktikan')
+            ->get();
+
+        // 4. Map Data Nilai Pretest
+        foreach ($praktikans as $p) {
+            // Cari nilai pretest user INI di halaqah INI
+            $nilai = Pretest::where('user_id', $p->id)
+                ->where('halaqah_id', $selectedHalaqah->id)
+                ->first();
+
+            // Tempelkan data nilai ke object praktikan
+            $p->nilai_pretest = $nilai; // Bisa null jika belum dinilai
+        }
+
+        return view('dashboard.asisten.pretest.index', compact('praktikans', 'selectedHalaqah'));
     }
 
     /**
