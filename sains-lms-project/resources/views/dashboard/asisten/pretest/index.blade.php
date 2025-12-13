@@ -31,8 +31,11 @@
                             <th scope="col" class="px-6 py-4 font-semibold">Nama Praktikan</th>
                             <th scope="col" class="px-6 py-4 text-center font-semibold text-blue-600">KBQ</th>
                             <th scope="col" class="px-6 py-4 text-center font-semibold text-green-600">Hukum Bacaan</th>
-                            <th scope="col" class="px-6 py-4 text-center font-semibold text-orange-600">Makharijul Huruf</th>
+                            <th scope="col" class="px-6 py-4 text-center font-semibold text-orange-600">Makharijul Huruf
+                            </th>
                             <th scope="col" class="px-6 py-4 text-center font-bold text-gray-800">Total</th>
+                            <th scope="col" class="px-6 py-4 text-center font-semibold text-gray-600">KET</th>
+                            <th scope="col" class="px-6 py-4 text-center font-bold text-gray-800">Grade</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100">
@@ -91,6 +94,36 @@
                                         <span
                                             class="inline-flex items-center justify-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-50 text-gray-400 border border-gray-100">
                                             Belum Dinilai
+                                        </span>
+                                    @endif
+                                </td>
+                                <td class="px-6 py-4 text-center">
+                                    <span
+                                        class="text-xs font-semibold 
+                                        {{ $praktikan->ket == 'SANGAT BAIK' ? 'text-green-600' : '' }}
+                                        {{ $praktikan->ket == 'BAIK' ? 'text-blue-600' : '' }}
+                                        {{ $praktikan->ket == 'CUKUP' ? 'text-yellow-600' : '' }}
+                                        {{ $praktikan->ket == 'KURANG' || $praktikan->ket == 'SANGAT KURANG' ? 'text-red-600' : '' }}
+                                    ">
+                                        {{ $praktikan->ket }}
+                                    </span>
+                                </td>
+
+                                {{-- Kolom Grade --}}
+                                <td class="px-6 py-4 text-center">
+                                    @if ($praktikan->grade == 'TIDAK PRE-TEST')
+                                        <span
+                                            class="inline-flex items-center justify-center px-2 py-1 rounded text-[10px] font-bold bg-gray-100 text-gray-500">
+                                            TIDAK PRE-TEST
+                                        </span>
+                                    @else
+                                        <span
+                                            class="inline-flex items-center justify-center w-8 h-8 rounded-full text-sm font-bold border 
+                                            {{ $praktikan->grade == 'A' ? 'bg-green-50 text-green-700 border-green-200' : '' }}
+                                            {{ $praktikan->grade == 'B' ? 'bg-blue-50 text-blue-700 border-blue-200' : '' }}
+                                            {{ $praktikan->grade == 'C' ? 'bg-red-50 text-red-700 border-red-200' : '' }}
+                                        ">
+                                            {{ $praktikan->grade }}
                                         </span>
                                     @endif
                                 </td>

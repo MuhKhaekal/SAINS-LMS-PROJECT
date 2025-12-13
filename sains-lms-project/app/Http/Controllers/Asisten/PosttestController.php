@@ -36,6 +36,36 @@ class PosttestController extends Controller
                 ->first();
 
             $p->nilai_posttest = $nilai;
+            $total = $nilai ? $nilai->total : 0;
+        
+        $ket = 'SANGAT KURANG'; 
+        $grade = 'TIDAK PRE-TEST';
+
+        if ($total > 0) { 
+            if ($total >= 91) {
+                $ket = 'SANGAT BAIK';
+                $grade = 'A';
+            } elseif ($total >= 81) {
+                $ket = 'BAIK';
+                $grade = 'A';
+            } elseif ($total >= 61) {
+                $ket = 'CUKUP';
+                $grade = 'B';
+            } elseif ($total >= 21) {
+                $ket = 'KURANG';
+                $grade = 'C';
+            } else {
+                $ket = 'SANGAT KURANG';
+                $grade = 'C';
+            }
+        } else {
+                 $ket = 'TIDAK PRE-TEST';
+                 $grade = 'TIDAK PRE-TEST';
+
+        }
+
+        $p->ket = $ket;
+        $p->grade = $grade;
         }
 
         return view('dashboard.asisten.posttest.index', compact('praktikans', 'selectedHalaqah'));
