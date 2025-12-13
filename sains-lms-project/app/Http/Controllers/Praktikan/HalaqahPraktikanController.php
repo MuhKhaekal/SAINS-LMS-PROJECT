@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Halaqah;
 use App\Models\Meeting;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\Auth;
 
 class HalaqahPraktikanController extends Controller
 {
@@ -25,8 +26,24 @@ class HalaqahPraktikanController extends Controller
         if ($selectedHalaqah) {
             $this->authorize('view', $selectedHalaqah);
         }
-    
-        return view('dashboard.praktikan.halaqah.index', compact('selectedHalaqah', 'meetings'));
+
+        $user = Auth::user();
+
+        $hasSertifUmum = $user->certificates()
+            ->where('type', 'sertifikat-praktikan-umum')
+            ->exists();
+
+        $hasSertifTerbaik = $user->certificates()
+            ->whereIn('type', [
+                'sertifikat-praktikan-akhwat-terbaik',
+                'sertifikat-praktikan-ikhwan-terbaik',
+            ])
+            ->exists();
+
+        $labelTerbaik = $user->gender == 'L' ? 'Praktikan Ikhwan Terbaik' : 'Praktikan Akhwat Terbaik';
+        $typeTerbaik  = $user->gender == 'L' ? 'sertifikat-praktikan-ikhwan-terbaik' : 'sertifikat-praktikan-akhwat-terbaik';
+
+        return view('dashboard.praktikan.halaqah.index', compact('selectedHalaqah', 'meetings', 'hasSertifUmum','hasSertifTerbaik','labelTerbaik', 'typeTerbaik'));
     }
 
     /**

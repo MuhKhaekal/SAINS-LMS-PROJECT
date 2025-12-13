@@ -40,6 +40,7 @@ use App\Http\Controllers\Praktikan\AssignmentPraktikanController;
 use App\Http\Controllers\Praktikan\FaqPraktikanController;
 use App\Http\Controllers\Praktikan\HalaqahPraktikanController;
 use App\Http\Controllers\Praktikan\MaterialPraktikanController;
+use App\Http\Controllers\Praktikan\PraktikanCertificateController;
 use App\Http\Controllers\Praktikan\PraktikanTestController;
 use App\Http\Controllers\Praktikan\SubmissionPraktikanController;
 use App\Models\ClassPai;
@@ -352,6 +353,9 @@ Route::middleware('auth')->group(function () {
 
 
     Route::middleware('praktikan')->group(function () {
+
+        Route::get('/sertifikat/download/{type}', [PraktikanCertificateController::class, 'download'])->name('sertifikat-praktikan.download');
+
         Route::resource('halaqah-praktikan', HalaqahPraktikanController::class)
         ->names([
             'index' => 'halaqah-praktikan.index',
