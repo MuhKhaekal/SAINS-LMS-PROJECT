@@ -7,7 +7,12 @@ use App\Imports\DaftarPenggunaImport;
 use App\Imports\UsersImport;
 use App\Models\Halaqah;
 use App\Models\PivotHalaqahUser;
+use App\Models\Posttest;
+use App\Models\Presence;
+use App\Models\Pretest;
+use App\Models\TestSubmission;
 use App\Models\User;
+use App\Models\WeeklyScore;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -16,9 +21,7 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index(Request $request)
     {
         $query = User::with('halaqahs');
@@ -47,17 +50,6 @@ class UserController extends Controller
         return view('dashboard.admin.daftar-pengguna.index', compact('users', 'halaqahs'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $messages = [
@@ -105,25 +97,54 @@ class UserController extends Controller
     }
     
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+
+    public function show($id)
     {
-        //
+        $user = User::findOrFail($id);
+
+        $user->load(['halaqahs.prodi.faculty']);
+
+        $academicData = [];
+
+        if ($user->role == 'praktikan') {
+            foreach ($user->halaqahs as $halaqah) {
+                $pretest = Pretest::where('user_id', $user->id)->where('halaqah_id', $halaqah->id)->first();
+                $posttest = Posttest::where('user_id', $user->id)->where('halaqah_id', $halaqah->id)->first();
+                $weekly = WeeklyScore::where('user_id', $user->id)->where('halaqah_id', $halaqah->id)->first();
+                $final = TestSubmission::where('user_id', $user->id)->where('halaqah_id', $halaqah->id)->latest()->first();
+                
+                $presences = Presence::with('meeting')
+                    ->where('user_id', $user->id)
+                    ->where('halaqah_id', $halaqah->id)
+                    ->get();
+
+                $totalHadir = $presences->where('status', 'Hadir')->count();
+                $totalIzin = $presences->where('status', 'Izin')->count();
+                $totalSakit = $presences->where('status', 'Sakit')->count();
+                $totalAlfa = $presences->where('status', 'Alfa')->count();
+
+                $academicData[] = (object) [
+                    'halaqah' => $halaqah,
+                    'pretest' => $pretest,
+                    'posttest' => $posttest,
+                    'weekly' => $weekly,
+                    'final' => $final,
+                    'presences' => $presences,
+                    'summary_presence' => [
+                        'hadir' => $totalHadir,
+                        'izin' => $totalIzin,
+                        'sakit' => $totalSakit,
+                        'alfa' => $totalAlfa,
+                        'total' => $presences->count()
+                    ]
+                ];
+            }
+        }
+
+        return view('dashboard.admin.daftar-pengguna.show', compact('user', 'academicData'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
         $messages = [
@@ -168,7 +189,6 @@ class UserController extends Controller
         $user->update($data);
 
         if ($request->role === 'praktikan') {
-            // Praktikan wajib punya halaqah
             if (!empty($request->halaqah_id)) {
                 PivotHalaqahUser::updateOrCreate(
                     ['user_id' => $id],
@@ -176,21 +196,13 @@ class UserController extends Controller
                 );
             }
         } else {
-            // Jika role berubah bukan praktikan → hapus halaqah
             PivotHalaqahUser::where('user_id', $id)->delete();
         }
-        
-
-    
-    
+         
         return redirect()->route('daftar-pengguna.index')->with('success', 'Akun berhasil diperbarui');
     }
     
     
-
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
         $user = User::findOrFail($id);

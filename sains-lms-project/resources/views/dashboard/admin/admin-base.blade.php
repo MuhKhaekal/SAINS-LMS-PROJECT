@@ -25,10 +25,8 @@
 
 <body class="font-poppins" style="background-color: #f4f6f9">
     <div class="flex">
-        <!-- Header -->
         <div class="md:hidden flex bg-primary text-secondary items-center py-3 fixed w-full top-0 z-40">
             <div class="w-10 ">
-                <!-- Tombol hanya muncul di mobile -->
                 <button id="toggleSidebar" class="p-2">
                     <svg class="w-6 h-6 text-secondary" xmlns="http://www.w3.org/2000/svg" fill="none"
                         viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -46,12 +44,10 @@
             class="fixed top-0 left-0 md:left-auto md:right-0 z-50 w-80 h-screen overflow-y-auto bg-primary text-secondary 
             transition-transform duration-300 transform -translate-x-full md:translate-x-0 md:static md:flex md:flex-col">
 
-            <!-- Logo -->
             <div class="text-secondary text-md font-bold flex items-center justify-center px-4 py-6">
                 <a href="" class="text-2xl font-semibold">[ SAINS UNHAS ]</a>
             </div>
 
-            <!-- Menu -->
             <div class="h-full overflow-y-auto flex flex-col flex-1 mt-0 no-scrollbar pb-10">
                 <ul class="space-y-4">
                     <li
@@ -193,7 +189,6 @@
 
         <div id="overlay" class="fixed inset-0 bg-black/30 backdrop-blur-sm hidden z-40 md:hidden"></div>
 
-        <!-- Content -->
         <div class="flex-1 h-screen overflow-y-auto">
             <div class="mx-4">
                 @yield('content')

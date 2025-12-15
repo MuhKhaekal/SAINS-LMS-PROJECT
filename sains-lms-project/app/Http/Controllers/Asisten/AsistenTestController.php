@@ -85,7 +85,7 @@ class AsistenTestController extends Controller
             ]
         );
     
-        return back()->with('success', 'Test berhasil dibuka untuk praktikan');
+        return back()->with('success', 'Ujian berhasil dibuka untuk praktikan');
     }
 
     public function close($id)
@@ -111,7 +111,7 @@ class AsistenTestController extends Controller
             ]
         );
 
-        return back()->with('success', 'Test berhasil ditutup');
+        return back()->with('success', 'Ujian berhasil ditutup');
     }
 
 }

@@ -4,17 +4,19 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Halaqah;
+use App\Models\Meeting;
 use App\Models\PivotHalaqahUser;
+use App\Models\Posttest;
+use App\Models\Pretest;
 use App\Models\Prodi;
+use App\Models\TestSubmission;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class HalaqahController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index(Request $request)
     {
         $query = Halaqah::with('prodi', 'users');
@@ -41,17 +43,8 @@ class HalaqahController extends Controller
         return view('dashboard.admin.daftar-halaqah.index', compact('halaqahs', 'users', 'prodis'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+
     public function store(Request $request)
     {
         $messages = [
@@ -96,25 +89,50 @@ class HalaqahController extends Controller
         return redirect()->route('daftar-halaqah.index')->with('success', 'Data halaqah berhasil ditambahkan');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+
+    public function show($id)
     {
-        //
+
+        $halaqah = Halaqah::with(['prodi.faculty', 'classPais'])->findOrFail($id);
+
+        $meetings = Meeting::orderBy('id', 'asc')->get(); 
+
+        $asisten = $halaqah->users()->where('role', 'asisten')->first();
+
+        $praktikans = $halaqah->users()
+            ->where('role', 'praktikan')
+            ->with(['presences' => function($q) use ($id) {
+                $q->where('halaqah_id', $id);
+            }])
+            ->get();
+
+        $totalPertemuan = $meetings->where('type', 'skk')->count(); 
+        $totalPraktikan = $praktikans->count();
+
+        $totalKehadiran = 0;
+        $totalSlot = $totalPertemuan * $totalPraktikan;
+        
+        foreach($praktikans as $p) {
+            $hadir = $p->presences->where('status', 'Hadir')->count();
+            
+            $p->jumlah_hadir = $hadir;
+            $p->persentase = $totalPertemuan > 0 ? ($hadir / $totalPertemuan) * 100 : 0;
+            
+            $totalKehadiran += $hadir;
+            
+            $p->pretest = Pretest::where('user_id', $p->id)->where('halaqah_id', $id)->first();
+            $p->posttest = Posttest::where('user_id', $p->id)->where('halaqah_id', $id)->first();
+            $p->final = TestSubmission::where('user_id', $p->id)->where('halaqah_id', $id)->latest()->first();
+        }
+
+        $avgKehadiran = $totalSlot > 0 ? ($totalKehadiran / $totalSlot) * 100 : 0;
+
+        return view('dashboard.admin.daftar-halaqah.show', compact(
+            'halaqah', 'asisten', 'praktikans', 'meetings', 
+            'totalPertemuan', 'totalPraktikan', 'avgKehadiran'
+        ));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
         $messages = [
@@ -175,9 +193,7 @@ class HalaqahController extends Controller
         return redirect()->route('daftar-halaqah.index')->with('success', 'Data halaqah berhasil diperbarui');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+
     public function destroy(string $id)
     {
         $halaqah = Halaqah::findOrFail($id);

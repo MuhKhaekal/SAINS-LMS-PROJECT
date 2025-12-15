@@ -5,13 +5,11 @@
 
 @section('content')
     <div class="relative w-full h-[600px] md:h-screen flex items-center justify-center overflow-hidden">
-        {{-- Background Image with Overlay --}}
         <div class="absolute inset-0 z-0">
             <div class="absolute inset-0 bg-gradient-to-r from-primary/90 to-primary/60 mix-blend-multiply"></div>
             <img src="{{ asset('assets/images/background-home.png') }}" alt="Background" class="w-full h-full object-cover">
         </div>
 
-        {{-- Content --}}
         <div class="container mx-auto px-6 md:px-12 text-center md:text-left flex flex-col md:flex-row items-center">
             <div class="md:w-2/3 text-white">
                 <h1 class="text-3xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6" data-aos="fade-right">
@@ -35,11 +33,9 @@
         </div>
     </div>
 
-    {{-- SECTION: TENTANG KAMI --}}
     <section class="py-16 md:py-24 bg-white overflow-hidden">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-            {{-- Item 1 --}}
             <div class="flex flex-col md:flex-row items-center gap-12 mb-16 md:mb-24">
                 <div class="w-full md:w-1/2" data-aos="fade-right">
                     <span class="text-primary font-bold tracking-wider uppercase text-sm mb-2 block">Tentang Kami</span>
@@ -59,7 +55,6 @@
                 </div>
             </div>
 
-            {{-- Item 2 (Reversed on Desktop) --}}
             <div class="flex flex-col md:flex-row-reverse items-center gap-12">
                 <div class="w-full md:w-1/2" data-aos="fade-left">
                     <span class="text-primary font-bold tracking-wider uppercase text-sm mb-2 block">Visi Kami</span>
@@ -73,7 +68,6 @@
                 </div>
                 <div class="w-full md:w-1/2" data-aos="fade-right">
                     <div class="relative rounded-2xl overflow-hidden shadow-2xl">
-                        {{-- Pastikan gambar kedua ada, atau gunakan placeholder --}}
                         <img src="{{ asset('assets/images/picture-home-2.png') }}" alt="Visi SAINS"
                             class="w-full h-auto transform hover:scale-105 transition duration-500">
                     </div>
@@ -83,9 +77,7 @@
         </div>
     </section>
 
-    {{-- SECTION: KEUNTUNGAN --}}
     <section class="py-20 bg-primary relative">
-        {{-- Pattern Background (Optional) --}}
         <div class="absolute inset-0 opacity-10"
             style="background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 20px 20px;"></div>
 
@@ -97,7 +89,6 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {{-- Card Loop --}}
                 @php
                     $benefits = [
                         [
@@ -159,7 +150,6 @@
         </div>
     </section>
 
-    {{-- SECTION: TESTIMONIALS --}}
     <section class="py-20 bg-gray-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12" data-aos="fade-up">
@@ -168,11 +158,9 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {{-- Testimonial Card --}}
                 @for ($i = 0; $i < 3; $i++)
                     <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition duration-300"
                         data-aos="fade-up" data-aos-delay="{{ $i * 100 }}">
-                        {{-- Quote Icon --}}
                         <svg class="w-8 h-8 text-yellow-400 mb-4 opacity-50" fill="currentColor" viewBox="0 0 24 24">
                             <path
                                 d="M14.017 21L14.017 18C14.017 16.8954 14.9124 16 16.017 16H19.017C19.5693 16 20.017 15.5523 20.017 15V9C20.017 8.44772 19.5693 8 19.017 8H15.017C14.4647 8 14.017 8.44772 14.017 9V11C14.017 11.5523 13.5693 12 13.017 12H12.017V5H22.017V15C22.017 18.3137 19.3307 21 16.017 21H14.017ZM5.0166 21L5.0166 18C5.0166 16.8954 5.91203 16 7.0166 16H10.0166C10.5689 16 11.0166 15.5523 11.0166 15V9C11.0166 8.44772 10.5689 8 10.0166 8H6.0166C5.46432 8 5.0166 8.44772 5.0166 9V11C5.0166 11.5523 4.56889 12 4.0166 12H3.0166V5H13.0166V15C13.0166 18.3137 10.3303 21 7.0166 21H5.0166Z">

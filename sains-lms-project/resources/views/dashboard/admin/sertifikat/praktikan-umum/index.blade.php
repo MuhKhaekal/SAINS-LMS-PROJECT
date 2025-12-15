@@ -15,7 +15,7 @@
         $judulSertifikat = ucwords(str_replace('-', ' ', $type));
     @endphp
 
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mt-14 md:mt-0">
         <div class="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
                 <div class="flex items-center gap-2 mb-1">
@@ -146,8 +146,7 @@
                                 }
                             </style>
                             <div id="default-modal-delete" tabindex="-1" aria-hidden="true"
-                                class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-full] max-h-full backdrop-blur-sm
-                             ">
+                                class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-full] max-h-full backdrop-blur-sm">
 
                                 <div class="relative p-4 w-full max-w-2xl max-h-full mt-36 md:mt-0">
                                     <div class="relative bg-primary rounded-lg shadow-sm px-4">

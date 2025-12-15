@@ -8,7 +8,8 @@ class Certificate extends Model
 {
     protected $fillable = [
         'type', 
-        'file_location'];
+        'file_location'
+    ];
 
     public function users()
     {

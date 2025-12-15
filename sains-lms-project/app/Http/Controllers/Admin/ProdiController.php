@@ -5,14 +5,13 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Faculty;
 use App\Models\Prodi;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class ProdiController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index(Request $request)
     {
         $query = Prodi::with('faculty');
@@ -34,17 +33,6 @@ class ProdiController extends Controller
         return view('dashboard.admin.daftar-prodi.index', compact('prodies', 'faculties'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $messages = [
@@ -75,26 +63,60 @@ class ProdiController extends Controller
     
         return redirect()->route('daftar-prodi.index')->with('success', 'Data Program Studi berhasil ditambahkan');
     }
+    
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        $prodi = Prodi::with(['faculty', 'halaqahs'])->findOrFail($id);
+
+        $totalHalaqah = $prodi->halaqahs->count();
+
+        $totalAsisten = User::where('role', 'asisten')
+            ->whereHas('halaqahs', function($q) use ($id) {
+                $q->where('prodi_id', $id);
+            })->distinct()->count('users.id');
+
+        $totalPraktikan = User::where('role', 'praktikan')
+            ->whereHas('halaqahs', function($q) use ($id) {
+                $q->where('prodi_id', $id);
+            })->distinct()->count('users.id');
+
+        $listHalaqah = $prodi->halaqahs;
+
+        $listAsisten = User::where('role', 'asisten')
+            ->whereHas('halaqahs', function($q) use ($id) {
+                $q->where('prodi_id', $id);
+            })
+            ->with(['halaqahs' => function($q) use ($id) {
+                $q->where('prodi_id', $id);
+            }])
+            ->distinct()
+            ->get();
+
+        $listPraktikan = User::where('role', 'praktikan')
+            ->whereHas('halaqahs', function($q) use ($id) {
+                $q->where('prodi_id', $id);
+            })
+            ->with(['halaqahs' => function($q) use ($id) {
+                $q->where('prodi_id', $id);
+            }])
+            ->distinct()
+            ->limit(500)
+            ->get();
+
+        $chartDataRaw = $prodi->halaqahs->groupBy('halaqah_type')->map->count();
+        $chartLabels = $chartDataRaw->keys();
+        $chartValues = $chartDataRaw->values();
+
+        return view('dashboard.admin.daftar-prodi.show', compact(
+            'prodi',
+            'totalHalaqah', 'totalAsisten', 'totalPraktikan',
+            'listHalaqah', 'listAsisten', 'listPraktikan',
+            'chartLabels', 'chartValues'
+        ));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
         $messages = [
@@ -130,9 +152,7 @@ class ProdiController extends Controller
         return redirect()->route('daftar-prodi.index')->with('success', 'Data Program Studi berhasil diperbarui');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+
     public function destroy(string $id)
     {
         $prodi = Prodi::findOrFail($id);

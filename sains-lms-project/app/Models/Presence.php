@@ -13,4 +13,19 @@ class Presence extends Model
         'status',
         'description',
     ];
+
+    public function meeting()
+    {
+        return $this->belongsTo(Meeting::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function halaqah()
+    {
+        return $this->belongsTo(Halaqah::class);
+    }
 }

@@ -9,9 +9,7 @@ use Illuminate\Support\Facades\Validator;
 
 class FacultyController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index(Request $request)
     {
         $query = Faculty::withCount('prodies', 'halaqahs');
@@ -30,17 +28,6 @@ class FacultyController extends Controller
         return view('dashboard.admin.daftar-fakultas.index', compact('faculties'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $messages = [
@@ -69,25 +56,60 @@ class FacultyController extends Controller
         return redirect()->route('daftar-fakultas.index')->with('success', 'Data fakultas berhasil ditambahkan');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        $faculty = Faculty::with(['prodies' => function($q) {
+            $q->withCount('halaqahs');
+        }])->findOrFail($id);
+
+        $totalProdi = $faculty->prodies->count();
+        $totalHalaqah = $faculty->prodies->sum('halaqahs_count');
+        
+        $totalAsisten = \App\Models\User::where('role', 'asisten')
+            ->whereHas('halaqahs.prodi', function($q) use ($id) {
+                $q->where('faculty_id', $id);
+            })->distinct()->count('users.id');
+
+        $totalPraktikan = \App\Models\User::where('role', 'praktikan')
+            ->whereHas('halaqahs.prodi', function($q) use ($id) {
+                $q->where('faculty_id', $id);
+            })->distinct()->count('users.id');
+
+        $listHalaqah = \App\Models\Halaqah::with('prodi')
+            ->whereHas('prodi', function($q) use ($id) {
+                $q->where('faculty_id', $id);
+            })->get();
+
+        $listAsisten = \App\Models\User::where('role', 'asisten')
+            ->whereHas('halaqahs.prodi', function($q) use ($id) {
+                $q->where('faculty_id', $id);
+            })
+            ->with('halaqahs') 
+            ->distinct()
+            ->get();
+
+        $listPraktikan = \App\Models\User::where('role', 'praktikan')
+            ->whereHas('halaqahs.prodi', function($q) use ($id) {
+                $q->where('faculty_id', $id);
+            })
+            ->with('halaqahs')
+            ->distinct()
+            ->limit(500) 
+            ->get();
+
+        $topProdies = $faculty->prodies->sortByDesc('halaqahs_count')->take(5);
+        $chartLabels = $topProdies->pluck('prodi_name')->values();
+        $chartData = $topProdies->pluck('halaqahs_count')->values();
+
+        return view('dashboard.admin.daftar-fakultas.show', compact(
+            'faculty', 
+            'totalProdi', 'totalHalaqah', 'totalAsisten', 'totalPraktikan',
+            'listHalaqah', 'listAsisten', 'listPraktikan',
+            'chartLabels', 'chartData'
+        ));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
 
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
         $messages = [
@@ -120,9 +142,6 @@ class FacultyController extends Controller
         return redirect()->route('daftar-fakultas.index')->with('success', 'Data fakultas berhasil diperbarui');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
         $faculty = Faculty::findOrFail($id);

@@ -125,6 +125,7 @@ Route::middleware('auth')->group(function () {
     
             Route::put('faq/add-to-list-faq-asisten/{id}', [FaqAsistenController::class, 'addToListFaq'])->name('faq.addToListFaqAsisten');
             Route::put('faq/delete-from-list-faq-asisten/{id}', [FaqAsistenController::class, 'deleteFromListFaq'])->name('faq.deleteFromListFaqAsisten');
+            
             Route::resource('faq-asisten', FaqAsistenController::class)
             ->names([
                 'index' => 'faq-asisten.index',
@@ -171,14 +172,11 @@ Route::middleware('auth')->group(function () {
             ]);
     
             Route::post('/periksa-tugas/update', [SubmissionAsistenController::class, 'updateAll'])
-            ->name('periksa-tugas.update');
-    
+            ->name('periksa-tugas.update');    
             Route::get('/ujian', [AsistenTestController::class, 'indexPretest'])->name('ujian-asisten.index');
-    
             Route::post('/ujian/buka/{id}', [AsistenTestController::class, 'open'])->name('ujian-asisten.open');
-    
             Route::post('/ujian/tutup/{id}', [AsistenTestController::class, 'close'])->name('ujian-asisten.close');
-    
+
             Route::resource('nilai-perpekan', WeeklyScoreController::class)
                 ->names([
                     'index' => 'nilai-perpekan.index',
@@ -330,16 +328,6 @@ Route::middleware('auth')->group(function () {
             'destroy' => 'sertifikat.destroy',
         ]);
     
-        Route::resource('laporan', ReportController::class)
-        ->names([
-            'index' => 'laporan.index',
-            'create' => 'laporan.create',
-            'store' => 'laporan.store',
-            'show' => 'laporan.show',         
-            'edit' => 'laporan.edit',
-            'update' => 'laporan.update',
-            'destroy' => 'laporan.destroy',
-        ]);
     
         Route::resource('pertemuan', MeetingController::class)
         ->names([
@@ -370,7 +358,6 @@ Route::middleware('auth')->group(function () {
     Route::middleware('praktikan')->group(function () {
 
         Route::get('/sertifikat/download/{type}', [PraktikanCertificateController::class, 'download'])->name('sertifikat-praktikan.download');
-
         Route::resource('halaqah-praktikan', HalaqahPraktikanController::class)
         ->names([
             'index' => 'halaqah-praktikan.index',
@@ -440,9 +427,7 @@ Route::middleware('auth')->group(function () {
         
         Route::get('/ujian-praktikan', [PraktikanTestController::class, 'index'])->name('ujian-praktikan.index');
         Route::post('/ujian-praktikan/mulai/{id}', [PraktikanTestController::class, 'start'])->name('ujian-praktikan.start');
-
         Route::get('/ujian-praktikan/{submissionId}/jawab', [PraktikanTestController::class, 'take'])->name('ujian-praktikan.take');
-
         Route::post('/ujian-praktikan/{testId}/kumpul', [PraktikanTestController::class, 'submit'])->name('ujian-praktikan.submit');
     });
 

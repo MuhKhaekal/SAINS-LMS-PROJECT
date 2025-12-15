@@ -3,9 +3,8 @@
 @section('page-title', 'SAINS - Pengumuman')
 
 @section('content')
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mt-14 md:mt-0">
 
-        {{-- HEADER --}}
         <div class="mb-8">
             <h1 class="text-2xl font-bold text-gray-800">Papan Pengumuman</h1>
             <p class="text-sm text-gray-500 mt-1">Bagikan informasi penting kepada asisten dan praktikan.</p>
@@ -13,7 +12,6 @@
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
 
-            {{-- SECTION KIRI: FORM INPUT (Sticky) --}}
             <div class="lg:col-span-1 lg:sticky lg:top-6">
                 <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
                     <h2 class="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
@@ -28,7 +26,6 @@
                     <form action="{{ route('pengumuman.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
 
-                        {{-- Input Pesan --}}
                         <div class="mb-4">
                             <label for="message" class="block mb-2 text-sm font-medium text-gray-700">Isi
                                 Pengumuman</label>
@@ -38,7 +35,6 @@
                             <x-input-error :messages="$errors->get('content')" class="mt-2" />
                         </div>
 
-                        {{-- Input File --}}
                         <div class="mb-6">
                             <label class="block mb-2 text-sm font-medium text-gray-700" for="file_input">Lampiran
                                 (Opsional)</label>
@@ -50,7 +46,6 @@
                             <x-input-error :messages="$errors->get('file_location')" class="mt-2" />
                         </div>
 
-                        {{-- Tombol Submit --}}
                         <div class="flex justify-end">
                             <x-primary-button class="w-full justify-center">
                                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -64,16 +59,13 @@
                 </div>
             </div>
 
-            {{-- SECTION KANAN: DAFTAR PENGUMUMAN --}}
             <div class="lg:col-span-2 space-y-6">
                 @forelse ($announcements as $announcement)
                     <div
                         class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200">
 
-                        {{-- Card Header: User Info & Actions --}}
                         <div class="flex justify-between items-start mb-4">
                             <div class="flex items-center gap-3">
-                                {{-- Avatar Initials --}}
                                 <div
                                     class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-700 font-bold text-sm">
                                     {{ substr($announcement->user->nama, 0, 1) }}
@@ -91,7 +83,6 @@
                                 </div>
                             </div>
 
-                            {{-- Action Buttons --}}
                             <div class="flex gap-2">
                                 <button type="button" data-modal-target="default-modal-update"
                                     data-modal-toggle="default-modal-update" data-id="{{ $announcement->id }}"
@@ -119,12 +110,10 @@
                             </div>
                         </div>
 
-                        {{-- Card Body: Content --}}
                         <div class="text-gray-700 text-sm leading-relaxed whitespace-pre-line mb-4">
                             {{ $announcement->content }}
                         </div>
 
-                        {{-- Card Footer: Attachment --}}
                         @if ($announcement->file_location)
                             <div class="border-t border-gray-100 pt-3 mt-3">
                                 <a href="{{ asset('storage/' . $announcement->file_location) }}" target="_blank"
@@ -358,9 +347,7 @@
             role="alert">
             <svg class="shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                 viewBox="0 0 20 20">
-                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3
-                                               1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1
-                                               1 1v4h1a1 1 0 0 1 0 2Z" />
+                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3  1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
             </svg>
             <div class="ms-3 text-sm font-medium">{{ session('success') }}</div>
         </div>
@@ -382,9 +369,7 @@
             role="alert">
             <svg class="shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                 viewBox="0 0 20 20">
-                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3
-                                               1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1
-                                               1 1v4h1a1 1 0 0 1 0 2Z" />
+                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
             </svg>
             <div class="ms-3 text-sm font-medium">{{ session('error') }}</div>
         </div>

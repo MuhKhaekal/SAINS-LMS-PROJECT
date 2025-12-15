@@ -3,9 +3,8 @@
 @section('page-title', 'SAINS - Daftar Program Studi')
 
 @section('content')
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mt-14 md:mt-0">
 
-        {{-- HEADER: Judul & Tombol Tambah --}}
         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
             <div>
                 <h1 class="text-2xl font-bold text-gray-800">Daftar Program Studi</h1>
@@ -21,12 +20,10 @@
             </div>
         </div>
 
-        {{-- FILTER SECTION --}}
         <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5 mb-6">
             <form method="GET" action="{{ route('daftar-prodi.index') }}"
                 class="grid grid-cols-1 md:grid-cols-12 gap-4 items-end">
 
-                {{-- Search Input --}}
                 <div class="md:col-span-5">
                     <label for="search" class="block text-xs font-medium text-gray-700 mb-1">Pencarian</label>
                     <div class="relative">
@@ -42,7 +39,6 @@
                     </div>
                 </div>
 
-                {{-- Faculty Filter --}}
                 <div class="md:col-span-4">
                     <label for="faculty" class="block text-xs font-medium text-gray-700 mb-1">Filter Fakultas</label>
                     <select name="faculty" id="faculty"
@@ -56,7 +52,6 @@
                     </select>
                 </div>
 
-                {{-- Buttons --}}
                 <div class="md:col-span-3 flex gap-2">
                     <button type="submit"
                         class="w-full bg-gray-800 text-white px-4 py-2 rounded-lg text-sm hover:bg-gray-700 transition">
@@ -75,7 +70,6 @@
             </form>
         </div>
 
-        {{-- BULK DELETE CONTEXT BAR --}}
         <form id="bulkDeleteForm" action="{{ route('daftar-prodi.destroy-multiple') }}" method="POST">
             @csrf
             @method('DELETE')
@@ -107,7 +101,6 @@
                 </div>
             </div>
 
-            {{-- TABLE SECTION --}}
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm text-left">
@@ -136,11 +129,12 @@
                                     <td class="px-6 py-4 font-mono font-medium text-gray-600">
                                         {{ $prodi->prodi_code }}
                                     </td>
-                                    <td class="px-6 py-4 font-medium text-gray-900">
-                                        {{ $prodi->prodi_name }}
+                                    <td class="px-6 py-4 "><a
+                                            href="{{ route('daftar-prodi.show', $prodi->id) }}" class="font-medium text-gray-900 hover:text-indigo-600 hover:underline transition-colors cursor-pointer">
+                                            {{ $prodi->prodi_name }}
+                                        </a>
                                     </td>
                                     <td class="px-6 py-4">
-                                        {{-- Badge untuk Fakultas agar lebih mudah dibaca --}}
                                         <span
                                             class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-50 text-indigo-700 border border-indigo-100">
                                             {{ $prodi->faculty->faculty_name ?? '-' }}
@@ -148,7 +142,6 @@
                                     </td>
                                     <td class="px-6 py-4 text-center">
                                         <div class="flex items-center justify-center gap-2">
-                                            {{-- Edit Button --}}
                                             <button type="button" data-modal-target="default-modal-update"
                                                 data-modal-toggle="default-modal-update" data-id="{{ $prodi->id }}"
                                                 data-prodi-code="{{ $prodi->prodi_code }}"
@@ -164,7 +157,6 @@
                                                 </svg>
                                             </button>
 
-                                            {{-- Delete Button --}}
                                             <button type="button" data-modal-target="default-modal-delete"
                                                 data-modal-toggle="default-modal-delete" data-id="{{ $prodi->id }}"
                                                 data-nama="{{ $prodi->prodi_name }}"
@@ -200,7 +192,6 @@
                     </table>
                 </div>
 
-                {{-- Pagination --}}
                 @if ($prodies->hasPages())
                     <div class="px-6 py-4 border-t border-gray-100 bg-gray-50">
                         {{ $prodies->appends(request()->query())->links() }}
@@ -216,7 +207,6 @@
             const checkItems = document.querySelectorAll('.checkItem');
             const bulkDeleteForm = document.getElementById('bulkDeleteForm');
 
-            // UI Elements
             const selectionBar = document.getElementById('selectionBar');
             const selectedCountSpan = document.getElementById('selectedCount');
             const clearBtn = document.getElementById('clearSelectionBtn');
@@ -278,7 +268,7 @@
 
             bulkDeleteForm.addEventListener('submit', function() {
                 const existingInputs = bulkDeleteForm.querySelectorAll(
-                'input[name="ids[]"][type="hidden"]');
+                    'input[name="ids[]"][type="hidden"]');
                 existingInputs.forEach(el => el.remove());
 
                 selectedIds.forEach(id => {
@@ -638,9 +628,8 @@
                 const bulkDeleteBtn = document.getElementById('bulkDeleteBtn');
                 const bulkForm = document.getElementById('bulkDeleteForm');
 
-                // === DELETE SATU DATA ===
                 document.querySelectorAll('[data-modal-target="default-modal-delete"]').forEach(button => {
-                    if (button !== bulkDeleteBtn) { // hindari bentrok dengan tombol massal
+                    if (button !== bulkDeleteBtn) { 
                         button.addEventListener('click', () => {
                             const id = button.getAttribute('data-id');
                             const nama = button.getAttribute('data-nama');
@@ -652,7 +641,6 @@
                     }
                 });
 
-                // === DELETE MULTIPLE ===
                 bulkDeleteBtn.addEventListener('click', () => {
                     const selectedIds = JSON.parse(localStorage.getItem('selectedIds') || '[]');
                     if (selectedIds.length === 0) return;
@@ -662,10 +650,8 @@
                     form.dataset.type = 'bulk';
                 });
 
-                // === KETIKA FORM DI-SUBMIT ===
                 form.addEventListener('submit', function(e) {
                     if (form.dataset.type === 'bulk') {
-                        // Tambahkan input hidden untuk setiap id terpilih
                         const selectedIds = JSON.parse(localStorage.getItem('selectedIds') || '[]');
                         selectedIds.forEach(id => {
                             const hidden = document.createElement('input');
@@ -690,8 +676,8 @@
             <svg class="shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                 viewBox="0 0 20 20">
                 <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3
-                                   1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1
-                                   1 1v4h1a1 1 0 0 1 0 2Z" />
+                                           1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1
+                                           1 1v4h1a1 1 0 0 1 0 2Z" />
             </svg>
             <div class="ms-3 text-sm font-medium">{{ session('success') }}</div>
         </div>
@@ -714,8 +700,8 @@
             <svg class="shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                 viewBox="0 0 20 20">
                 <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3
-                                   1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1
-                                   1 1v4h1a1 1 0 0 1 0 2Z" />
+                                           1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1
+                                           1 1v4h1a1 1 0 0 1 0 2Z" />
             </svg>
             <div class="ms-3 text-sm font-medium">{{ session('error') }}</div>
         </div>
@@ -738,11 +724,4 @@
             });
         </script>
     @endif
-
-
-
-
-
-
-
 @endsection

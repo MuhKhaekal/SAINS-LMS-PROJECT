@@ -3,9 +3,8 @@
 @section('page-title', 'SAINS - Pengumuman')
 
 @section('content')
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mt-14 md:mt-0">
 
-        {{-- HEADER: Judul & Aksi Utama --}}
         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
             <div>
                 <h1 class="text-2xl font-bold text-gray-800">{{ isset($test) ? 'Edit Soal Ujian' : 'Buat Ujian Baru' }}</h1>
@@ -24,7 +23,6 @@
                     Preview
                 </a>
 
-                {{-- Tombol Simpan Trigger (Akan memanggil fungsi JS) --}}
                 <x-primary-button onclick="document.getElementById('triggerSave').click()">
                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -36,16 +34,13 @@
             </div>
         </div>
 
-        {{-- INIT DATA --}}
         <script>
             window.existingQuestions = @json($jsQuestions ?? []);
             window.existingType = @json($test->test_type ?? 'pretest');
         </script>
 
-        {{-- MAIN BUILDER AREA --}}
         <div x-data="testBuilder(window.existingQuestions, window.existingType)" class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
 
-            {{-- KOLOM KIRI: PENGATURAN (Sticky) --}}
             <div class="lg:col-span-1 lg:sticky lg:top-6 space-y-6">
                 <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
                     <h2 class="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
@@ -60,7 +55,6 @@
                     </h2>
 
                     <div class="space-y-4">
-                        {{-- Judul --}}
                         <div>
                             <label for="visitors" class="block text-sm font-medium text-gray-700 mb-1">Judul Tes</label>
                             <input type="text" id="visitors"
@@ -69,7 +63,6 @@
                                 required />
                         </div>
 
-                        {{-- Deskripsi --}}
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Deskripsi & Instruksi</label>
                             <textarea name="description" rows="4"
@@ -77,7 +70,6 @@
                                 placeholder="Jelaskan instruksi pengerjaan..." required>{{ old('description', $test->description ?? '') }}</textarea>
                         </div>
 
-                        {{-- Durasi --}}
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Durasi Pengerjaan</label>
                             <div class="score-wrapper flex items-center">
@@ -107,10 +99,8 @@
                 </div>
             </div>
 
-            {{-- KOLOM KANAN: EDITOR PERTANYAAN --}}
             <div class="lg:col-span-2 space-y-6">
 
-                {{-- Tombol Tambah Soal --}}
                 <div class="grid grid-cols-2 gap-4">
                     <button @click="addMultipleChoice()" type="button"
                         class="flex flex-col items-center justify-center p-4 border-2 border-dashed border-gray-300 rounded-xl hover:border-indigo-500 hover:bg-indigo-50 transition group">
@@ -134,13 +124,11 @@
                     </button>
                 </div>
 
-                {{-- List Soal --}}
                 <div class="space-y-4">
                     <template x-for="(q, index) in questions" :key="q.id">
                         <div
                             class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden transition hover:shadow-md">
 
-                            {{-- Card Header --}}
                             <div class="bg-gray-50 px-4 py-3 border-b border-gray-200 flex justify-between items-center">
                                 <div class="flex items-center gap-3">
                                     <span
@@ -181,16 +169,13 @@
                                 </div>
                             </div>
 
-                            {{-- Card Body --}}
                             <div class="p-5">
-                                {{-- Input Pertanyaan --}}
                                 <div class="mb-4">
                                     <textarea x-model="q.question" rows="2"
                                         class="block w-full text-sm text-gray-900 border-0 border-b-2 border-gray-200 focus:ring-0 focus:border-indigo-500 placeholder-gray-400 resize-none transition"
                                         placeholder="Tuliskan pertanyaan disini..."></textarea>
                                 </div>
 
-                                {{-- Logic Pilihan Ganda --}}
                                 <template x-if="q.type === 'mcq'">
                                     <div class="space-y-3 bg-gray-50 p-4 rounded-lg">
                                         <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Opsi
@@ -225,7 +210,6 @@
                                     </div>
                                 </template>
 
-                                {{-- Logic Essay --}}
                                 <template x-if="q.type === 'essay'">
                                     <div class="flex items-center gap-3 bg-pink-50 p-3 rounded-lg border border-pink-100">
                                         <svg class="w-5 h-5 text-pink-500" fill="none" stroke="currentColor"
@@ -244,7 +228,6 @@
                         </div>
                     </template>
 
-                    {{-- Empty State --}}
                     <div x-show="questions.length === 0"
                         class="text-center py-12 border-2 border-dashed border-gray-300 rounded-xl">
                         <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24"
@@ -260,17 +243,13 @@
 
         </div>
 
-        {{-- Hidden Form for Submission --}}
         <form id="testForm" @submit.prevent="submitData" class="hidden">
-            {{-- Form akan di-generate oleh JS --}}
             <button id="triggerSave" type="submit">Simpan</button>
         </form>
 
     </div>
 
-    {{-- SCRIPT --}}
     <script>
-        // Logic untuk Counter Durasi (Vanilla JS)
         const MIN = 0,
             MAX = 180;
         document.querySelectorAll('.score-wrapper').forEach(wrapper => {
@@ -309,7 +288,6 @@
             updateButtons(parseInt(input.value) || 0);
         });
 
-        // Alpine JS Component
         function testBuilder(dbQuestions, dbType) {
             return {
                 test_type: dbType,
@@ -396,7 +374,6 @@
                     dur.value = document.querySelector('input[name=duration]').value;
                     form.appendChild(dur);
 
-                    // Append questions JSON
                     this.questions.forEach(q => {
                         const i = document.createElement('input');
                         i.type = 'hidden';

@@ -3,9 +3,8 @@
 @section('page-title', 'SAINS - Daftar Pengguna')
 
 @section('content')
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mt-14 md:mt-0">
 
-        {{-- HEADER: Judul & Aksi Utama --}}
         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
             <div>
                 <h1 class="text-2xl font-bold text-gray-800">Daftar Pengguna</h1>
@@ -29,12 +28,10 @@
             </div>
         </div>
 
-        {{-- FILTER SECTION --}}
         <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5 mb-6">
             <form method="GET" action="{{ route('daftar-pengguna.index') }}"
                 class="grid grid-cols-1 md:grid-cols-12 gap-4 items-end">
 
-                {{-- Search Input --}}
                 <div class="md:col-span-4">
                     <label for="search" class="block text-xs font-medium text-gray-700 mb-1">Pencarian</label>
                     <div class="relative">
@@ -50,7 +47,6 @@
                     </div>
                 </div>
 
-                {{-- Role Filter --}}
                 <div class="md:col-span-3">
                     <label for="role" class="block text-xs font-medium text-gray-700 mb-1">Role</label>
                     <select name="role" id="role"
@@ -62,7 +58,6 @@
                     </select>
                 </div>
 
-                {{-- Gender Filter --}}
                 <div class="md:col-span-3">
                     <label for="gender" class="block text-xs font-medium text-gray-700 mb-1">Jenis Kelamin</label>
                     <select name="gender" id="gender"
@@ -73,7 +68,6 @@
                     </select>
                 </div>
 
-                {{-- Buttons --}}
                 <div class="md:col-span-2 flex gap-2">
                     <button type="submit"
                         class="w-full bg-gray-800 text-white px-4 py-2 rounded-lg text-sm hover:bg-gray-700 transition">
@@ -92,8 +86,6 @@
             </form>
         </div>
 
-        {{-- BULK DELETE INFO BAR --}}
-        {{-- Area ini muncul jika ada checkbox yang dipilih --}}
         <form id="bulkDeleteForm" action="{{ route('daftar-pengguna.destroy-multiple') }}" method="POST">
             @csrf
             @method('DELETE')
@@ -126,7 +118,6 @@
                 </div>
             </div>
 
-            {{-- TABLE SECTION --}}
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm text-left">
@@ -156,7 +147,8 @@
                                         @endif
                                     </td>
                                     <td class="px-6 py-4">
-                                        <div class="font-medium text-gray-900">{{ $user->nama }}</div>
+                                        <a href="{{ route('daftar-pengguna.show', $user->id) }}"
+                                            class="font-medium text-gray-900 hover:text-indigo-600 hover:underline transition-colors cursor-pointer">{{ $user->nama }}</a>
                                         <div class="text-xs text-gray-500">{{ $user->email }}</div>
                                     </td>
                                     <td class="px-6 py-4 font-mono text-gray-600">
@@ -193,7 +185,6 @@
                                     </td>
                                     <td class="px-6 py-4 text-center">
                                         <div class="flex items-center justify-center gap-2">
-                                            {{-- Edit Button --}}
                                             <button type="button" data-modal-target="default-modal-update"
                                                 data-modal-toggle="default-modal-update" data-id="{{ $user->id }}"
                                                 data-nama="{{ $user->nama }}" data-nim="{{ $user->nim }}"
@@ -209,7 +200,6 @@
                                                 </svg>
                                             </button>
 
-                                            {{-- Delete Button --}}
                                             <button type="button" data-modal-target="default-modal-delete"
                                                 data-modal-toggle="default-modal-delete" data-id="{{ $user->id }}"
                                                 data-nama="{{ $user->nama }}"
@@ -245,7 +235,6 @@
                     </table>
                 </div>
 
-                {{-- Pagination --}}
                 @if ($users->hasPages())
                     <div class="px-6 py-4 border-t border-gray-100 bg-gray-50">
                         {{ $users->appends(request()->query())->links() }}
@@ -261,14 +250,14 @@
             const checkItems = document.querySelectorAll('.checkItem');
             const bulkDeleteForm = document.getElementById('bulkDeleteForm');
 
-            // UI Elements for selection
+
             const selectionBar = document.getElementById('selectionBar');
             const selectedCountSpan = document.getElementById('selectedCount');
             const clearBtn = document.getElementById('clearSelectionBtn');
 
             let selectedIds = JSON.parse(localStorage.getItem('selectedIds') || '[]');
 
-            // Sync Checkboxes on Load
+
             function syncCheckboxes() {
                 checkItems.forEach(item => {
                     if (selectedIds.includes(item.value)) {
@@ -278,14 +267,12 @@
                 updateSelectionUI();
             }
 
-            // Update UI (Show/Hide Bar & Update Count)
             function updateSelectionUI() {
                 const count = selectedIds.length;
                 selectedCountSpan.innerText = count;
 
                 if (count > 0) {
                     selectionBar.classList.remove('hidden');
-                    // Optional: Check 'CheckAll' if all on page are checked
                     const allOnPageChecked = Array.from(checkItems).every(item => item.checked);
                     if (checkItems.length > 0) checkAll.checked = allOnPageChecked;
                 } else {
@@ -296,7 +283,6 @@
 
             syncCheckboxes();
 
-            // Individual Checkbox Event
             checkItems.forEach(item => {
                 item.addEventListener('change', () => {
                     if (item.checked) {
@@ -309,7 +295,7 @@
                 });
             });
 
-            // Check All Event
+
             if (checkAll) {
                 checkAll.addEventListener('change', function() {
                     const isChecked = checkAll.checked;
@@ -326,11 +312,11 @@
                 });
             }
 
-            // Handle Form Submit (Inject Hidden Inputs)
+
             bulkDeleteForm.addEventListener('submit', function() {
-                // Remove existing hidden inputs to avoid duplicates
+
                 const existingInputs = bulkDeleteForm.querySelectorAll(
-                'input[name="ids[]"][type="hidden"]');
+                    'input[name="ids[]"][type="hidden"]');
                 existingInputs.forEach(el => el.remove());
 
                 selectedIds.forEach(id => {
@@ -344,7 +330,7 @@
                 localStorage.removeItem('selectedIds');
             });
 
-            // Clear Selection Button
+
             clearBtn.addEventListener('click', function() {
                 selectedIds = [];
                 checkItems.forEach(item => item.checked = false);
@@ -625,7 +611,6 @@
                 const nimInput = modal.querySelector('#nim');
                 const genderSelect = modal.querySelector('#gender');
 
-                // 🔥 FIX: gunakan #role_update (bukan #role)
                 const roleSelect = modal.querySelector('#role_update');
 
                 const halaqahSelect = modal.querySelector('#halaqah_id');
@@ -643,21 +628,18 @@
                         const role = button.getAttribute('data-role');
                         const halaqah = button.getAttribute('data-halaqah');
 
-                        // Isi input field
                         namaInput.value = nama;
                         nimInput.value = nim;
                         genderSelect.value = gender;
                         roleSelect.value = role;
                         halaqahSelect.value = halaqah;
 
-                        // 🔥 WAJIB — jalankan toggle setelah value ter-set & modal render
                         setTimeout(() => {
                             if (window.toggleHalaqahUpdate) {
                                 window.toggleHalaqahUpdate();
                             }
                         }, 10);
 
-                        // Set form action
                         form.action = `/daftar-pengguna/${id}`;
                     });
                 });
@@ -975,9 +957,8 @@
             role="alert">
             <svg class="shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                 viewBox="0 0 20 20">
-                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3
-                                                                                               1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1
-                                                                                               1 1v4h1a1 1 0 0 1 0 2Z" />
+                <path
+                    d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
             </svg>
             <div class="ms-3 text-sm font-medium">{{ session('success') }}</div>
         </div>
@@ -999,9 +980,8 @@
             role="alert">
             <svg class="shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                 viewBox="0 0 20 20">
-                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3
-                                                                                               1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1
-                                                                                               1 1v4h1a1 1 0 0 1 0 2Z" />
+                <path
+                    d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
             </svg>
             <div class="ms-3 text-sm font-medium">{{ session('error') }}</div>
         </div>
@@ -1024,11 +1004,5 @@
             });
         </script>
     @endif
-
-
-
-
-
-
 
 @endsection

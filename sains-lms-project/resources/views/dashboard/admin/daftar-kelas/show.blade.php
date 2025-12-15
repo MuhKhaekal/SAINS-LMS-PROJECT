@@ -2,9 +2,8 @@
 @section('page-title', 'Rekapitulasi Nilai Gabungan')
 
 @section('content')
-    <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mt-12 md:mt-0">
+    <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mt-14 md:mt-0">
 
-        {{-- HEADER --}}
         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
             <div>
                 <h1 class="text-2xl font-bold text-gray-800">Rekapitulasi Nilai</h1>
@@ -33,7 +32,6 @@
             </div>
         </div>
 
-        {{-- INFO CARDS --}}
         <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-8">
             <div class="flex items-center gap-2 mb-4 pb-4 border-b border-gray-100">
                 <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -44,7 +42,6 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-12">
-                {{-- Baris 1: Kelas & Dosen --}}
                 <div>
                     <label class="block text-xs font-medium text-gray-500 mb-1">Nama Kelas</label>
                     <p class="text-lg font-bold text-gray-900">{{ $classPai->class_name }}</p>
@@ -54,7 +51,6 @@
                     <p class="text-lg font-bold text-gray-900">{{ $classPai->lecturer }}</p>
                 </div>
 
-                {{-- Baris 2: Fakultas & Prodi (Full Width jika panjang) --}}
                 <div class="md:col-span-2 border-t border-gray-50 pt-4 grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-12">
                     <div>
                         <label class="block text-xs font-medium text-gray-500 mb-1">Fakultas</label>
@@ -68,7 +64,6 @@
             </div>
         </div>
 
-        {{-- TABEL 1: RINCIAN NILAI MENTAH --}}
         <div class="mb-12">
             <div class="flex items-center gap-2 mb-4">
                 <span class="w-1 h-6 bg-indigo-600 rounded-full"></span>
@@ -107,7 +102,6 @@
                                     class="px-3 py-3 bg-slate-100 text-slate-700 border-t-2 border-slate-300">Final</th>
                             </tr>
                             <tr>
-                                {{-- Sub Pretest --}}
                                 <th class="px-2 py-1.5 border-r border-gray-200 bg-sky-50/50 text-sky-700 font-medium">K
                                 </th>
                                 <th class="px-2 py-1.5 border-r border-gray-200 bg-sky-50/50 text-sky-700 font-medium">HB
@@ -119,14 +113,12 @@
                                 <th class="px-2 py-1.5 border-r border-gray-200 bg-sky-50/50 text-sky-700 font-medium">Ket
                                 </th>
 
-                                {{-- Sub Pekanan --}}
                                 @for ($i = 1; $i <= 6; $i++)
                                     <th
                                         class="px-2 py-1.5 border-r border-gray-200 bg-emerald-50/50 text-emerald-700 w-10 font-medium">
                                         {{ $i }}</th>
                                 @endfor
 
-                                {{-- Sub Posttest --}}
                                 <th
                                     class="px-2 py-1.5 border-r border-gray-200 bg-indigo-50/50 text-indigo-700 font-medium">
                                     K</th>
@@ -148,7 +140,6 @@
                         <tbody class="divide-y divide-gray-100 text-gray-700 text-center bg-white">
                             @forelse ($praktikans as $index => $p)
                                 <tr class="hover:bg-gray-50 transition-colors">
-                                    {{-- Sticky Columns --}}
                                     <td
                                         class="px-3 py-2 border-r border-gray-100 sticky left-0 bg-white hover:bg-gray-50 z-10">
                                         {{ $index + 1 }}</td>
@@ -162,7 +153,6 @@
                                         {{ $p->halaqahs->first()->halaqah_name ?? '-' }}
                                     </td>
 
-                                    {{-- Pretest --}}
                                     <td class="px-2 py-2 border-r border-gray-100 bg-sky-50/10">{{ $p->pre_kbq }}</td>
                                     <td class="px-2 py-2 border-r border-gray-100 bg-sky-50/10">{{ $p->pre_hb }}</td>
                                     <td class="px-2 py-2 border-r border-gray-100 bg-sky-50/10">{{ $p->pre_mh }}</td>
@@ -171,12 +161,10 @@
                                     <td class="px-2 py-2 border-r border-gray-100 bg-sky-50/10 text-[10px]">
                                         {{ $p->pre_ket }}</td>
 
-                                    {{-- Weekly --}}
                                     @for ($i = 1; $i <= 6; $i++)
                                         <td class="px-2 py-2 border-r border-gray-100">{{ $p->{'score' . $i} }}</td>
                                     @endfor
 
-                                    {{-- Posttest --}}
                                     <td class="px-2 py-2 border-r border-gray-100 bg-indigo-50/10">{{ $p->post_kbq }}
                                     </td>
                                     <td class="px-2 py-2 border-r border-gray-100 bg-indigo-50/10">{{ $p->post_hb }}
@@ -189,7 +177,6 @@
                                     <td class="px-2 py-2 border-r border-gray-100 bg-indigo-50/10 text-[10px]">
                                         {{ $p->post_ket }}</td>
 
-                                    {{-- Final --}}
                                     <td class="px-3 py-2 font-bold bg-slate-50 text-slate-800">{{ $p->final_score }}</td>
                                 </tr>
                             @empty
@@ -204,7 +191,6 @@
             </div>
         </div>
 
-        {{-- TABEL 2: LAPORAN KELULUSAN --}}
         <div>
             <div class="flex items-center gap-2 mb-4">
                 <span class="w-1 h-6 bg-green-600 rounded-full"></span>
@@ -263,7 +249,6 @@
                         <tbody class="divide-y divide-gray-100 text-gray-700 text-center bg-white">
                             @forelse ($praktikans as $index => $p)
                                 <tr class="hover:bg-gray-50 transition-colors">
-                                    {{-- Sticky Columns --}}
                                     <td
                                         class="px-3 py-2 border-r border-gray-100 sticky left-0 bg-white hover:bg-gray-50 z-10">
                                         {{ $index + 1 }}</td>
@@ -276,7 +261,6 @@
                                         title="{{ $p->halaqahs->first()->halaqah_name ?? '-' }}">
                                         {{ $p->halaqahs->first()->halaqah_name ?? '-' }}</td>
 
-                                    {{-- Persentase --}}
                                     <td class="px-2 py-2 border-r border-gray-100">{{ number_format($p->val_kbq_30, 2) }}
                                     </td>
                                     <td class="px-2 py-2 border-r border-gray-100">
@@ -284,19 +268,16 @@
                                     <td class="px-2 py-2 border-r border-gray-100">
                                         {{ number_format($p->val_final_20, 2) }}</td>
 
-                                    {{-- Nilai Akhir --}}
                                     <td
                                         class="px-3 py-2 border-r border-gray-100 font-bold text-indigo-700 bg-indigo-50/30">
                                         {{ number_format($p->val_total, 2) }}
                                     </td>
 
-                                    {{-- Ket KBQ --}}
                                     <td class="px-2 py-2 border-r border-gray-100 text-[10px] font-medium bg-sky-50/10">
                                         {{ $p->pre_ket }}</td>
                                     <td class="px-2 py-2 border-r border-gray-100 text-[10px] font-medium bg-sky-50/10">
                                         {{ $p->post_ket }}</td>
 
-                                    {{-- Kehadiran --}}
                                     <td class="px-3 py-2 border-r border-gray-100">
                                         <span
                                             class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold 
@@ -305,7 +286,6 @@
                                         </span>
                                     </td>
 
-                                    {{-- Status --}}
                                     <td class="px-3 py-2">
                                         <span
                                             class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold 
@@ -333,7 +313,6 @@
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
 
-                {{-- BAR CHART (POST TEST) --}}
                 <div class="bg-white rounded-xl shadow-lg border border-gray-200 p-4 lg:col-span-2">
                     <h3 class="text-sm font-bold text-gray-600 uppercase mb-4 text-center">Distribusi Nilai Post-Test</h3>
                     <div class="relative h-64 w-full">
@@ -341,7 +320,6 @@
                     </div>
                 </div>
 
-                {{-- PIE CHART (KELULUSAN) --}}
                 <div class="bg-white rounded-xl shadow-lg border border-gray-200 p-4">
                     <h3 class="text-sm font-bold text-gray-600 uppercase mb-4 text-center">Persentase Kelulusan</h3>
                     <div class="relative h-64 w-full flex justify-center">
@@ -350,7 +328,6 @@
                 </div>
             </div>
 
-            {{-- TABEL PERBANDINGAN --}}
             <div class="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
                 <div class="p-4 bg-gray-50 border-b border-gray-200">
                     <h3 class="text-sm font-bold text-gray-700 uppercase">Tabel Perbandingan Pre-Test vs Post-Test</h3>
@@ -396,27 +373,25 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
 
-            // --- DATA DARI CONTROLLER ---
             const categories = @json($categories);
             const dataPost = @json(array_values($statsPost));
-            const dataLulus = @json(array_values($statsLulus)); // [Jumlah Lulus, Jumlah Tidak Lulus]
+            const dataLulus = @json(array_values($statsLulus));
 
-            // --- 1. BAR CHART (Horizontal) ---
             const ctxBar = document.getElementById('barChartPost').getContext('2d');
             new Chart(ctxBar, {
-                type: 'bar', // Gunakan 'bar' dengan indexAxis 'y' untuk horizontal
+                type: 'bar',
                 data: {
                     labels: categories,
                     datasets: [{
                         label: 'Jumlah Praktikan',
                         data: dataPost,
                         backgroundColor: [
-                            'rgba(34, 197, 94, 0.7)', // Sangat Baik (Green)
-                            'rgba(59, 130, 246, 0.7)', // Baik (Blue)
-                            'rgba(234, 179, 8, 0.7)', // Cukup (Yellow)
-                            'rgba(249, 115, 22, 0.7)', // Kurang (Orange)
-                            'rgba(239, 68, 68, 0.7)', // Sangat Kurang (Red)
-                            'rgba(156, 163, 175, 0.5)' // Tidak Ada Nilai (Gray)
+                            'rgba(34, 197, 94, 0.7)',
+                            'rgba(59, 130, 246, 0.7)', 
+                            'rgba(234, 179, 8, 0.7)',
+                            'rgba(249, 115, 22, 0.7)',
+                            'rgba(239, 68, 68, 0.7)', 
+                            'rgba(156, 163, 175, 0.5)'
                         ],
                         borderColor: [
                             'rgb(34, 197, 94)',
@@ -431,7 +406,7 @@
                     }]
                 },
                 options: {
-                    indexAxis: 'y', // MENJADIKAN SUMBU X ANGKA, SUMBU Y KATEGORI
+                    indexAxis: 'y', 
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: {
@@ -454,7 +429,6 @@
                 }
             });
 
-            // --- 2. PIE CHART ---
             const ctxPie = document.getElementById('pieChartLulus').getContext('2d');
             new Chart(ctxPie, {
                 type: 'pie',
@@ -463,8 +437,8 @@
                     datasets: [{
                         data: dataLulus,
                         backgroundColor: [
-                            'rgba(34, 197, 94, 0.8)', // Lulus (Green)
-                            'rgba(239, 68, 68, 0.8)' // Tidak Lulus (Red)
+                            'rgba(34, 197, 94, 0.8)',
+                            'rgba(239, 68, 68, 0.8)' 
                         ],
                         borderColor: ['#fff', '#fff'],
                         borderWidth: 2

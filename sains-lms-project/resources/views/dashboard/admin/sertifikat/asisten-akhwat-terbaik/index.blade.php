@@ -15,7 +15,7 @@
         $judulSertifikat = ucwords(str_replace('-', ' ', $type));
     @endphp
 
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mt-14 md:mt-0">
         <div class="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
                 <div class="flex items-center gap-2 mb-1">
@@ -286,9 +286,7 @@
 
         </div>
 
-        {{-- ... Kode Upload dan Preview sebelumnya ... --}}
 
-        {{-- SECTION DISTRIBUSI: HANYA MUNCUL JIKA SUDAH ADA TEMPLATE --}}
         @if ($certificate)
             <div class="mt-8 bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
                 <div class="p-6 border-b border-gray-100 bg-gray-50">
@@ -299,16 +297,13 @@
                 </div>
 
                 <div class="p-6">
-                    {{-- LOGIKA TAMPILAN BERDASARKAN TIPE --}}
 
-                    {{-- CASE 1: ASISTEN UMUM (BULK ACTION) --}}
                     @if ($type == 'sertifikat-asisten-umum')
                         <div
                             class="flex flex-col md:flex-row items-center justify-between {{ $isDistributed ? 'bg-green-50 border-green-100' : 'bg-blue-50 border-blue-100' }} p-4 rounded-lg border">
 
                             <div class="mb-4 md:mb-0">
                                 @if ($isDistributed)
-                                    {{-- TAMPILAN JIKA SUDAH DISAHKAN --}}
                                     <div class="flex items-center gap-2 mb-1">
                                         <span class="flex h-6 w-6 items-center justify-center rounded-full bg-green-200">
                                             <svg class="h-4 w-4 text-green-700" fill="none" viewBox="0 0 24 24"
@@ -324,7 +319,6 @@
                                             Asisten</b>.
                                     </p>
                                 @else
-                                    {{-- TAMPILAN JIKA BELUM DISAHKAN --}}
                                     <h4 class="font-bold text-blue-800">Pengesahan Massal</h4>
                                     <p class="text-sm text-blue-600 mt-1">
                                         Tindakan ini akan memberikan sertifikat ini kepada
@@ -340,9 +334,7 @@
                                 <input type="hidden" name="certificate_id" value="{{ $certificate->id }}">
                                 <input type="hidden" name="type" value="{{ $type }}">
 
-                                {{-- LOGIC BUTTON TOGGLE --}}
                                 @if ($isDistributed)
-                                    {{-- TOMBOL BATALKAN (MERAH) --}}
                                     <input type="hidden" name="action" value="revoke">
                                     <button type="submit"
                                         class="whitespace-nowrap px-4 py-2 bg-white border border-red-200 text-red-600 rounded-lg hover:bg-red-50 hover:border-red-300 shadow-sm transition font-medium flex items-center gap-2 group">
@@ -355,7 +347,6 @@
                                         Batalkan Pengesahan
                                     </button>
                                 @else
-                                    {{-- TOMBOL SAH-KAN (BIRU) --}}
                                     <input type="hidden" name="action" value="assign">
                                     <button type="submit"
                                         class="whitespace-nowrap px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 shadow transition font-medium flex items-center gap-2">
@@ -405,7 +396,6 @@
                             </form>
                         </div>
 
-                        {{-- LIST PENERIMA SAAT INI (Opsional, agar admin tahu siapa yang sudah dipilih) --}}
                         <div class="mt-8">
                             <h4 class="text-sm font-bold text-gray-700 mb-3 uppercase tracking-wider">Penerima Terpilih
                             </h4>
@@ -434,7 +424,6 @@
                                                     {{ $recipient->pivot->created_at->format('d M Y') }}
                                                 </td>
                                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                                    {{-- Tombol Hapus Hak Akses User Pivot (Optional) --}}
                                                     <form
                                                         action="{{ route('sertifikat.revoke', ['certId' => $certificate->id, 'userId' => $recipient->id]) }}"
                                                         method="POST" class="inline">

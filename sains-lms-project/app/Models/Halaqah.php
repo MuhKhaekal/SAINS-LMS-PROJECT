@@ -29,6 +29,11 @@ class Halaqah extends Model
                     ->withTimestamps();
     }
 
+    public function meetings()
+    {
+        return $this->hasMany(Meeting::class);
+    }
+
     public function asisten()
     {
         return $this->belongsToMany(User::class, 'pivot_halaqah_users')

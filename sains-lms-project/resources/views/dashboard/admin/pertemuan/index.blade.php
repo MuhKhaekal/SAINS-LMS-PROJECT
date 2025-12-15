@@ -3,9 +3,7 @@
 @section('page-title', 'SAINS - Pertemuan')
 
 @section('content')
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-
-        {{-- HEADER: Judul & Tombol Tambah --}}
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mt-14 md:mt-0">
         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
             <div>
                 <h1 class="text-2xl font-bold text-gray-800">Daftar Pertemuan</h1>
@@ -21,29 +19,24 @@
             </div>
         </div>
 
-        {{-- LIST PERTEMUAN --}}
         <div class="space-y-4">
             @forelse ($meetings as $index => $meeting)
                 <div
                     class="group bg-white rounded-xl shadow-sm border border-gray-200 p-5 hover:shadow-md transition-all duration-300 relative overflow-hidden">
 
-                    {{-- Decorative Side Bar based on Type --}}
                     <div
                         class="absolute left-0 top-0 bottom-0 w-1 {{ $meeting->type == 'ujian' ? 'bg-red-500' : 'bg-indigo-500' }}">
                     </div>
 
                     <div class="flex flex-col md:flex-row md:items-start justify-between gap-4 pl-3">
 
-                        {{-- KONTEN UTAMA --}}
                         <div class="flex-1">
                             <div class="flex items-center gap-3 mb-2">
-                                {{-- Badge Nama Pertemuan --}}
                                 <span
                                     class="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-bold uppercase tracking-wide {{ $meeting->type == 'ujian' ? 'bg-red-50 text-red-700 ring-1 ring-red-600/10' : 'bg-indigo-50 text-indigo-700 ring-1 ring-indigo-600/10' }}">
                                     {{ $meeting->meeting_name }}
                                 </span>
 
-                                {{-- Badge Tipe --}}
                                 @if ($meeting->type == 'ujian')
                                     <span
                                         class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-red-100 text-red-800">
@@ -57,21 +50,17 @@
                                 @endif
                             </div>
 
-                            {{-- Topik --}}
                             <h3 class="text-lg font-bold text-gray-900 mb-1">
                                 {{ $meeting->topic }}
                             </h3>
 
-                            {{-- Deskripsi --}}
                             <p class="text-sm text-gray-600 leading-relaxed max-w-3xl">
                                 {{ $meeting->description }}
                             </p>
                         </div>
 
-                        {{-- AKSI / TOMBOL --}}
                         <div class="flex items-center gap-2 md:self-start mt-4 md:mt-0">
 
-                            {{-- Tombol Khusus Ujian --}}
                             @if ($meeting->type == 'ujian')
                                 <a href="{{ route('buat-test.create') }}"
                                     class="inline-flex items-center gap-2 px-3 py-1.5 bg-emerald-50 text-emerald-700 text-xs font-semibold rounded-lg hover:bg-emerald-100 transition border border-emerald-200 mr-2"
@@ -90,7 +79,6 @@
                                 </div>
                             @endif
 
-                            {{-- Tombol Edit --}}
                             <button type="button" data-modal-target="default-modal-update"
                                 data-modal-toggle="default-modal-update" data-id="{{ $meeting->id }}"
                                 data-meeting-name="{{ $meeting->meeting_name }}" data-topic="{{ $meeting->topic }}"
@@ -109,7 +97,6 @@
                                 <div class="tooltip-arrow" data-popper-arrow></div>
                             </div>
 
-                            {{-- Tombol Hapus --}}
                             <button type="button" data-modal-target="default-modal-delete"
                                 data-modal-toggle="default-modal-delete" data-id="{{ $meeting->id }}"
                                 class="text-gray-500 hover:text-red-600 transition-colors p-1 rounded hover:bg-red-50"

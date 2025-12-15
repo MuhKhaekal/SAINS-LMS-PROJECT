@@ -65,7 +65,8 @@ class User extends Authenticatable
                     ->withTimestamps();
     }
 
-    
-
-
+    public function presences()
+    {
+        return $this->hasMany(Presence::class);
+    }
 }

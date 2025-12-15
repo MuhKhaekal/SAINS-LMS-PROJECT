@@ -3,9 +3,8 @@
 @section('page-title', 'SAINS - Review Soal')
 
 @section('content')
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mt-14 md:mt-0">
 
-        {{-- HEADER --}}
         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
             <div>
                 <h1 class="text-2xl font-bold text-gray-800">Tinjau Soal Ujian</h1>
@@ -22,13 +21,11 @@
             </div>
         </div>
 
-        {{-- LIST SOAL --}}
         <div class="space-y-6">
             @forelse ($questions as $index => $q)
                 <div
                     class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow duration-300">
 
-                    {{-- Question Header --}}
                     <div class="bg-gray-50 px-6 py-4 border-b border-gray-200 flex justify-between items-center">
                         <div class="flex items-center gap-3">
                             <span
@@ -42,7 +39,6 @@
                             </span>
                         </div>
 
-                        {{-- Delete Action --}}
                         <button type="button" data-modal-target="default-modal-delete"
                             data-modal-toggle="default-modal-delete" data-id="{{ $q->id }}"
                             class="text-gray-400 hover:text-red-600 p-2 rounded-lg hover:bg-red-50 transition"
@@ -56,14 +52,12 @@
                     </div>
 
                     <div class="p-6">
-                        {{-- Question Text --}}
                         <div class="mb-6">
                             <h3 class="text-gray-900 font-medium text-lg leading-relaxed">
                                 {{ $q->question }}
                             </h3>
                         </div>
 
-                        {{-- Options / Answer Key --}}
                         @if ($q->type === 'mcq')
                             <div class="space-y-3">
                                 @foreach ($q->options as $optIndex => $option)
@@ -73,7 +67,6 @@
                                         ? 'bg-emerald-50 border-emerald-500 ring-1 ring-emerald-500'
                                         : 'bg-white border-gray-200' }}">
 
-                                        {{-- Option Letter (A, B, C...) --}}
                                         <div
                                             class="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full text-sm font-bold border mr-4
                                         {{ $option->is_correct
@@ -82,13 +75,11 @@
                                             {{ chr(65 + $optIndex) }}
                                         </div>
 
-                                        {{-- Option Text --}}
                                         <div
                                             class="flex-1 text-sm {{ $option->is_correct ? 'text-emerald-900 font-medium' : 'text-gray-700' }}">
                                             {{ $option->option_text }}
                                         </div>
 
-                                        {{-- Correct Indicator Icon --}}
                                         @if ($option->is_correct)
                                             <div
                                                 class="absolute right-4 flex items-center justify-center w-6 h-6 bg-emerald-100 rounded-full">
@@ -127,7 +118,6 @@
                     </div>
                 </div>
             @empty
-                {{-- Empty State --}}
                 <div class="text-center py-16 bg-white rounded-xl border-2 border-dashed border-gray-300">
                     <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 mb-4">
                         <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -239,9 +229,7 @@
             <svg class="shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                 viewBox="0 0 20 20">
                 <path
-                    d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3
-                                                                                                           1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1
-                                                                                                           1 1v4h1a1 1 0 0 1 0 2Z" />
+                    d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
             </svg>
             <div class="ms-3 text-sm font-medium">{{ session('success') }}</div>
         </div>
@@ -264,9 +252,7 @@
             <svg class="shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                 viewBox="0 0 20 20">
                 <path
-                    d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3
-                                                                                                           1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1
-                                                                                                           1 1v4h1a1 1 0 0 1 0 2Z" />
+                    d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
             </svg>
             <div class="ms-3 text-sm font-medium">{{ session('error') }}</div>
         </div>

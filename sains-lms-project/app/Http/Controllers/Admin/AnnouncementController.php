@@ -13,26 +13,13 @@ use Illuminate\Support\Facades\Storage;
 
 class AnnouncementController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
         $announcements = Announcement::all();
         return view('dashboard.admin.pengumuman.index', compact('announcements'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $messages = [
@@ -72,25 +59,6 @@ class AnnouncementController extends Controller
 
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
         $announcement = Announcement::findOrFail($id);
@@ -114,18 +82,14 @@ class AnnouncementController extends Controller
                 ->with('error', 'Periksa kembali input Anda!');
         }
     
-        // update content
         $announcement->content = $request->content;
-    
-        // handle file
+
         if ($request->hasFile('file_location')) {
     
-            // hapus file lama
             if ($announcement->file_location) {
                 Storage::disk('public')->delete($announcement->file_location);
             }
     
-            // upload file baru
             $filePath = $request->file('file_location')->store('announcement_files', 'public');
     
             $announcement->file_location = $filePath;
@@ -138,11 +102,7 @@ class AnnouncementController extends Controller
             ->with('success', 'Pengumuman berhasil diperbarui');
     }
     
-    
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
         $announcement = Announcement::findOrFail($id);

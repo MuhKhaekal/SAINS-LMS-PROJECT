@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ClassPai;
+use App\Models\Faculty;
 use App\Models\Halaqah;
+use App\Models\Presence;
 use App\Models\Prodi;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -16,25 +19,48 @@ class HomeController extends Controller
             if (Auth::user()->role == 'admin') {
                 
 
-                $totalUsers = User::count();
-                $totalHalaqah = Halaqah::count();
-                $totalProdi = Prodi::count();
-                
-                // Gender
-                $maleCount = User::where('gender', 'L')->count();
-                $femaleCount = User::where('gender', 'P')->count();
-                
-                // Chart Data (Contoh query agregat)
-                // Anda bisa menggunakan ->groupBy('faculty_id') pada relasi untuk mendapatkan ini
-                $facultyNames = ['Teknik', 'Ekonomi', 'Hukum', 'Sastra']; 
-                $facultyCounts = [150, 200, 100, 80];
-                
-                // Recent Halaqah
-                $recentHalaqahs = Halaqah::with('prodi')->latest()->take(5)->get();
-                
+                $stats = [
+                    'asisten'   => User::where('role', 'asisten')->count(),
+                    'praktikan' => User::where('role', 'praktikan')->count(),
+                    'halaqah'   => Halaqah::count(),
+                    'kelas'     => ClassPai::count(),
+                ];
+        
+                $presenceRaw = Presence::selectRaw('status, count(*) as total')
+                    ->groupBy('status')
+                    ->pluck('total', 'status');
+        
+                $chartPresence = [
+                    $presenceRaw['Hadir'] ?? 0,
+                    $presenceRaw['Izin'] ?? 0,
+                    $presenceRaw['Sakit'] ?? 0,
+                    $presenceRaw['Alfa'] ?? 0,
+                ];
+        
+                $faculties = Faculty::withCount('halaqahs')->get();
+        
+
+                $labelsFakultas = $faculties->pluck('faculty_code'); 
+                $dataFakultas   = $faculties->pluck('halaqahs_count'); 
+        
+                $recentPresences = Presence::with(['user', 'halaqah'])
+                    ->latest()
+                    ->limit(5)
+                    ->get();
+        
+                $topAsisten = User::where('role', 'asisten')
+                    ->withCount('halaqahs')
+                    ->orderByDesc('halaqahs_count')
+                    ->limit(5)
+                    ->get();
+        
                 return view('dashboard.admin.admin-home', compact(
-                    'totalUsers', 'totalHalaqah', 'maleCount', 'femaleCount', 
-                    'facultyNames', 'facultyCounts', 'recentHalaqahs'
+                    'stats', 
+                    'chartPresence', 
+                    'labelsFakultas', 
+                    'dataFakultas',
+                    'recentPresences',
+                    'topAsisten'
                 ));
 
 

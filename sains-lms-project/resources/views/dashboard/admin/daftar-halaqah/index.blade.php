@@ -3,9 +3,8 @@
 @section('page-title', 'SAINS - Daftar Halaqah')
 
 @section('content')
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mt-14 md:mt-0">
 
-        {{-- HEADER: Judul & Tombol Tambah --}}
         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
             <div>
                 <h1 class="text-2xl font-bold text-gray-800">Daftar Halaqah</h1>
@@ -21,12 +20,10 @@
             </div>
         </div>
 
-        {{-- FILTER SECTION --}}
         <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5 mb-6">
             <form method="GET" action="{{ route('daftar-halaqah.index') }}"
                 class="grid grid-cols-1 md:grid-cols-12 gap-4 items-end">
 
-                {{-- Search Input --}}
                 <div class="md:col-span-4">
                     <label for="search" class="block text-xs font-medium text-gray-700 mb-1">Pencarian</label>
                     <div class="relative">
@@ -42,7 +39,6 @@
                     </div>
                 </div>
 
-                {{-- Filter Jenis Halaqah --}}
                 <div class="md:col-span-3">
                     <label for="halaqah_type" class="block text-xs font-medium text-gray-700 mb-1">Jenis Halaqah</label>
                     <select name="halaqah_type" id="halaqah_type"
@@ -55,7 +51,6 @@
                     </select>
                 </div>
 
-                {{-- Filter Prodi --}}
                 <div class="md:col-span-3">
                     <label for="prodi" class="block text-xs font-medium text-gray-700 mb-1">Program Studi</label>
                     <select name="prodi" id="prodi"
@@ -69,7 +64,6 @@
                     </select>
                 </div>
 
-                {{-- Buttons --}}
                 <div class="md:col-span-2 flex gap-2">
                     <button type="submit"
                         class="w-full bg-gray-800 text-white px-4 py-2 rounded-lg text-sm hover:bg-gray-700 transition">
@@ -88,7 +82,6 @@
             </form>
         </div>
 
-        {{-- BULK DELETE CONTEXT BAR --}}
         <form id="bulkDeleteForm" action="{{ route('daftar-halaqah.destroy-multiple') }}" method="POST">
             @csrf
             @method('DELETE')
@@ -120,7 +113,6 @@
                 </div>
             </div>
 
-            {{-- TABLE SECTION --}}
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm text-left">
@@ -151,8 +143,11 @@
                                     <td class="px-6 py-4 font-mono font-medium text-gray-600">
                                         {{ $halaqah->halaqah_code }}
                                     </td>
-                                    <td class="px-6 py-4 font-medium text-gray-900">
-                                        {{ $halaqah->halaqah_name }}
+                                    <td class="px-6 py-4"> <a href="{{ route('daftar-halaqah.show', $halaqah->id) }}"
+                                            class="font-medium text-gray-900 hover:text-indigo-600 hover:underline transition-colors cursor-pointer">
+                                            {{ $halaqah->halaqah_name }}
+                                        </a>
+
                                     </td>
                                     <td class="px-6 py-4">
                                         @if ($halaqah->halaqah_type == 'Halaqah Ikhwan')
@@ -187,32 +182,6 @@
                                     </td>
                                     <td class="px-6 py-4 text-center">
                                         <div class="flex items-center justify-center gap-1">
-                                            {{-- Report Buttons Group --}}
-                                            <div class="flex bg-gray-100 rounded-md p-0.5 border border-gray-200">
-                                                <button type="button"
-                                                    class="p-1 hover:bg-white hover:text-green-600 rounded transition-colors text-gray-400"
-                                                    title="Laporan 1"
-                                                    data-tooltip-target="tooltip-report1-{{ $index }}">
-                                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                                        <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
-                                                        <path fill-rule="evenodd"
-                                                            d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z"
-                                                            clip-rule="evenodd" />
-                                                    </svg>
-                                                </button>
-                                                <button type="button"
-                                                    class="p-1 hover:bg-white hover:text-green-600 rounded transition-colors text-gray-400"
-                                                    title="Laporan 2"
-                                                    data-tooltip-target="tooltip-report2-{{ $index }}">
-                                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                                        <path fill-rule="evenodd"
-                                                            d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0015.414 6L12 2.586A2 2 0 0010.586 2H6zm5 6a1 1 0 10-2 0v3.586l-1.293-1.293a1 1 0 10-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 11.586V8z"
-                                                            clip-rule="evenodd" />
-                                                    </svg>
-                                                </button>
-                                            </div>
-
-                                            {{-- Edit Button --}}
                                             <button type="button" data-modal-target="default-modal-update"
                                                 data-modal-toggle="default-modal-update" data-id="{{ $halaqah->id }}"
                                                 data-halaqah-code="{{ $halaqah->halaqah_code }}"
@@ -230,7 +199,6 @@
                                                 </svg>
                                             </button>
 
-                                            {{-- Delete Button --}}
                                             <button type="button" data-modal-target="default-modal-delete"
                                                 data-modal-toggle="default-modal-delete" data-id="{{ $halaqah->id }}"
                                                 data-halaqah-name="{{ $halaqah->halaqah_name }}"
@@ -245,7 +213,6 @@
                                             </button>
                                         </div>
 
-                                        {{-- Tooltips (Optional jika ingin tetap pakai Flowbite Tooltip) --}}
                                         <div id="tooltip-report1-{{ $index }}" role="tooltip"
                                             class="absolute z-10 invisible inline-block px-3 py-2 text-xs font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip">
                                             Laporan 1
@@ -279,7 +246,6 @@
                     </table>
                 </div>
 
-                {{-- Pagination --}}
                 @if ($halaqahs->hasPages())
                     <div class="px-6 py-4 border-t border-gray-100 bg-gray-50">
                         {{ $halaqahs->appends(request()->query())->links() }}
@@ -289,14 +255,12 @@
         </form>
     </div>
 
-    {{-- SCRIPT SAMA DENGAN HALAMAN LAINNYA --}}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const checkAll = document.getElementById('checkAll');
             const checkItems = document.querySelectorAll('.checkItem');
             const bulkDeleteForm = document.getElementById('bulkDeleteForm');
 
-            // UI Elements
             const selectionBar = document.getElementById('selectionBar');
             const selectedCountSpan = document.getElementById('selectedCount');
             const clearBtn = document.getElementById('clearSelectionBtn');
@@ -358,7 +322,7 @@
 
             bulkDeleteForm.addEventListener('submit', function() {
                 const existingInputs = bulkDeleteForm.querySelectorAll(
-                'input[name="ids[]"][type="hidden"]');
+                    'input[name="ids[]"][type="hidden"]');
                 existingInputs.forEach(el => el.remove());
 
                 selectedIds.forEach(id => {
@@ -604,7 +568,7 @@
                         halaqahTypeSelect.value = halaqahType;
                         prodiSelect.value = prodi;
                         if (user === '-' || user === null) {
-                            userSelect.value = ''; // pilih "Belum ada"
+                            userSelect.value = '';
                         } else {
                             userSelect.value = user;
                         }
@@ -681,9 +645,8 @@
                 const bulkDeleteBtn = document.getElementById('bulkDeleteBtn');
                 const bulkForm = document.getElementById('bulkDeleteForm');
 
-                // === DELETE SATU DATA ===
                 document.querySelectorAll('[data-modal-target="default-modal-delete"]').forEach(button => {
-                    if (button !== bulkDeleteBtn) { // hindari bentrok dengan tombol massal
+                    if (button !== bulkDeleteBtn) {
                         button.addEventListener('click', () => {
                             const id = button.getAttribute('data-id');
                             const namaHalaqah = button.getAttribute('data-halaqah-name');
@@ -695,7 +658,6 @@
                     }
                 });
 
-                // === DELETE MULTIPLE ===
                 bulkDeleteBtn.addEventListener('click', () => {
                     const selectedIds = JSON.parse(localStorage.getItem('selectedIds') || '[]');
                     if (selectedIds.length === 0) return;
@@ -705,10 +667,8 @@
                     form.dataset.type = 'bulk';
                 });
 
-                // === KETIKA FORM DI-SUBMIT ===
                 form.addEventListener('submit', function(e) {
                     if (form.dataset.type === 'bulk') {
-                        // Tambahkan input hidden untuk setiap id terpilih
                         const selectedIds = JSON.parse(localStorage.getItem('selectedIds') || '[]');
                         selectedIds.forEach(id => {
                             const hidden = document.createElement('input');
@@ -732,9 +692,8 @@
             role="alert">
             <svg class="shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                 viewBox="0 0 20 20">
-                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3
-                                                                       1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1
-                                                                       1 1v4h1a1 1 0 0 1 0 2Z" />
+                <path
+                    d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1v4h1a1 1 0 0 1 0 2Z" />
             </svg>
             <div class="ms-3 text-sm font-medium">{{ session('success') }}</div>
         </div>
@@ -756,9 +715,7 @@
             role="alert">
             <svg class="shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                 viewBox="0 0 20 20">
-                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3
-                                                                       1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1
-                                                                       1 1v4h1a1 1 0 0 1 0 2Z" />
+                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
             </svg>
             <div class="ms-3 text-sm font-medium">{{ session('error') }}</div>
         </div>
@@ -782,11 +739,5 @@
             });
         </script>
     @endif
-
-
-
-
-
-
 
 @endsection

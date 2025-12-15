@@ -4,7 +4,6 @@
 @section('content')
     <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:mt-24">
 
-        {{-- HEADER STANDAR --}}
         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
             <div>
                 <h1 class="text-2xl font-bold text-gray-800">Konfigurasi Kelas</h1>
@@ -28,10 +27,8 @@
             </div>
         </div>
 
-        {{-- MAIN CARD --}}
         <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
 
-            {{-- Info Banner --}}
             <div class="bg-indigo-50 border-b border-indigo-100 p-6 flex items-start gap-4">
                 <div class="p-2 bg-white rounded-lg text-indigo-600 shadow-sm shrink-0">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -51,12 +48,10 @@
             <div class="p-6 md:p-8">
                 <form action="{{ route('akumulasi-nilai.store') }}" method="POST">
                     @csrf
-                    {{-- Hidden Fields --}}
                     <input type="hidden" name="halaqah_id" value="{{ $selectedHalaqah->id }}">
                     <input type="hidden" name="halaqah_name" value="{{ $selectedHalaqah->halaqah_name }}">
 
                     <div class="space-y-6">
-                        {{-- Field 1: Halaqah (Read Only) --}}
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2">Halaqah Binaan</label>
                             <div
@@ -71,7 +66,6 @@
                             </div>
                         </div>
 
-                        {{-- Field 2: Select Kelas PAI --}}
                         <div>
                             <label for="class_pai_id" class="block text-sm font-bold text-gray-800 mb-2">
                                 Pilih Kelas PAI <span class="text-red-500">*</span>
@@ -104,7 +98,6 @@
                         </div>
                     </div>
 
-                    {{-- Actions --}}
                     <div class="mt-8 pt-6 border-t border-gray-100 flex justify-end">
                         <x-primary-button class="justify-center px-6 py-3 text-sm font-bold">
                             Simpan & Lanjutkan

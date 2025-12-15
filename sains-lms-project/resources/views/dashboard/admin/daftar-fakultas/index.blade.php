@@ -3,9 +3,8 @@
 @section('page-title', 'SAINS - Daftar Fakultas')
 
 @section('content')
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mt-14 md:mt-0">
 
-        {{-- HEADER: Judul & Tombol Tambah --}}
         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
             <div>
                 <h1 class="text-2xl font-bold text-gray-800">Daftar Fakultas</h1>
@@ -21,7 +20,6 @@
             </div>
         </div>
 
-        {{-- SEARCH SECTION --}}
         <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5 mb-6">
             <form method="GET" action="{{ route('daftar-fakultas.index') }}" class="flex flex-col md:flex-row gap-4">
 
@@ -55,8 +53,6 @@
             </form>
         </div>
 
-        {{-- BULK DELETE CONTEXT BAR --}}
-        {{-- Form ini terpisah dari tabel agar HTML valid, JS akan mengurus input hidden --}}
         <form id="bulkDeleteForm" action="{{ route('daftar-fakultas.destroy-multiple') }}" method="POST">
             @csrf
             @method('DELETE')
@@ -88,7 +84,6 @@
                 </div>
             </div>
 
-            {{-- TABLE SECTION --}}
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm text-left">
@@ -118,8 +113,9 @@
                                     <td class="px-6 py-4 font-mono font-medium text-gray-600">
                                         {{ $faculty->faculty_code }}
                                     </td>
-                                    <td class="px-6 py-4 font-medium text-gray-900">
-                                        {{ $faculty->faculty_name }}
+                                    <td class="px-6 py-4"><a
+                                            href="{{ route('daftar-fakultas.show', $faculty->id) }}" class="font-medium text-gray-900 hover:text-indigo-600 hover:underline transition-colors cursor-pointer">{{ $faculty->faculty_name }}</a>
+
                                     </td>
                                     <td class="px-6 py-4 text-center">
                                         <span
@@ -150,7 +146,6 @@
                                                 </svg>
                                             </button>
 
-                                            {{-- Delete Button --}}
                                             <button type="button" data-modal-target="default-modal-delete"
                                                 data-modal-toggle="default-modal-delete" data-id="{{ $faculty->id }}"
                                                 data-faculty-name="{{ $faculty->faculty_name }}"
@@ -186,7 +181,6 @@
                     </table>
                 </div>
 
-                {{-- Pagination --}}
                 @if ($faculties->hasPages())
                     <div class="px-6 py-4 border-t border-gray-100 bg-gray-50">
                         {{ $faculties->appends(request()->query())->links() }}
@@ -196,14 +190,12 @@
         </form>
     </div>
 
-    {{-- SCRIPT SAMA DENGAN SEBELUMNYA --}}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const checkAll = document.getElementById('checkAll');
             const checkItems = document.querySelectorAll('.checkItem');
             const bulkDeleteForm = document.getElementById('bulkDeleteForm');
 
-            // UI Elements
             const selectionBar = document.getElementById('selectionBar');
             const selectedCountSpan = document.getElementById('selectedCount');
             const clearBtn = document.getElementById('clearSelectionBtn');
@@ -265,7 +257,7 @@
 
             bulkDeleteForm.addEventListener('submit', function() {
                 const existingInputs = bulkDeleteForm.querySelectorAll(
-                'input[name="ids[]"][type="hidden"]');
+                    'input[name="ids[]"][type="hidden"]');
                 existingInputs.forEach(el => el.remove());
 
                 selectedIds.forEach(id => {
@@ -561,8 +553,8 @@
             <svg class="shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                 viewBox="0 0 20 20">
                 <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3
-                                   1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1
-                                   1 1v4h1a1 1 0 0 1 0 2Z" />
+                                       1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1
+                                       1 1v4h1a1 1 0 0 1 0 2Z" />
             </svg>
             <div class="ms-3 text-sm font-medium">{{ session('success') }}</div>
         </div>
@@ -585,8 +577,8 @@
             <svg class="shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                 viewBox="0 0 20 20">
                 <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3
-                                   1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1
-                                   1 1v4h1a1 1 0 0 1 0 2Z" />
+                                       1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1
+                                       1 1v4h1a1 1 0 0 1 0 2Z" />
             </svg>
             <div class="ms-3 text-sm font-medium">{{ session('error') }}</div>
         </div>
@@ -610,11 +602,4 @@
             });
         </script>
     @endif
-
-
-
-
-
-
-
 @endsection

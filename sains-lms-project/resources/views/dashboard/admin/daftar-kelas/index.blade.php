@@ -3,9 +3,8 @@
 @section('page-title', 'SAINS - Daftar Kelas')
 
 @section('content')
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mt-14 md:mt-0">
 
-        {{-- HEADER: Judul & Tombol Tambah --}}
         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
             <div>
                 <h1 class="text-2xl font-bold text-gray-800">Daftar Kelas PAI</h1>
@@ -21,7 +20,6 @@
             </div>
         </div>
 
-        {{-- SEARCH SECTION --}}
         <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5 mb-6">
             <form method="GET" action="{{ route('daftar-kelas.index') }}" class="flex flex-col md:flex-row gap-4">
 
@@ -55,8 +53,6 @@
             </form>
         </div>
 
-        {{-- BULK DELETE CONTEXT BAR --}}
-        {{-- PERBAIKAN: Action route disesuaikan menjadi daftar-kelas --}}
         <form id="bulkDeleteForm" action="{{ route('daftar-kelas.destroy-multiple') }}" method="POST">
             @csrf
             @method('DELETE')
@@ -88,7 +84,6 @@
                 </div>
             </div>
 
-            {{-- TABLE SECTION --}}
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm text-left">
@@ -132,7 +127,6 @@
                                     </td>
                                     <td class="px-6 py-4 text-center">
                                         <div class="flex items-center justify-center gap-2">
-                                            {{-- Edit Button --}}
                                             <button type="button" data-modal-target="default-modal-update"
                                                 data-modal-toggle="default-modal-update" data-id="{{ $classPai->id }}"
                                                 data-class-name="{{ $classPai->class_name }}"
@@ -147,7 +141,6 @@
                                                 </svg>
                                             </button>
 
-                                            {{-- Delete Button --}}
                                             <button type="button" data-modal-target="default-modal-delete"
                                                 data-modal-toggle="default-modal-delete" data-id="{{ $classPai->id }}"
                                                 data-class-name="{{ $classPai->class_name }}"
@@ -183,7 +176,6 @@
                     </table>
                 </div>
 
-                {{-- Pagination --}}
                 @if ($classPais->hasPages())
                     <div class="px-6 py-4 border-t border-gray-100 bg-gray-50">
                         {{ $classPais->appends(request()->query())->links() }}
@@ -554,9 +546,7 @@
             role="alert">
             <svg class="shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                 viewBox="0 0 20 20">
-                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3
-                                           1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1
-                                           1 1v4h1a1 1 0 0 1 0 2Z" />
+                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
             </svg>
             <div class="ms-3 text-sm font-medium">{{ session('success') }}</div>
         </div>
@@ -578,9 +568,7 @@
             role="alert">
             <svg class="shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                 viewBox="0 0 20 20">
-                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3
-                                           1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1
-                                           1 1v4h1a1 1 0 0 1 0 2Z" />
+                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
             </svg>
             <div class="ms-3 text-sm font-medium">{{ session('error') }}</div>
         </div>
@@ -603,11 +591,5 @@
             });
         </script>
     @endif
-
-
-
-
-
-
 
 @endsection

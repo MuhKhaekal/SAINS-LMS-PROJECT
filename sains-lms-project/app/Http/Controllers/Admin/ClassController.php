@@ -117,17 +117,13 @@ class ClassController extends Controller
 
     public function show($id)
     {
-        // Panggil fungsi hitung data
         $data = $this->getCalculationData($id);
         
-        // Return view show biasa
         return view('dashboard.admin.daftar-kelas.show', $data);
     }
 
-    // --- METHOD BARU UNTUK EXPORT ---
     public function export($id)
     {
-        // Panggil fungsi hitung data yang sama
         $data = $this->getCalculationData($id);
         
         $namaFile = 'Rekap_Nilai_' . str_replace(' ', '_', $data['classPai']->class_name) . '.xlsx';
@@ -135,7 +131,6 @@ class ClassController extends Controller
         return Excel::download(new ClassPaiExport($data), $namaFile);
     }
 
-    // --- LOGIKA PERHITUNGAN DIPINDAHKAN KESINI (PRIVATE) ---
     private function getCalculationData($id)
     {
         $classPai = ClassPai::with('halaqahs.prodi.faculty')->findOrFail($id);
@@ -153,7 +148,6 @@ class ClassController extends Controller
         $skkMeetingIds = Meeting::where('type', 'skk')->pluck('id');
         $totalMeetings = $skkMeetingIds->count() ?: 1;
 
-        // Init Stats
         $categories = ['SANGAT BAIK', 'BAIK', 'CUKUP', 'KURANG', 'SANGAT KURANG', 'TIDAK ADA NILAI'];
         $statsPre  = array_fill_keys($categories, 0);
         $statsPost = array_fill_keys($categories, 0);
@@ -164,7 +158,6 @@ class ClassController extends Controller
             $hId = $userHalaqah ? $userHalaqah->id : null;
             if (!$hId) continue; 
 
-            // --- 1. PRETEST ---
             $pre = Pretest::where('user_id', $p->id)->where('halaqah_id', $hId)->first();
             $p->pre_kbq = $pre ? $pre->kbq : 0;
             $p->pre_hb  = $pre ? $pre->hb : 0;
@@ -172,7 +165,6 @@ class ClassController extends Controller
             $p->pre_hasil = $pre ? number_format(($pre->kbq + $pre->hb + $pre->mh) / 30 * 100, 2) : 0;
             $p->pre_ket   = $this->getKeterangan($p->pre_hasil);
 
-            // --- 2. WEEKLY ---
             $weekly = WeeklyScore::where('user_id', $p->id)->where('halaqah_id', $hId)->first();
             $p->score1 = $weekly ? $weekly->score1 : 0;
             $p->score2 = $weekly ? $weekly->score2 : 0;
@@ -181,7 +173,6 @@ class ClassController extends Controller
             $p->score5 = $weekly ? $weekly->score5 : 0;
             $p->score6 = $weekly ? $weekly->score6 : 0;
 
-            // --- 3. POSTTEST ---
             $post = Posttest::where('user_id', $p->id)->where('halaqah_id', $hId)->first();
             $p->post_kbq = $post ? $post->kbq : 0;
             $p->post_hb  = $post ? $post->hb : 0;
@@ -189,7 +180,6 @@ class ClassController extends Controller
             $p->post_hasil = $post ? number_format(($post->kbq + $post->hb + $post->mh) / 30 * 100, 2) : 0;
             $p->post_ket   = $this->getKeterangan($p->post_hasil);
 
-            // --- 4. FINAL & TOTAL ---
             $final = TestSubmission::where('user_id', $p->id)->where('halaqah_id', $hId)->latest()->first();
             $p->final_score = $final ? $final->score : 0;
 
@@ -205,7 +195,6 @@ class ClassController extends Controller
             $p->ket_absen = $p->val_absen_50 > 25 ? 'AKTIF' : 'TIDAK AKTIF';
             $p->ket_lulus = $p->val_total >= 50 ? 'LULUS' : 'TIDAK LULUS';
 
-            // --- 5. STATS COUNTER ---
             $labelPre = ($p->pre_ket == '-') ? 'TIDAK ADA NILAI' : $p->pre_ket;
             $labelPost = ($p->post_ket == '-') ? 'TIDAK ADA NILAI' : $p->post_ket;
 
@@ -217,7 +206,6 @@ class ClassController extends Controller
         $facultyList = $classPai->halaqahs->pluck('prodi.faculty.faculty_name')->unique()->filter()->join(', ') ?: '-';
         $prodiList = $classPai->halaqahs->pluck('prodi.prodi_name')->unique()->filter()->join(', ') ?: '-';
 
-        // Return Array Data
         return compact('classPai', 'praktikans', 'facultyList', 'prodiList', 'statsPre', 'statsPost', 'statsLulus', 'categories');
     }
 

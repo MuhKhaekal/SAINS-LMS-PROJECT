@@ -15,14 +15,11 @@ class PraktikanTestController extends Controller
 {
     public function index()
     {
-        // 1. Ambil data test (bisa berisi object, bisa null)
         $test = Test::latest()->first();
     
-        // 2. Siapkan variabel default null
         $session = null;
         $existingSubmission = null;
     
-        // 3. Jika test ada, baru cari data lainnya
         if ($test) {
             $halaqahId = null;
             if (Auth::user()->halaqahs()->exists()) {
@@ -39,7 +36,6 @@ class PraktikanTestController extends Controller
                 ->first();
         }
     
-        // 4. Return view dengan compact (PENTING: variabel tetap dikirim meski null)
         return view('dashboard.praktikan.tests.index', compact('test', 'session', 'existingSubmission'));
     }
 

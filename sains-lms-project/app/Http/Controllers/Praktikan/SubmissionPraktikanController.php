@@ -35,10 +35,7 @@ class SubmissionPraktikanController extends Controller
         return view('dashboard.praktikan.tugas.pengajuan.index', compact('selectedMeeting', 'selectedHalaqah', 'selectedAssignment'));
     }
 
-    public function create()
-    {
-        //
-    }
+
 
     public function store(Request $request)
     {
@@ -85,10 +82,7 @@ class SubmissionPraktikanController extends Controller
         ])->with('success', 'Tugas berhasil diunggah');
     }
 
-    public function show(string $id)
-    {
-        //
-    }
+
 
     public function edit($id)
     {

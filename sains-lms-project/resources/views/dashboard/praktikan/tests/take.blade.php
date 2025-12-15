@@ -136,7 +136,6 @@
                 } else {
                     display.textContent = formatTime(timeLeft);
                     
-                    // Optional: Visual warning when time is low (e.g., less than 1 minute)
                     if(timeLeft < 60) {
                         timerDiv.classList.remove('bg-yellow-50', 'text-yellow-800');
                         timerDiv.classList.add('bg-orange-100', 'text-orange-800');

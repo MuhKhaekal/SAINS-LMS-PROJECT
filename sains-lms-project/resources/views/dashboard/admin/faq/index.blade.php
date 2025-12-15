@@ -3,9 +3,7 @@
 @section('page-title', 'SAINS - FAQ')
 
 @section('content')
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-
-        {{-- HEADER --}}
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mt-14 md:mt-0">
         <div class="mb-8">
             <h1 class="text-2xl font-bold text-gray-800">Manajemen FAQ</h1>
             <p class="text-sm text-gray-500 mt-1">Kelola pertanyaan yang sering diajukan oleh praktikan.</p>
@@ -13,7 +11,6 @@
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
 
-            {{-- KOLOM KIRI: FAQ DITAMPILKAN (ACTIVE) --}}
             <section class="lg:col-span-7 space-y-4">
                 <div class="flex items-center justify-between mb-2">
                     <h2 class="text-lg font-semibold text-gray-800 flex items-center gap-2">
@@ -49,11 +46,9 @@
                                     <div class="p-5 border-b border-gray-200 bg-gray-50/50">
                                         <p class="mb-4 text-gray-600 text-sm leading-relaxed">{{ $faq->answer }}</p>
 
-                                        {{-- Action Buttons inside Accordion --}}
                                         <div class="flex justify-end items-center gap-2 pt-2 border-t border-gray-200/60">
                                             <span class="text-xs text-gray-400 mr-auto">Tindakan:</span>
 
-                                            {{-- Edit Button --}}
                                             <button type="button" data-modal-target="default-modal-update"
                                                 data-modal-toggle="default-modal-update" data-id="{{ $faq->id }}"
                                                 data-question="{{ $faq->question }}" data-answer="{{ $faq->answer }}"
@@ -67,7 +62,6 @@
                                                 Edit
                                             </button>
 
-                                            {{-- Sembunyikan (Delete from List) --}}
                                             <form action="{{ route('faq.deleteFromListFaq', ['id' => $faq->id]) }}"
                                                 method="POST">
                                                 @csrf
@@ -108,7 +102,6 @@
                 </div>
             </section>
 
-            {{-- KOLOM KANAN: DRAF / DISEMBUNYIKAN --}}
             <section class="lg:col-span-5 space-y-4">
                 <div class="flex items-center justify-between mb-2">
                     <h2 class="text-lg font-semibold text-gray-800 flex items-center gap-2">
@@ -140,7 +133,6 @@
                                         </svg>
                                     </button>
 
-                                    {{-- Permanently Delete Button (Optional - based on your flow) --}}
                                     <button type="button" data-modal-target="default-modal-delete"
                                         data-modal-toggle="default-modal-delete" data-id="{{ $faq->id }}"
                                         class="text-gray-500 hover:text-red-600 transition-colors p-1 rounded hover:bg-red-50"
@@ -196,7 +188,6 @@
         </div>
     </div>
 
-    {{-- CSS Tambahan untuk Scrollbar Halus (Opsional) --}}
     <style>
         .custom-scrollbar::-webkit-scrollbar {
             width: 6px;
@@ -389,18 +380,17 @@
                 const icon = btn.querySelector("svg");
 
                 if (content.classList.contains("max-h-0")) {
-                    // buka smooth
                     content.style.maxHeight = content.scrollHeight + "px";
                     content.classList.remove("max-h-0");
-                    icon.classList.add("rotate-180"); // 🔄 ikon berputar
+                    icon.classList.add("rotate-180"); 
                 } else {
-                    // tutup smooth
+
                     content.style.maxHeight = content.scrollHeight + "px";
                     setTimeout(() => {
                         content.style.maxHeight = "0px";
                         content.classList.add("max-h-0");
                     }, 10);
-                    icon.classList.remove("rotate-180"); // 🔄 ikon balik lagi
+                    icon.classList.remove("rotate-180");
                 }
             });
         });
@@ -415,9 +405,7 @@
             role="alert">
             <svg class="shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                 viewBox="0 0 20 20">
-                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3
-                                                                       1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1
-                                                                       1 1v4h1a1 1 0 0 1 0 2Z" />
+                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
             </svg>
             <div class="ms-3 text-sm font-medium">{{ session('success') }}</div>
         </div>
@@ -439,9 +427,7 @@
             role="alert">
             <svg class="shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                 viewBox="0 0 20 20">
-                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3
-                                                                       1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1
-                                                                       1 1v4h1a1 1 0 0 1 0 2Z" />
+                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
             </svg>
             <div class="ms-3 text-sm font-medium">{{ session('error') }}</div>
         </div>

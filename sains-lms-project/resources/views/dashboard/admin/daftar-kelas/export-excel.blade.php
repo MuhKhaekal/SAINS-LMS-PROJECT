@@ -7,7 +7,6 @@
 
 <body>
 
-    {{-- METADATA --}}
     <table>
         <tr>
             <td colspan="6" style="font-weight: bold; font-size: 14px; height: 30px; vertical-align: middle;">
@@ -34,7 +33,6 @@
         </tr>
     </table>
 
-    {{-- TABEL 1: AKUMULASI NILAI --}}
     <table>
         <thead>
             <tr>
@@ -71,7 +69,6 @@
                     Final Test</th>
             </tr>
             <tr>
-                {{-- Sub Header --}}
                 <th
                     style="font-weight: bold; background-color: #34a853; border: 1px solid #000000; text-align: center;">
                     K</th>
@@ -132,7 +129,6 @@
                     <td style="border: 1px solid #000000;">{{ $p->nama }}</td>
                     <td style="border: 1px solid #000000;">{{ $p->halaqahs->first()->halaqah_name ?? '-' }}</td>
 
-                    {{-- Pretest --}}
                     <td style="text-align: center; border: 1px solid #000000;">{{ $p->pre_kbq }}</td>
                     <td style="text-align: center; border: 1px solid #000000;">{{ $p->pre_hb }}</td>
                     <td style="text-align: center; border: 1px solid #000000;">{{ $p->pre_mh }}</td>
@@ -141,7 +137,6 @@
                         {{ $p->pre_hasil }}</td>
                     <td style="text-align: center; font-size: 9px; border: 1px solid #000000;">{{ $p->pre_ket }}</td>
 
-                    {{-- Weekly --}}
                     <td style="text-align: center; border: 1px solid #000000;">{{ $p->score1 }}</td>
                     <td style="text-align: center; border: 1px solid #000000;">{{ $p->score2 }}</td>
                     <td style="text-align: center; border: 1px solid #000000;">{{ $p->score3 }}</td>
@@ -149,7 +144,6 @@
                     <td style="text-align: center; border: 1px solid #000000;">{{ $p->score5 }}</td>
                     <td style="text-align: center; border: 1px solid #000000;">{{ $p->score6 }}</td>
 
-                    {{-- Post --}}
                     <td style="text-align: center; border: 1px solid #000000;">{{ $p->post_kbq }}</td>
                     <td style="text-align: center; border: 1px solid #000000;">{{ $p->post_hb }}</td>
                     <td style="text-align: center; border: 1px solid #000000;">{{ $p->post_mh }}</td>
@@ -168,7 +162,6 @@
 
     <br>
 
-    {{-- TABEL 2: LAPORAN KELULUSAN (DENGAN STRATEGI MERGE KOLOM) --}}
     <table>
         <thead>
             <tr>
@@ -177,7 +170,6 @@
                     LAPORAN KELULUSAN AKHIR</th>
             </tr>
             <tr>
-                {{-- Gunakan Kolom A, B, C, D seperti biasa --}}
                 <th rowspan="2"
                     style="font-weight: bold; text-align: center; vertical-align: middle; border: 1px solid #000000; background-color: #92d050;">
                     No
@@ -192,30 +184,24 @@
                     style="font-weight: bold; text-align: center; vertical-align: middle; border: 1px solid #000000; background-color: #92d050;">
                     Asal Halaqah</th>
 
-                {{-- Persentase menggunakan kolom E, F, G --}}
                 <th colspan="3"
                     style="font-weight: bold; text-align: center; border: 1px solid #000000; background-color: #34a853;">
                     Pembagian Persentase
                 </th>
 
-                {{-- Total pakai H --}}
                 <th rowspan="2"
                     style="font-weight: bold; text-align: center; vertical-align: middle; background-color: #34a853; border: 1px solid #000000;">
                     Total (100%)</th>
 
-                {{-- Ket KBQ Pre pakai I --}}
-                {{-- Ket KBQ Post pakai MERGE J,K,L (3 kolom x 6 lebar = 18 lebar) --}}
                 <th colspan="4"
                     style="font-weight: bold; text-align: center; border: 1px solid #000000; background-color: #34a853;">
                     Keterangan
                     KBQ</th>
 
-                {{-- Ket Absen pakai MERGE M,N,O --}}
                 <th colspan="3" rowspan="2"
                     style="font-weight: bold; text-align: center; vertical-align: middle; border: 1px solid #000000; background-color: #92d050;">
                     Ket. Kehadiran</th>
 
-                {{-- Ket Lulus pakai Sisanya (P-U) --}}
                 <th colspan="3" rowspan="2"
                     style="font-weight: bold; text-align: center; vertical-align: middle; background-color: #92d050; border: 1px solid #000000; background-color: #92d050;">
                     Ket. Lulus</th>
@@ -247,7 +233,6 @@
                     <td style="border: 1px solid #000000;">{{ $p->nama }}</td>
                     <td style="border: 1px solid #000000;">{{ $p->halaqahs->first()->halaqah_name ?? '-' }}</td>
 
-                    {{-- Mapping ke Kolom E, F, G --}}
                     <td style="text-align: center; border: 1px solid #000000;">{{ number_format($p->val_kbq_30, 2) }}
                     </td>
                     <td style="text-align: center; border: 1px solid #000000;">
@@ -255,26 +240,21 @@
                     <td style="text-align: center; border: 1px solid #000000;">
                         {{ number_format($p->val_final_20, 2) }}</td>
 
-                    {{-- Mapping ke Kolom H --}}
                     <td
                         style="text-align: center; font-weight: bold; background-color: #e0e7ff; border: 1px solid #000000;">
                         {{ number_format($p->val_total, 2) }}</td>
 
-                    {{-- Mapping ke Kolom I (Pre Ket) --}}
                     <td style="text-align: center; font-size: 9px; border: 1px solid #000000;">{{ $p->pre_ket }}
                     </td>
 
-                    {{-- Mapping ke Kolom J-L (Post Ket) --}}
                     <td colspan="3" style="text-align: center; font-size: 9px; border: 1px solid #000000;">
                         {{ $p->post_ket }}</td>
 
-                    {{-- Mapping ke Kolom M-O (Ket Absen) --}}
                     <td colspan="3"
                         style="text-align: center; font-weight: bold; color: {{ $p->ket_absen == 'AKTIF' ? '#166534' : '#991b1b' }}; border: 1px solid #000000;">
                         {{ $p->ket_absen }}
                     </td>
 
-                    {{-- Mapping ke Kolom P-U (Ket Lulus) --}}
                     <td colspan="3"
                         style="text-align: center; font-weight: bold; color: {{ $p->ket_lulus == 'LULUS' ? '#166534' : '#991b1b' }}; border: 1px solid #000000;">
                         {{ $p->ket_lulus }}
@@ -286,7 +266,6 @@
 
     <br>
 
-    {{-- STATISTIK --}}
     <table>
         <tr>
             <td colspan="4" style="font-weight: bold; font-size: 14px;">DATA STATISTIK</td>
