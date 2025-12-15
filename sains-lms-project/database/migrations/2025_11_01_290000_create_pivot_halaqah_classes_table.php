@@ -11,18 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pivot_prodi_halaqahs', function (Blueprint $table) {
+        Schema::create('pivot_halaqah_classes', function (Blueprint $table) {
             $table->id();
-        
-            $table->foreignId('prodi_id')
-                  ->constrained('prodis')
-                  ->onUpdate('cascade')
-                  ->onDelete('cascade');
-        
             $table->foreignId('halaqah_id')
-                  ->constrained('halaqahs')
-                  ->onUpdate('cascade')
-                  ->onDelete('cascade');
+                ->nullable()
+                ->constrained('halaqahs')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+            $table->foreignId('class_pai_id')
+                ->constrained('class_pais')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -32,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pivot_prodi_halaqahs');
+        Schema::dropIfExists('pivot_halaqah_classes');
     }
 };

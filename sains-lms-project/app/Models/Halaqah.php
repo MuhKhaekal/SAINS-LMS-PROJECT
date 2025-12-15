@@ -18,6 +18,11 @@ class Halaqah extends Model
         return $this->belongsTo(Prodi::class, 'prodi_id');
     }
 
+    public function classPais()
+    {
+        return $this->belongsToMany(ClassPai::class, 'pivot_halaqah_classes', 'halaqah_id', 'class_pai_id');
+    }
+
     public function users()
     {
         return $this->belongsToMany(User::class, 'pivot_halaqah_users', 'halaqah_id', 'user_id')

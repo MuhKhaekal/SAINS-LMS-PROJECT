@@ -28,6 +28,7 @@ use App\Http\Controllers\Admin\TestController;
 use App\Http\Controllers\Asisten\AsistenCertificateController;
 use App\Http\Controllers\Asisten\AsistenTestController;
 use App\Http\Controllers\Asisten\AssignmentController;
+use App\Http\Controllers\Asisten\CalculateScoreController;
 use App\Http\Controllers\Asisten\MaterialController;
 use App\Http\Controllers\Asisten\PosttestController;
 use App\Http\Controllers\Asisten\PresenceController;
@@ -210,6 +211,19 @@ Route::middleware('auth')->group(function () {
                 'update' => 'posttest.update',
                 'destroy' => 'posttest.destroy',
             ]);
+
+            Route::delete('/akumulasi-nilai/reset/{halaqahId}', [CalculateScoreController::class, 'resetClass'])
+        ->name('akumulasi-nilai.reset');
+            Route::resource('akumulasi-nilai', CalculateScoreController::class)
+            ->names([
+                'index' => 'akumulasi-nilai.index',
+                'create' => 'akumulasi-nilai.create',
+                'store' => 'akumulasi-nilai.store',
+                'show' => 'akumulasi-nilai.show',         
+                'edit' => 'akumulasi-nilai.edit',
+                'update' => 'akumulasi-nilai.update',
+                'destroy' => 'akumulasi-nilai.destroy',
+            ]);
     
     
         });
@@ -217,6 +231,7 @@ Route::middleware('auth')->group(function () {
     Route::middleware('admin')->group(function () {
         Route::post('/daftar-pengguna/importExcel', [UserController::class, 'importExcel'])->name('daftar-pengguna.importExcel');
         Route::delete('daftar-pengguna/destroy-multiple', [UserController::class, 'destroyMultiple'])->name('daftar-pengguna.destroy-multiple');
+        Route::get('daftar-kelas/{id}/export', [ClassController::class, 'export'])->name('daftar-kelas.export');
         Route::resource('daftar-pengguna', UserController::class)
         ->names([
             'index' => 'daftar-pengguna.index',

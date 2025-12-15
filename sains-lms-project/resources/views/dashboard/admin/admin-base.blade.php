@@ -195,7 +195,7 @@
 
         <!-- Content -->
         <div class="flex-1 h-screen overflow-y-auto">
-            <div class="pb-20 mx-4">
+            <div class="mx-4">
                 @yield('content')
             </div>
         </div>

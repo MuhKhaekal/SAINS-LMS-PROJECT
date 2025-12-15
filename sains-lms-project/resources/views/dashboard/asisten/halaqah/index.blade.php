@@ -19,7 +19,7 @@
         </div>
 
         <section class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-            <a href="#"
+            <a href="{{ route('akumulasi-nilai.index', ['halaqah_name' => $selectedHalaqah->halaqah_name]) }}"
                 class="bg-white p-4 rounded-xl shadow-sm border border-gray-200 hover:shadow-md hover:-translate-y-1 transition-all duration-300 group">
                 <div class="flex flex-col items-center text-center gap-3">
                     <div
