@@ -44,11 +44,13 @@
             class="fixed top-0 left-0 md:left-auto md:right-0 z-50 w-80 h-screen overflow-y-auto bg-primary text-secondary 
             transition-transform duration-300 transform -translate-x-full md:translate-x-0 md:static md:flex md:flex-col">
 
-            <div class="text-secondary text-md font-bold flex items-center justify-center px-4 py-6">
-                <a href="" class="text-2xl font-semibold">[ SAINS UNHAS ]</a>
+            <div class="text-secondary text-md font-bold flex flex-col items-center justify-center px-4 py-6 border-b-2">
+                <img src="{{ asset('assets/images/logo-uh.png') }}" alt="" class="w-12 h-12">
+                <p class="text-center mt-2">STUDI AL-QUR'AN INTENSIF UNIVERSITAS HASANUDDIN</p>
+                
             </div>
 
-            <div class="h-full overflow-y-auto flex flex-col flex-1 mt-0 no-scrollbar pb-10">
+            <div class="h-full overflow-y-auto flex flex-col flex-1 mt-2 no-scrollbar pb-10">
                 <ul class="space-y-4">
                     <li
                         class="text-lg font-semibold rounded-lg mx-2 px-5 py-3 flex justify-items-center hover:bg-gray-700 hover:text-gray-300 {{ request()->routeIs('dashboard') ? 'text-secondary bg-gray-600 ' : ' text-gray-500 hover:bg-gray-700 group' }}">

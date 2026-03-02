@@ -22,7 +22,7 @@
     <section class="flex-1">
         <h1 class="font-bold mb-5">Sosial Media</h1>
         <div class="flex flex-col">
-            <a class="hover:text-blue-500 hover:underline" href="">Instagram</a>
+            <a class="hover:text-blue-500 hover:underline" href="https://www.instagram.com/sainsunhas/" target="_blank">Instagram</a>
             <a class="hover:text-blue-500 hover:underline" href="">Telegram</a>
             <a class="hover:text-blue-500 hover:underline" href="">Youtube</a>
         </div>
@@ -31,13 +31,12 @@
         <h1 class="font-bold mb-5">Program</h1>
         <div class="flex flex-col">
             <a class="hover:text-blue-500 hover:underline" href="">Merdeka Belajar</a>
-            <a class="hover:text-blue-500 hover:underline" href="">Finterpreneur</a>
+            <a class="hover:text-blue-500 hover:underline" href=""></a>
         </div>
     </section>
     <section class="flex-1">
-        <h1 class="font-bold mb-5">Sosial Media</h1>
+        <h1 class="font-bold mb-5">Tentang Kami</h1>
         <div class="flex flex-col">
-            <a class="hover:text-blue-500 hover:underline" href="">Tentang Kami</a>
             <a class="hover:text-blue-500 hover:underline" href="">Ketentuan</a>
             <a class="hover:text-blue-500 hover:underline" href="">Kebijakan Privasi</a>
         </div>
